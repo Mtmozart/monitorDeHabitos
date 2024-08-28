@@ -1,0 +1,26 @@
+package br.com.monitodehabitos.monitodehabitos.domain;
+
+import br.com.monitodehabitos.monitodehabitos.domain.entities.Admin;
+import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
+import br.com.monitodehabitos.monitodehabitos.domain.enums.TypeUserEnum;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class FactoryClientTest {
+    @Test
+    void deveriaCriarUsuarioComFabrica() {
+        FactoryClient factoryClient = new FactoryClient();
+        Client client = factoryClient.withAllParameters(
+                "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
+                null, new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
+        ;
+
+        Assertions.assertEquals("Matheus Mozart da Silva Neves Borges", client.getName());
+        Assertions.assertEquals(TypeUserEnum.CLIENT, client.getTypeUserEnum());
+    }
+
+}

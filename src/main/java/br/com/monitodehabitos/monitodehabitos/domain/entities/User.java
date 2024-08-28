@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public abstract class User {
-    private UUID id;
+
     private String email;
     private String password;
     private String name;
@@ -17,9 +17,9 @@ public abstract class User {
     private Address address;
     private TypeUserEnum typeUserEnum;
 
-    public User(UUID id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum) {
-        this.id = id;
+    public User(String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum) {
         this.email = email;
+
         this.password = password;
         this.name = name;
         this.createdAt = createdAt;
@@ -28,9 +28,6 @@ public abstract class User {
         this.typeUserEnum = typeUserEnum;
     }
 
-    public UUID getId() {
-        return id;
-    }
 
     public String getEmail() {
         return email;

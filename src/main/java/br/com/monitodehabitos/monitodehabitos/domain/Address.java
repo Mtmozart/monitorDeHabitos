@@ -7,10 +7,10 @@ public class Address {
     private String city;
     private String state;
     private String neighborhood;
-    private Integer number;
+    private String number;
     private String complement;
 
-    public Address(String cep, String street, String city, String state, String neighborhood, Integer number, String complement) {
+    public Address(String cep, String street, String city, String state, String neighborhood, String number, String complement) {
         this.cep = cep;
         this.street = street;
         this.city = city;
@@ -61,11 +61,11 @@ public class Address {
         this.neighborhood = neighborhood;
     }
 
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 

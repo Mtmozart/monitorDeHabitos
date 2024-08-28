@@ -10,8 +10,8 @@ public class Client extends User{
   private Boolean isClient;
 
 
-  public Client(UUID id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum, Boolean isClient) {
-    super(id, email, password, name, createdAt, updatedAt, address, typeUserEnum);
+  public Client(String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum, Boolean isClient) {
+    super( email, password, name, createdAt, updatedAt, address, typeUserEnum);
     this.isClient = isClient;
   }
 
