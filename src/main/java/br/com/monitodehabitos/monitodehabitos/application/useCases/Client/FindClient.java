@@ -8,7 +8,7 @@ import java.util.UUID;
 public class FindClient {
     private final ClientRepository repository;
     public FindClient(ClientRepository repository) {this.repository = repository;}
-    public Client findClient(UUID id) {
-        return repository.findById(id).get();
+    public Client findClient(Long id) {
+        return repository.findById(id);
     }
 }

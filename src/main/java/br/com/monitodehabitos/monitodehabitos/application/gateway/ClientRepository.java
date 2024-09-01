@@ -9,6 +9,6 @@ public interface ClientRepository {
 
     Client save(Client client);
     Client update(Client client);
-    Optional<Client> findById(UUID id);
+    Client findById(Long id);
     Boolean delete(UUID id);
 }

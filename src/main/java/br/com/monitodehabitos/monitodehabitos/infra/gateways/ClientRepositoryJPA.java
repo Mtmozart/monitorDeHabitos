@@ -31,8 +31,13 @@ public class ClientRepositoryJPA implements ClientRepository {
     }
 
     @Override
-    public Optional<Client> findById(UUID id) {
-        return Optional.empty();
+    public Client findById(Long id) {
+        ClientEntity clientEntity = this.clientEntityRepository.findById(id).orElse(null);
+
+        if(clientEntity == null) {
+            throw new RuntimeException("Usuário não encontrado");
+        }
+        return this.clientEntityMapper.toClientDomain(clientEntity);
     }
 
     @Override

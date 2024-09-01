@@ -1,8 +1,15 @@
 package br.com.monitodehabitos.monitodehabitos.infra.persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-import java.util.UUID;
+import java.util.Optional;
 
-public interface ClientEntityRepository extends JpaRepository<ClientEntity, UUID> {
+public interface ClientEntityRepository extends JpaRepository<ClientEntity, Long> {
+
+    @Query("SELECT c FROM client c WHERE c.email = :email")
+    Optional<ClientEntity> findByEmail(String email);
+
+    @Query("SELECT c FROM client c WHERE c.id = :id")
+    Optional<ClientEntity> findById(Long id);
 }
