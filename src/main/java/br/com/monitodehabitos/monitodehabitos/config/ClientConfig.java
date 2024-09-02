@@ -3,7 +3,9 @@ package br.com.monitodehabitos.monitodehabitos.config;
 
 import br.com.monitodehabitos.monitodehabitos.application.gateway.ClientRepository;
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.CreateClient;
+import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.DeleteClient;
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.FindClient;
+import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.UpdateClient;
 import br.com.monitodehabitos.monitodehabitos.domain.FactoryClient;
 import br.com.monitodehabitos.monitodehabitos.infra.gateways.ClientEntityMapper;
 import br.com.monitodehabitos.monitodehabitos.infra.gateways.ClientRepositoryJPA;
@@ -23,6 +25,16 @@ public class ClientConfig {
     FindClient findById(ClientRepository clientRepository) {
         return new FindClient(clientRepository);
     }
+    @Bean
+    DeleteClient deleteClient(ClientRepository clientRepository) {
+        return new DeleteClient(clientRepository);
+    }
+
+    @Bean
+    UpdateClient updateClient(ClientRepository clientRepository) {
+        return new UpdateClient(clientRepository);
+    }
+
 
     @Bean
     ClientRepositoryJPA clientRepositoryJPA(ClientEntityRepository clientEntityRepository, ClientEntityMapper clientEntityMapper) {

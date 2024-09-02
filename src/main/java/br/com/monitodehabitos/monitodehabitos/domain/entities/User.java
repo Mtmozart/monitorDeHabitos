@@ -5,7 +5,6 @@ import br.com.monitodehabitos.monitodehabitos.domain.RandomPasswordResetCodeGene
 import br.com.monitodehabitos.monitodehabitos.domain.enums.TypeUserEnum;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public abstract class User {
 
@@ -17,9 +16,11 @@ public abstract class User {
     private Address address;
     private TypeUserEnum typeUserEnum;
 
+    public User() {
+    }
+
     public User(String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum) {
         this.email = email;
-
         this.password = password;
         this.name = name;
         this.createdAt = createdAt;
@@ -27,7 +28,6 @@ public abstract class User {
         this.address = address;
         this.typeUserEnum = typeUserEnum;
     }
-
 
     public String getEmail() {
         return email;
@@ -57,8 +57,37 @@ public abstract class User {
         return typeUserEnum;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public void updateAddress(Address newAddress) {
+        if (address != null) {
+            this.address.updateAddress(newAddress);
+        }
+    }
+
+
     public void resetPassword() {
         RandomPasswordResetCodeGenerator generate = new RandomPasswordResetCodeGenerator();
         this.password = generate.generateRandomCode();
     }
+
+
 }

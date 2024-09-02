@@ -10,6 +10,9 @@ public class Address {
     private String number;
     private String complement;
 
+    public Address() {
+    }
+
     public Address(String cep, String street, String city, String state, String neighborhood, String number, String complement) {
         this.cep = cep;
         this.street = street;
@@ -76,4 +79,32 @@ public class Address {
     public void setComplement(String complement) {
         this.complement = complement;
     }
+
+    public void updateAddress(Address newAddress) {
+        if (newAddress != null) {
+            if (newAddress.getCep() != null && !newAddress.getCep().isEmpty()) {
+                this.cep = newAddress.getCep();
+            }
+            if (newAddress.getStreet() != null && !newAddress.getStreet().isEmpty()) {
+                this.street = newAddress.getStreet();
+            }
+            if (newAddress.getCity() != null && !newAddress.getCity().isEmpty()) {
+                this.city = newAddress.getCity();
+            }
+            if (newAddress.getState() != null && !newAddress.getState().isEmpty()) {
+                this.state = newAddress.getState();
+            }
+            if (newAddress.getNeighborhood() != null && !newAddress.getNeighborhood().isEmpty()) {
+                this.neighborhood = newAddress.getNeighborhood();
+            }
+            if (newAddress.getNumber() != null && !newAddress.getNumber().isEmpty()) {
+                this.number = newAddress.getNumber();
+            }
+            if (newAddress.getComplement() != null && !newAddress.getComplement().isEmpty()) {
+                this.complement = newAddress.getComplement();
+            }
+        }
+    }
+
+
 }

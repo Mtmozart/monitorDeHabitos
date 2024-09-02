@@ -9,7 +9,7 @@ public class UpdateClient {
 
     public UpdateClient(ClientRepository repository) {this.repository = repository;}
 
-    public Client update(Client client) {
-        return repository.update(client);
+    public Client update(Long id, Client newClient) {
+        return repository.update(id, newClient);
     }
 }

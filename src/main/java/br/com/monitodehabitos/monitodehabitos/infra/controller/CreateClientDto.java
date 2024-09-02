@@ -1,8 +1,6 @@
 package br.com.monitodehabitos.monitodehabitos.infra.controller;
 
-import java.time.LocalDateTime;
-
-public record ClientDto (
+public record CreateClientDto(
     String email,
     String password,
     String name,

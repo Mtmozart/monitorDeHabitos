@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface ClientRepository {
 
     Client save(Client client);
-    Client update(Client client);
+    Client update(Long id, Client newClient);
     Client findById(Long id);
-    Boolean delete(UUID id);
+    void delete(Long id);
 }

@@ -58,4 +58,18 @@ public class ClientEntityMapper {
                 toAddressEntity(client.getAddress())
         );
     }
+
+    public ClientEntity toClientEntityUpdate(Long id, Client client) {
+        return new ClientEntity(
+                id,
+                client.getEmail(),
+                client.getPassword(),
+                client.getName(),
+                client.getTypeUserEnum(),
+                client.getClient(),
+                client.getCreatedAt(),
+                client.getUpdatedAt(),
+                toAddressEntity(client.getAddress())
+        );
+    }
 }

@@ -7,8 +7,12 @@ import java.util.UUID;
 
 public class DeleteClient {
     private final ClientRepository repository;
-    public DeleteClient(ClientRepository repository) {this.repository = repository;}
-    public Boolean delete(UUID id) {
-        return repository.delete(id);
+
+    public DeleteClient(ClientRepository repository) {
+        this.repository = repository;
+    }
+
+    public void delete(Long id) {
+        repository.delete(id);
     }
 }
