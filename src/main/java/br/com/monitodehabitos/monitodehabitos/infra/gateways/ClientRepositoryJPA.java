@@ -6,9 +6,6 @@ import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntityRepository;
 
-import java.util.Optional;
-import java.util.UUID;
-
 public class ClientRepositoryJPA implements ClientRepository {
     private final ClientEntityRepository clientEntityRepository;
     private final ClientEntityMapper clientEntityMapper;
@@ -40,7 +37,6 @@ public class ClientRepositoryJPA implements ClientRepository {
     @Override
     public Client findById(Long id) {
         ClientEntity clientEntity = this.clientEntityRepository.findById(id).orElse(null);
-
         if(clientEntity == null) {
             throw new RuntimeException("Usuário não encontrado");
         }
