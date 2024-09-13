@@ -3,6 +3,7 @@ package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 import br.com.monitodehabitos.monitodehabitos.domain.Address;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.TypeUserEnum;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.UserExeption;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntityRepository;
 import org.junit.jupiter.api.Test;
@@ -73,7 +74,7 @@ class ClientRepositoryJPATest {
     }
 
     @Test
-    void update_whenClientExists_shouldUpdateAndReturnClient() {
+    void update_whenClientExists_shouldUpdateAndReturnClient() throws UserExeption {
         Long clientId = 1L;
 
         Address originalAddress = new Address(

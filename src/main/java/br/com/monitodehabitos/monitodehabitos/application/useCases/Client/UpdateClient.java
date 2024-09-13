@@ -2,6 +2,7 @@ package br.com.monitodehabitos.monitodehabitos.application.useCases.Client;
 
 import br.com.monitodehabitos.monitodehabitos.application.gateway.ClientRepository;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.UserExeption;
 
 public class UpdateClient {
 
@@ -9,7 +10,7 @@ public class UpdateClient {
 
     public UpdateClient(ClientRepository repository) {this.repository = repository;}
 
-    public Client update(Long id, Client newClient) {
+    public Client update(Long id, Client newClient) throws UserExeption {
         return repository.update(id, newClient);
     }
 }

@@ -3,6 +3,8 @@ package br.com.monitodehabitos.monitodehabitos.domain.entities;
 import br.com.monitodehabitos.monitodehabitos.domain.Address;
 import br.com.monitodehabitos.monitodehabitos.domain.RandomPasswordResetCodeGenerator;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.TypeUserEnum;
+import br.com.monitodehabitos.monitodehabitos.domain.enums.UserErroEnum;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.UserExeption;
 
 import java.time.LocalDateTime;
 
@@ -77,10 +79,13 @@ public abstract class User {
         this.address = address;
     }
 
-    public void updateAddress(Address newAddress) {
-        if (address != null) {
-            this.address.updateAddress(newAddress);
+    public void updateAddress(Address newAddress) throws UserExeption {
+        if (address == null) {
+            throw new UserExeption(UserErroEnum.USR0002.getMessage());
         }
+
+        this.address.updateAddress(newAddress);
+
     }
 
 

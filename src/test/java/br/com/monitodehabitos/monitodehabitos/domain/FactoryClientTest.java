@@ -1,14 +1,12 @@
 package br.com.monitodehabitos.monitodehabitos.domain;
 
-import br.com.monitodehabitos.monitodehabitos.domain.entities.Admin;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.TypeUserEnum;
+import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class FactoryClientTest {
     @Test
@@ -32,5 +30,4 @@ class FactoryClientTest {
         Assertions.assertEquals("Matheus Mozart da Silva Neves Borges", client.getName());
         Assertions.assertEquals(TypeUserEnum.CLIENT, client.getTypeUserEnum());
     }
-
 }

@@ -6,7 +6,7 @@ import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.Create
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.DeleteClient;
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.FindClient;
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.UpdateClient;
-import br.com.monitodehabitos.monitodehabitos.domain.FactoryClient;
+import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryClient;
 import br.com.monitodehabitos.monitodehabitos.infra.gateways.ClientEntityMapper;
 import br.com.monitodehabitos.monitodehabitos.infra.gateways.ClientRepositoryJPA;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntityRepository;
