@@ -80,4 +80,17 @@ public class AddressEntity {
     public void setComplement(String complement) {
         this.complement = complement;
     }
+
+    @Override
+    public String toString() {
+        return "AddressEntity{" +
+                "cep='" + cep + '\'' +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", neighborhood='" + neighborhood + '\'' +
+                ", number='" + number + '\'' +
+                ", complement='" + complement + '\'' +
+                '}';
+    }
 }

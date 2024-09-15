@@ -5,7 +5,8 @@ import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.Delete
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.FindClient;
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.UpdateClient;
 import br.com.monitodehabitos.monitodehabitos.domain.Address;
-import br.com.monitodehabitos.monitodehabitos.domain.FactoryClient;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.UserException;
+import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryClient;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +52,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity update(@PathVariable("id") Long id, @RequestBody UpdateClientDto dto){
+    private ResponseEntity update(@PathVariable("id") Long id, @RequestBody UpdateClientDto dto) throws UserException {
         Client updatesClient = factoryClient.updateClient(dto.email(), dto.password(), dto.name(),
                 new Address(
                         dto.cep(), dto.street(), dto.city(),

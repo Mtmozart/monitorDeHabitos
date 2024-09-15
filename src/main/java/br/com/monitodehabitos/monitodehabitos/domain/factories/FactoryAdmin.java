@@ -1,5 +1,6 @@
-package br.com.monitodehabitos.monitodehabitos.domain;
+package br.com.monitodehabitos.monitodehabitos.domain.factories;
 
+import br.com.monitodehabitos.monitodehabitos.domain.Address;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Admin;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.TypeUserEnum;

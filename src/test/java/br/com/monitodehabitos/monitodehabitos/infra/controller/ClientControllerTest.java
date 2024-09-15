@@ -1,7 +1,7 @@
 package br.com.monitodehabitos.monitodehabitos.infra.controller;
 
 import br.com.monitodehabitos.monitodehabitos.application.gateway.ClientRepository;
-import br.com.monitodehabitos.monitodehabitos.domain.FactoryClient;
+import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryClient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

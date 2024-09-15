@@ -1,7 +1,7 @@
 package br.com.monitodehabitos.monitodehabitos.domain.entities;
 
 import br.com.monitodehabitos.monitodehabitos.domain.Address;
-import br.com.monitodehabitos.monitodehabitos.domain.FactoryClient;
+import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryClient;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.TypeUserEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

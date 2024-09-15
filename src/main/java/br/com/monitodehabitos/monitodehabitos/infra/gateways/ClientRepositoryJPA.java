@@ -3,6 +3,7 @@ package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 
 import br.com.monitodehabitos.monitodehabitos.application.gateway.ClientRepository;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.UserException;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntityRepository;
 
@@ -18,12 +19,13 @@ public class ClientRepositoryJPA implements ClientRepository {
     @Override
     public Client save(Client client) {
         ClientEntity clientEntity = this.clientEntityMapper.toClientEntity(client);
+        System.out.println(clientEntity);
         this.clientEntityRepository.save(clientEntity);
         return this.clientEntityMapper.toClientDomain(clientEntity);
     }
 
     @Override
-    public Client update(Long id, Client updateClient) {
+    public Client update(Long id, Client updateClient) throws UserException {
         ClientEntity clientEntity = this.clientEntityRepository.findById(id).orElse(null);
         if(clientEntity == null) {
             throw new RuntimeException("Usuário não encontrado");        }

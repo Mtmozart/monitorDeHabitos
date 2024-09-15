@@ -1,7 +1,6 @@
 package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 
 import br.com.monitodehabitos.monitodehabitos.domain.Address;
-import br.com.monitodehabitos.monitodehabitos.domain.FactoryClient;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.AddressEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntity;
