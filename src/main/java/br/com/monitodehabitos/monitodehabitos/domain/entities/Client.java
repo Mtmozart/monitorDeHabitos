@@ -24,6 +24,11 @@ public class Client extends User {
     this.isClient = isClient;
   }
 
+  public Client(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum, Boolean isClient, List<Habit> habits) {
+    super(id, email, password, name, createdAt, updatedAt, address, typeUserEnum);
+    this.isClient = isClient;
+    this.habits = habits;
+  }
 
   public Boolean getClient() {
     return isClient;

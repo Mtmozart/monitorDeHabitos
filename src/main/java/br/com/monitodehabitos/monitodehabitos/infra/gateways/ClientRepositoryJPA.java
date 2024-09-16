@@ -26,8 +26,9 @@ public class ClientRepositoryJPA implements ClientRepository {
     @Override
     public Client update(Long id, Client updateClient) throws UserException {
         ClientEntity clientEntity = this.clientEntityRepository.findById(id).orElse(null);
-        if(clientEntity == null) {
-            throw new RuntimeException("Usuário não encontrado");        }
+        if (clientEntity == null) {
+            throw new RuntimeException("Usuário não encontrado");
+        }
         Client client = this.clientEntityMapper.toClientDomain(clientEntity);
         client.updateClient(updateClient);
         ClientEntity clientEntityUpdated = this.clientEntityMapper.toClientEntityUpdate(id, client);
@@ -38,7 +39,7 @@ public class ClientRepositoryJPA implements ClientRepository {
     @Override
     public Client findById(Long id) {
         ClientEntity clientEntity = this.clientEntityRepository.findById(id).orElse(null);
-        if(clientEntity == null) {
+        if (clientEntity == null) {
             throw new RuntimeException("Usuário não encontrado");
         }
         return this.clientEntityMapper.toClientDomain(clientEntity);
@@ -51,4 +52,5 @@ public class ClientRepositoryJPA implements ClientRepository {
         }
         this.clientEntityRepository.deleteById(id);
     }
+
 }

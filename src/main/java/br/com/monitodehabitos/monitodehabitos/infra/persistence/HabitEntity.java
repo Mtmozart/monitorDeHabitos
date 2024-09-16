@@ -15,10 +15,12 @@ public class HabitEntity {
     private LocalDate end;
     @Column(name = "percentage_for_day")
     private Double percentageForDay;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;
 
+    public HabitEntity() {
+    }
 
     public HabitEntity(Long id, String description, Boolean done, LocalDate start, LocalDate end, Double percentageForDay, ClientEntity clientEntity) {
         this.id = id;

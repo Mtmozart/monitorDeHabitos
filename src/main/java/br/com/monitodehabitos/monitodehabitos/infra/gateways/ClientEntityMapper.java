@@ -2,8 +2,13 @@ package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 
 import br.com.monitodehabitos.monitodehabitos.domain.Address;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
+import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.AddressEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntity;
+import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntity;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class ClientEntityMapper {
@@ -29,20 +34,6 @@ public class ClientEntityMapper {
                 address.getNeighborhood(),
                 address.getNumber(),
                 address.getComplement()
-        );
-    }
-
-    public Client toClientDomain(ClientEntity clientEntity) {
-        return new Client(
-                clientEntity.getId(),
-                clientEntity.getEmail(),
-                clientEntity.getPassword(),
-                clientEntity.getName(),
-                clientEntity.getCreatedAt(),
-                clientEntity.getUpdatedAt(),
-                toAddressDomain(clientEntity.getAddressEntity()),
-                clientEntity.getTypeUser(),
-                clientEntity.getClient()
         );
     }
     public ClientEntity toClientEntity(Client client) {
@@ -72,4 +63,37 @@ public class ClientEntityMapper {
                 toAddressEntity(client.getAddress())
         );
     }
+
+    public Client toClientDomain(ClientEntity clientEntity) {
+        return new Client(
+                clientEntity.getId(),
+                clientEntity.getEmail(),
+                clientEntity.getPassword(),
+                clientEntity.getName(),
+                clientEntity.getCreatedAt(),
+                clientEntity.getUpdatedAt(),
+                toAddressDomain(clientEntity.getAddressEntity()),
+                clientEntity.getTypeUser(),
+                clientEntity.getClient(),
+                convertHabitsDomain(clientEntity.getHabits())
+        );
+    }
+    private List<Habit> convertHabitsDomain(List<HabitEntity> habitEntities) {
+        return habitEntities.stream()
+                .map(this::toHabitDomain)
+                .collect(Collectors.toList());
+    }
+
+    private Habit toHabitDomain(HabitEntity habitEntity) {
+        return new Habit(
+                habitEntity.getId(),
+                habitEntity.getDescription(),
+                habitEntity.getDone(),
+                habitEntity.getStart(),
+                habitEntity.getEnd(),
+                habitEntity.getPercentageForDay(),
+                null
+        );
+    }
+
 }

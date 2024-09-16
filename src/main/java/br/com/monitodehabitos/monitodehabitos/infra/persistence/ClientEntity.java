@@ -14,7 +14,7 @@ public class ClientEntity extends UserEntity {
 
     @Column(name = "is_client", nullable = false)
     private Boolean isClient;
-    @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<HabitEntity> habits = new ArrayList<>();
 
     public ClientEntity() {

@@ -8,12 +8,10 @@ import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
 import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryClient;
 import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryHabit;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("/habit")
@@ -31,12 +29,12 @@ public class HabitController {
     }
 
     @PostMapping
-    public String create() throws HabitExeption {
-        Long id = 1L;
-        Client client = this.findClient.findClient(id);
-        Habit habit = this.factoryHabit.withDescriptionAndDate(null, client, "description", LocalDate.now());
-        System.out.println(habit);
-        this.createHabit.create(habit);
-        return "Hello world";
+    public Habit create(@RequestBody CreateHabitController data) throws HabitExeption {
+        Client client = this.findClient.findClient(data.clientId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dateStart = LocalDate.parse(data.start(), formatter);
+        Habit habit = this.factoryHabit.withDescriptionAndDate(null, client, data.description(),dateStart);
+        client.addHabit(habit);
+        return this.createHabit.create(habit);
     }
 }
