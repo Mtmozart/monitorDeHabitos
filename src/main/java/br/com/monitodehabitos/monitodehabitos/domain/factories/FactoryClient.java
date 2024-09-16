@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 public class FactoryClient {
     private Client client;
 
-    public Client withAllParameters(String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address) {
-        this.client = new Client(email, password, name, createdAt, updatedAt, address, TypeUserEnum.CLIENT, true);
+    public Client withAllParameters(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address) {
+        this.client = new Client(id, email, password, name, createdAt, updatedAt, address, TypeUserEnum.CLIENT, true);
         return this.client;
     }
 
-    public Client withoutCreatedatAndUpdatedatParameters(String email, String password, String name, Address address) {
-        this.client = new Client(email, password, name, LocalDateTime.now(), null, address, TypeUserEnum.CLIENT, true);
+    public Client withoutCreatedatAndUpdatedatParameters(Long id, String email, String password, String name, Address address) {
+        this.client = new Client(id, email, password, name, LocalDateTime.now(), null, address, TypeUserEnum.CLIENT, true);
         return this.client;
     }
 

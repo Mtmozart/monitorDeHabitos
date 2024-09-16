@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 public class FactoryAdmin {
     private Admin admin;
 
-    public Admin withAllParameters(String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address){
-        this.admin = new Admin( email, password, name, createdAt, updatedAt, address, TypeUserEnum.ADMIN, true);
+    public Admin withAllParameters(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address){
+        this.admin = new Admin(id, email, password, name, createdAt, updatedAt, address, TypeUserEnum.ADMIN, true);
         return this.admin;
     }
 }

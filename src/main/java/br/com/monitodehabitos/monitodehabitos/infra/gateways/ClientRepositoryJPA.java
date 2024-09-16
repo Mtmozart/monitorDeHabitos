@@ -19,7 +19,6 @@ public class ClientRepositoryJPA implements ClientRepository {
     @Override
     public Client save(Client client) {
         ClientEntity clientEntity = this.clientEntityMapper.toClientEntity(client);
-        System.out.println(clientEntity);
         this.clientEntityRepository.save(clientEntity);
         return this.clientEntityMapper.toClientDomain(clientEntity);
     }

@@ -7,7 +7,7 @@ import br.com.monitodehabitos.monitodehabitos.domain.enums.TypeUserEnum;
 import java.time.LocalDateTime;
 
 public abstract class User {
-
+    private Long id;
     private String email;
     private String password;
     private String name;
@@ -19,7 +19,8 @@ public abstract class User {
     public User() {
     }
 
-    public User(String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum) {
+     public User(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -27,6 +28,10 @@ public abstract class User {
         this.updatedAt = updatedAt;
         this.address = address;
         this.typeUserEnum = typeUserEnum;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getEmail() {

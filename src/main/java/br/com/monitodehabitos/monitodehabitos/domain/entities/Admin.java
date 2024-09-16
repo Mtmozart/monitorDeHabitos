@@ -10,8 +10,8 @@ public class Admin extends User{
   private Boolean isAdmin;
 
 
-  public Admin(String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum, Boolean isAdmin) {
-    super( email, password, name, createdAt, updatedAt, address, typeUserEnum);
+  public Admin(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum, Boolean isAdmin) {
+    super(id, email, password, name, createdAt, updatedAt, address, typeUserEnum);
     this.isAdmin = isAdmin;
   }
 

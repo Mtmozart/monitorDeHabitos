@@ -18,11 +18,12 @@ public class Client extends User {
     super();
   }
 
-  public Client(String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt,
+  public Client(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt,
                 Address address, TypeUserEnum typeUserEnum, Boolean isClient) {
-    super(email, password, name, createdAt, updatedAt, address, typeUserEnum);
+    super(id, email, password, name, createdAt, updatedAt, address, typeUserEnum);
     this.isClient = isClient;
   }
+
 
   public Boolean getClient() {
     return isClient;

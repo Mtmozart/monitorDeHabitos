@@ -34,6 +34,7 @@ public class ClientEntityMapper {
 
     public Client toClientDomain(ClientEntity clientEntity) {
         return new Client(
+                clientEntity.getId(),
                 clientEntity.getEmail(),
                 clientEntity.getPassword(),
                 clientEntity.getName(),
@@ -46,7 +47,7 @@ public class ClientEntityMapper {
     }
     public ClientEntity toClientEntity(Client client) {
         return new ClientEntity(
-                null,
+                client.getId(),
                 client.getEmail(),
                 client.getPassword(),
                 client.getName(),

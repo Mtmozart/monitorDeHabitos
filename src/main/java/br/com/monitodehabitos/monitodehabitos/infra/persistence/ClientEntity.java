@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "client")
+@Table(name = "client")
 public class ClientEntity extends UserEntity {
 
     @Column(name = "is_client", nullable = false)

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 
 public class Habit {
+    private Long id;
     private String description;
     private Boolean done;
     private LocalDate start;
@@ -16,20 +17,28 @@ public class Habit {
     private Client client;
 
 
-    public Habit(String description, Boolean done, LocalDate start, LocalDate end, Double percentageForDay) {
+    public Habit(Long id, String description, Boolean done, LocalDate start, LocalDate end, Double percentageForDay, Client client) {
+        this.id = id;
         this.description = description;
         this.done = done;
         this.start = start;
         this.end = end;
         this.percentageForDay = percentageForDay;
+        this.client = client;
     }
 
-    public Habit(Client client, String description, LocalDate start) throws HabitExeption {
+    public Habit(Long id, Client client, String description, LocalDate start) throws HabitExeption {
+        this.id = id;
         this.description = description;
         this.done = false;
         this.start = start;
         this.end = calcEnd(start);
         this.percentageForDay = this.calcPercentageForDay();
+        this.client = client;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getDescription() {
@@ -92,13 +101,13 @@ public class Habit {
     @Override
     public String toString() {
         return "Habit{" +
-                "description='" + description + '\'' +
+                "id=" + id +
+                ", description='" + description + '\'' +
                 ", done=" + done +
                 ", start=" + start +
                 ", end=" + end +
                 ", percentageForDay=" + percentageForDay +
+                ", client=" + client.toString() +
                 '}';
     }
-
-
 }

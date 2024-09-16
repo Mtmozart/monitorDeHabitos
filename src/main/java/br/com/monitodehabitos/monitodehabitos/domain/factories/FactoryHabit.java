@@ -9,8 +9,8 @@ import java.time.LocalDate;
 public class FactoryHabit {
     private Habit habit;
 
-    public Habit withDescriptionAndDate(Client client, String description, LocalDate start) throws HabitExeption {
-        this.habit = new Habit(client, description, start);
+    public Habit withDescriptionAndDate(Long id, Client client, String description, LocalDate start) throws HabitExeption {
+        this.habit = new Habit(id, client, description, start);
         return this.habit;
     }
 }
