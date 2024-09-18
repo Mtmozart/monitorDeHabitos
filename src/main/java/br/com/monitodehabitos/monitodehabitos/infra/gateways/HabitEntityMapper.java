@@ -1,5 +1,7 @@
 package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 
+import br.com.monitodehabitos.monitodehabitos.domain.Address;
+import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.AddressEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntity;
@@ -34,6 +36,38 @@ public class HabitEntityMapper {
                         )
                 )
         );
+    }
+
+
+    public Habit toHabitWithAllParamenters(HabitEntity habitEntity) {
+        return new Habit(
+                habitEntity.getId(),
+                habitEntity.getDescription(),
+                habitEntity.getDone(),
+                habitEntity.getStart(),
+                habitEntity.getEnd(),
+                habitEntity.getPercentageForDay(),
+                new Client(
+                        habitEntity.getClientEntity().getId(),
+                        habitEntity.getClientEntity().getEmail(),
+                        habitEntity.getClientEntity().getPassword(),
+                        habitEntity.getClientEntity().getName(),
+                        habitEntity.getClientEntity().getCreatedAt(),
+                        habitEntity.getClientEntity().getUpdatedAt(),
+                        new Address(
+                                habitEntity.getClientEntity().getAddressEntity().getCep(),
+                                habitEntity.getClientEntity().getAddressEntity().getStreet(),
+                                habitEntity.getClientEntity().getAddressEntity().getCity(),
+                                habitEntity.getClientEntity().getAddressEntity().getState(),
+                                habitEntity.getClientEntity().getAddressEntity().getNeighborhood(),
+                                habitEntity.getClientEntity().getAddressEntity().getNumber(),
+                                habitEntity.getClientEntity().getAddressEntity().getComplement()
+                        ),
+                        habitEntity.getClientEntity().getTypeUser(),
+                        habitEntity.getClientEntity().getClient()
+                )
+        );
+
     }
 
 }

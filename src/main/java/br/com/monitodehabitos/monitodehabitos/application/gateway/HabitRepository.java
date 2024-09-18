@@ -1,6 +1,7 @@
 package br.com.monitodehabitos.monitodehabitos.application.gateway;
 
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
 
 import java.util.List;
 
@@ -9,9 +10,9 @@ public interface HabitRepository {
 
     Habit update(Long id, Habit newHabit);
 
-    Habit findById(Long id);
+    Habit findById(Long id) throws HabitExeption;
 
-    void delete(Long id);
+    void delete(Long id) throws HabitExeption;
 
     List<Habit> findAllByUser(Long userId);
 }
