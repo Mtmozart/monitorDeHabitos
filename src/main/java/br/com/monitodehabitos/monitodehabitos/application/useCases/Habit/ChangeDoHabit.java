@@ -1,17 +1,16 @@
 package br.com.monitodehabitos.monitodehabitos.application.useCases.Habit;
 
 import br.com.monitodehabitos.monitodehabitos.application.gateway.HabitRepository;
-import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
 
-public class UpdateHabit {
+public class ChangeDoHabit {
     private final HabitRepository habitRepository;
 
-    public UpdateHabit(HabitRepository habitRepository) {
+    public ChangeDoHabit(HabitRepository habitRepository) {
         this.habitRepository = habitRepository;
     }
 
-    public Habit update(Long id, Habit habit) throws HabitExeption {
-        return this.habitRepository.update(id, habit);
+    public Boolean changeDoHabit(Long id) throws HabitExeption {
+        return habitRepository.changeDone(id);
     }
 }

@@ -13,4 +13,9 @@ public class FactoryHabit {
         this.habit = new Habit(id, client, description, start);
         return this.habit;
     }
+
+    public Habit update(String description, LocalDate start) throws HabitExeption {
+        this.habit = new Habit(null, null, description, start);
+        return this.habit;
+    }
 }

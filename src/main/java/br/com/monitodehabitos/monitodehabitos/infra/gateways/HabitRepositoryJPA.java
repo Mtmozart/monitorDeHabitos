@@ -29,8 +29,11 @@ public class HabitRepositoryJPA implements HabitRepository {
     }
 
     @Override
-    public Habit update(Long id, Habit newHabit) {
-        return null;
+    public Habit update(Long id, Habit newHabit) throws HabitExeption {
+        Habit habit = this.findById(id);
+        habit.update(newHabit);
+        this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityCreate(habit));
+        return habit;
     }
 
     @Override
@@ -52,6 +55,14 @@ public class HabitRepositoryJPA implements HabitRepository {
     }
 
     @Override
+    public Boolean changeDone(Long id) throws HabitExeption {
+        Habit habit = this.findById(id);
+        habit.changeDo();
+        this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityCreate(habit));
+        return habit.getDone();
+    }
+
+    @Override
     public List<Habit> findAllByUser(Long userId) {
 
         List<HabitEntity> habitEntities = this.habitEntityRespository.findAllByClientId(userId);
@@ -61,7 +72,5 @@ public class HabitRepositoryJPA implements HabitRepository {
         return habitEntities.stream()
                 .map(this.habitEntityMapper::toHabitWithAllParamenters)
                 .toList();
-
-
     }
 }

@@ -62,12 +62,23 @@ public class Habit {
     }
 
     public void changeDateStart(LocalDate newDate) throws HabitExeption {
-        if (newDate == null) {
-            throw new HabitExeption(HabitsErrorEnum.HBT0007.getMessage());
+        if (newDate != null) {
+            this.start = newDate;
+            this.end = this.calcEnd(newDate);
+            this.percentageForDay = this.calcPercentageForDay();
         }
-        this.start = newDate;
-        this.end = this.calcEnd(newDate);
-        this.percentageForDay = this.calcPercentageForDay();
+    }
+
+    public void update(Habit updateHabit) throws HabitExeption {
+        if(updateHabit == null){
+            throw new HabitExeption(HabitsErrorEnum.HBT0002.getMessage());
+        }
+        if(updateHabit.start != this.getStart() && updateHabit.start != null){
+            this.changeDateStart(updateHabit.getStart());
+        }
+        if(updateHabit.description != this.description && updateHabit.description != null){
+            this.description = updateHabit.getDescription();
+        }
     }
 
     public void changeDo() {
@@ -75,14 +86,19 @@ public class Habit {
     }
 
     public LocalDate calcEnd(LocalDate start) throws HabitExeption {
-        if (start == null) {
-            throw new HabitExeption(HabitsErrorEnum.HBT0009.getMessage());
+        if (start != null) {
+            return start.with(TemporalAdjusters.next(DayOfWeek.SATURDAY));
         }
-        return start.with(TemporalAdjusters.next(DayOfWeek.SATURDAY));
+        this.end = this.start;
+        return this.end;
     }
 
     public Double calcPercentageForDay() {
+        if (this.start == null || this.end == null) {
+            return 0.0;
+        }
         long totalDays = this.start.until(this.end).getDays() + 1;
+
         if (totalDays > 0) {
             return Math.round((1.0 / totalDays) * 10000.0) / 100.0;
         } else {

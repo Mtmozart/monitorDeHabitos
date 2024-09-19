@@ -8,11 +8,13 @@ import java.util.List;
 public interface HabitRepository {
     Habit save(Habit habit);
 
-    Habit update(Long id, Habit newHabit);
+    Habit update(Long id, Habit newHabit) throws HabitExeption;
 
     Habit findById(Long id) throws HabitExeption;
 
     void delete(Long id) throws HabitExeption;
+
+    Boolean changeDone(Long id) throws HabitExeption;
 
     List<Habit> findAllByUser(Long userId);
 }
