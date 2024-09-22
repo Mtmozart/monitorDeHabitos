@@ -15,7 +15,7 @@ class FactoryAdminTest {
     void deveriaCriarUsuarioComFabrica() {
         FactoryAdmin factoryAdmin = new FactoryAdmin();
         Admin admin = factoryAdmin.withAllParameters(
-                "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
+                1l, "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
                 null, new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
         ;
 

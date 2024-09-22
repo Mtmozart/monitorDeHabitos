@@ -3,6 +3,7 @@ package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 import br.com.monitodehabitos.monitodehabitos.domain.Address;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.TypeUserEnum;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.UserException;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntityRepository;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,7 @@ class ClientRepositoryJPATest {
         );
 
         Client client = new Client(
+                1L,
                 "cliente@example.com",
                 "senhaSegura123",
                 "Carlos Silva",
@@ -57,7 +59,7 @@ class ClientRepositoryJPATest {
                 true
         );
 
-        ClientEntity clientEntity = new ClientEntity(); // Suponha que ClientEntity tenha um construtor padrão
+        ClientEntity clientEntity = new ClientEntity();
         when(clientEntityMapper.toClientEntity(client)).thenReturn(clientEntity);
         when(clientEntityRepository.save(clientEntity)).thenReturn(clientEntity);
         when(clientEntityMapper.toClientDomain(clientEntity)).thenReturn(client);
@@ -73,7 +75,7 @@ class ClientRepositoryJPATest {
     }
 
     @Test
-    void update_whenClientExists_shouldUpdateAndReturnClient() {
+    void update_whenClientExists_shouldUpdateAndReturnClient() throws UserException {
         Long clientId = 1L;
 
         Address originalAddress = new Address(
@@ -97,6 +99,7 @@ class ClientRepositoryJPATest {
         );
 
         Client originalClient = new Client(
+                1l,
                 "cliente@example.com",
                 "senhaSegura123",
                 "Carlos Silva",
@@ -108,6 +111,7 @@ class ClientRepositoryJPATest {
         );
 
         Client updateClient = new Client(
+                1L,
                 "cliente@example.com",
                 "novaSenhaSegura123",
                 "Carlos Silva",
@@ -142,6 +146,7 @@ class ClientRepositoryJPATest {
     void update_whenClientDoesNotExist_shouldThrowException() {
         Long clientId = 1L;
         Client updateClient = new Client(
+                1L,
                 "cliente@example.com",
                 "novaSenhaSegura123",
                 "Carlos Silva",

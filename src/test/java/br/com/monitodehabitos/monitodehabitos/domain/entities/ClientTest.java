@@ -1,19 +1,25 @@
 package br.com.monitodehabitos.monitodehabitos.domain.entities;
 
 import br.com.monitodehabitos.monitodehabitos.domain.Address;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.UserException;
 import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryClient;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.TypeUserEnum;
+import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryHabit;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 class ClientTest {
 
     @Test
-    void deveriaAtualizarClienteComMetodoUpdate() {
+    void deveriaAtualizarClienteComMetodoUpdate() throws UserException {
         FactoryClient factoryClient = new FactoryClient();
         Client client = factoryClient.withAllParameters(
+                1L,
                 "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
                 null, new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
 
@@ -28,6 +34,7 @@ class ClientTest {
         );
 
         Client updatedClient = new Client(
+                1L,
                 "email-atualizado@gmail.com",
                 "Password@123",
                 "Matheus Mozart Borges",
@@ -53,13 +60,15 @@ class ClientTest {
     }
 
     @Test
-    void deveriaAtualizarNome() {
+    void deveriaAtualizarNome() throws UserException {
         FactoryClient factoryClient = new FactoryClient();
         Client client = factoryClient.withAllParameters(
+                1L,
                 "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
                 null, new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
 
         Client updatedClient = new Client(
+                null,
                 null,
                 null,
                 "Novo Nome",
@@ -76,13 +85,15 @@ class ClientTest {
     }
 
     @Test
-    void deveriaAtualizarSenha() {
+    void deveriaAtualizarSenha() throws UserException {
         FactoryClient factoryClient = new FactoryClient();
         Client client = factoryClient.withAllParameters(
+                1L,
                 "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
                 null, new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
 
         Client updatedClient = new Client(
+                null,
                 null,
                 "NovaSenha@123",
                 null,
@@ -98,10 +109,11 @@ class ClientTest {
     }
 
     @Test
-    void deveriaAtualizarEndereco() {
+    void deveriaAtualizarEndereco() throws UserException {
         // Arrange
         FactoryClient factoryClient = new FactoryClient();
         Client client = factoryClient.withAllParameters(
+                1L,
                 "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
                 null, new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
 
@@ -118,6 +130,7 @@ class ClientTest {
 
         // Atualiza o cliente com o novo endereço
         Client updatedClient = new Client(
+                null,
                 null,    // Não altera o email
                 null,    // Não altera a senha
                 null,    // Não altera o nome
@@ -139,5 +152,56 @@ class ClientTest {
         Assertions.assertEquals("Novo Bairro", clientAddress.getNeighborhood());
         Assertions.assertEquals("123", clientAddress.getNumber());
         Assertions.assertEquals("Apto 45", clientAddress.getComplement());
+    }
+
+    @Test
+    @DisplayName("Should be to return all habits")
+    void getHabits() throws HabitExeption {
+        FactoryClient factoryClient = new FactoryClient();
+        Client client = factoryClient.withAllParameters(
+                1L,
+                "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
+                null, new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
+
+        FactoryHabit factoryHabit = new FactoryHabit();
+        Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now());
+        Habit habit2 = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now());
+        Habit habit3 = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now());
+        client.addHabit(habit);
+        client.addHabit(habit2);
+        client.addHabit(habit3);
+        Assertions.assertEquals(3, client.getHabits().size());
+    }
+
+    @Test
+    @DisplayName("Should be to add habit")
+    void addHabit() throws HabitExeption {
+        FactoryClient factoryClient = new FactoryClient();
+        Client client = factoryClient.withAllParameters(
+                1L,
+                "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
+                null, new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
+        FactoryHabit factoryHabit = new FactoryHabit();
+        Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now());
+        client.addHabit(habit);
+
+        Assertions.assertEquals("description", client.getHabits().get(0).getDescription());
+        Assertions.assertEquals(1L, client.getHabits().get(0).getId());
+    }
+
+    @Test
+    @DisplayName("Should be to remove habit")
+    void removeHabit() throws HabitExeption {
+        FactoryClient factoryClient = new FactoryClient();
+        Client client = factoryClient.withAllParameters(
+                1L,
+                "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
+                null, new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
+        FactoryHabit factoryHabit = new FactoryHabit();
+        Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now());
+        client.addHabit(habit);
+        client.removeHabit(habit);
+        Assertions.assertEquals(0, client.getHabits().size());
+
     }
 }

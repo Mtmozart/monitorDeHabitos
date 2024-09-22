@@ -13,7 +13,7 @@ class FactoryClientTest {
     void deveriaCriarUsuarioComFabrica() {
         FactoryClient factoryClient = new FactoryClient();
         Client client = factoryClient.withAllParameters(
-                "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
+                1L, "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
                 null, new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
         ;
 
@@ -24,6 +24,7 @@ class FactoryClientTest {
     void deveriaCriarUsuarioComFabricaSemDataDeCriacaoEAtualizazao() {
         FactoryClient factoryClient = new FactoryClient();
         Client client = factoryClient.withoutCreatedatAndUpdatedatParameters(
+                1L,
                 "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
         ;
 

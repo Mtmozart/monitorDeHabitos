@@ -63,7 +63,6 @@ public class Client extends User {
     }
     this.habits.add(habit);
     habit.setClient(this);
-
   }
 
   public void removeHabit(Habit habit) throws HabitExeption {
