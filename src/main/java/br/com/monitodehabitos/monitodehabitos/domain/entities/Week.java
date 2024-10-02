@@ -49,7 +49,6 @@ public class Week {
         }
     }
 
-
 public void subtractPercentage(double subtract) throws WeekException {
     if (subtract < 0) {
         throw new WeekException(WeekErrorEnum.HBT0002.getMessage());

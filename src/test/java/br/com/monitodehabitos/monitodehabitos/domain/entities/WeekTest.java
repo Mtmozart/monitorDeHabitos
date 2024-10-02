@@ -23,7 +23,7 @@ class WeekTest {
         //20%
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.of(2024, 9, 24));
         FactoryWeek factoryWeek = new FactoryWeek();
-        Week week =  factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
+        Week week = factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
         week.addPercentage(week.getHabit().getPercentageForDay());
         Assertions.assertEquals(20.0, week.getTotalePercentage());
     }
@@ -36,7 +36,7 @@ class WeekTest {
         //20%
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.of(2024, 9, 24));
         FactoryWeek factoryWeek = new FactoryWeek();
-        Week week =  factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
+        Week week = factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
         week.addPercentage(week.getHabit().getPercentageForDay());
         week.addPercentage(week.getHabit().getPercentageForDay());
         week.addPercentage(week.getHabit().getPercentageForDay());
@@ -54,7 +54,7 @@ class WeekTest {
         //33.33%
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genérica de algo", LocalDate.of(2024, 9, 26));
         FactoryWeek factoryWeek = new FactoryWeek();
-        Week week =  factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
+        Week week = factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
         week.addPercentage(week.getHabit().getPercentageForDay());
         week.addPercentage(week.getHabit().getPercentageForDay());
         week.addPercentage(week.getHabit().getPercentageForDay());
@@ -72,7 +72,7 @@ class WeekTest {
         //20%
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.of(2024, 9, 24));
         FactoryWeek factoryWeek = new FactoryWeek();
-        Week week =  factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
+        Week week = factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
         week.addPercentage(week.getHabit().getPercentageForDay());
         week.addPercentage(week.getHabit().getPercentageForDay());
         week.addPercentage(week.getHabit().getPercentageForDay());
@@ -90,8 +90,9 @@ class WeekTest {
         //20%
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.of(2024, 9, 24));
         FactoryWeek factoryWeek = new FactoryWeek();
-        Week week =  factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
+        Week week = factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
         week.subtractPercentage(week.getHabit().getPercentageForDay());
         Assertions.assertEquals(0, week.getTotalePercentage());
     }
+
 }

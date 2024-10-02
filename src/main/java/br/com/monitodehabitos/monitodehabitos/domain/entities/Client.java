@@ -8,83 +8,91 @@ import br.com.monitodehabitos.monitodehabitos.domain.exception.UserException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Client extends User {
-  private Boolean isClient;
-  private List<Habit> habits = new ArrayList<>();
+    private Boolean isClient;
+    private List<Habit> habits = new ArrayList<>();
+    private Set<Week> weeks = new HashSet<>();
 
-  public Client() {
-    super();
-  }
-
-  public Client(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt,
-                Address address, TypeUserEnum typeUserEnum, Boolean isClient) {
-    super(id, email, password, name, createdAt, updatedAt, address, typeUserEnum);
-    this.isClient = isClient;
-  }
-
-  public Client(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum, Boolean isClient, List<Habit> habits) {
-    super(id, email, password, name, createdAt, updatedAt, address, typeUserEnum);
-    this.isClient = isClient;
-    this.habits = habits;
-  }
-
-  public Boolean getClient() {
-    return isClient;
-  }
-
-  public void updateClient(Client newClient) throws UserException {
-    if (newClient == null) {
-      throw new UserException(UserErroEnum.USR0002.getMessage());
+    public Client() {
+        super();
     }
-    if (newClient.getEmail() != null && !newClient.getEmail().isEmpty()) {
-      setEmail(newClient.getEmail());
-    }
-    if (newClient.getPassword() != null && !newClient.getPassword().isEmpty()) {
-      setPassword(newClient.getPassword());
-    }
-    if (newClient.getName() != null && !newClient.getName().trim().isEmpty()) {
-      setName(newClient.getName());
-    }
-    if (newClient.getAddress() != null) {
-      updateAddress(newClient.getAddress());
-    }
-    setUpdatedAt(LocalDateTime.now());
-  }
 
-  public List<Habit> getHabits() {
-    return habits;
-  }
-
-  public void addHabit(Habit habit) throws HabitExeption {
-    if (habit == null) {
-      throw new HabitExeption("O hábito não pode ser nulo");
+    public Client(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt,
+                  Address address, TypeUserEnum typeUserEnum, Boolean isClient) {
+        super(id, email, password, name, createdAt, updatedAt, address, typeUserEnum);
+        this.isClient = isClient;
     }
-    this.habits.add(habit);
-    habit.setClient(this);
-  }
 
-  public void removeHabit(Habit habit) throws HabitExeption {
-    if (habit == null) {
-      throw new HabitExeption("O hábito não pode ser nulo");
+    public Client(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum, Boolean isClient, List<Habit> habits, Set<Week> weeks) {
+        super(id, email, password, name, createdAt, updatedAt, address, typeUserEnum);
+        this.isClient = isClient;
+        this.habits = habits;
+        this.weeks = weeks;
     }
-    this.habits.remove(habit);
-    habit.setClient(null);
-  }
 
-  @Override
-  public String toString() {
-    return "Client{" +
-            "email='" + getEmail() + '\'' +
-            ", name='" + getName() + '\'' +
-            ", createdAt=" + getCreatedAt() +
-            ", updatedAt=" + getUpdatedAt() +
-            ", address=" + (getAddress() != null ? getAddress().toString() : "null") +
-            ", typeUserEnum=" + getTypeUserEnum() +
-            ", isClient=" + isClient +
-            ", habits=" + habits +
-            '}';
-  }
+    public Boolean getClient() {
+        return isClient;
+    }
+
+    public void updateClient(Client newClient) throws UserException {
+        if (newClient == null) {
+            throw new UserException(UserErroEnum.USR0002.getMessage());
+        }
+        if (newClient.getEmail() != null && !newClient.getEmail().isEmpty()) {
+            setEmail(newClient.getEmail());
+        }
+        if (newClient.getPassword() != null && !newClient.getPassword().isEmpty()) {
+            setPassword(newClient.getPassword());
+        }
+        if (newClient.getName() != null && !newClient.getName().trim().isEmpty()) {
+            setName(newClient.getName());
+        }
+        if (newClient.getAddress() != null) {
+            updateAddress(newClient.getAddress());
+        }
+        setUpdatedAt(LocalDateTime.now());
+    }
+
+    public List<Habit> getHabits() {
+        return habits;
+    }
+
+    public void addHabit(Habit habit) throws HabitExeption {
+        if (habit == null) {
+            throw new HabitExeption("O hábito não pode ser nulo");
+        }
+        this.habits.add(habit);
+        habit.setClient(this);
+    }
+
+    public void removeHabit(Habit habit) throws HabitExeption {
+        if (habit == null) {
+            throw new HabitExeption("O hábito não pode ser nulo");
+        }
+        this.habits.remove(habit);
+        habit.setClient(null);
+    }
+
+    public Set<Week> getWeeks() {
+        return weeks;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "email='" + getEmail() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", createdAt=" + getCreatedAt() +
+                ", updatedAt=" + getUpdatedAt() +
+                ", address=" + (getAddress() != null ? getAddress().toString() : "null") +
+                ", typeUserEnum=" + getTypeUserEnum() +
+                ", isClient=" + isClient +
+                ", habits=" + habits +
+                '}';
+    }
 
 }

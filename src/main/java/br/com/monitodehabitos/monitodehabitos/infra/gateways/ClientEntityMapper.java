@@ -3,11 +3,15 @@ package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 import br.com.monitodehabitos.monitodehabitos.domain.Address;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
+import br.com.monitodehabitos.monitodehabitos.domain.entities.Week;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.AddressEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntity;
+import br.com.monitodehabitos.monitodehabitos.infra.persistence.WeekEntity;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -75,7 +79,8 @@ public class ClientEntityMapper {
                 toAddressDomain(clientEntity.getAddressEntity()),
                 clientEntity.getTypeUser(),
                 clientEntity.getClient(),
-                convertHabitsDomain(clientEntity.getHabits())
+                convertHabitsDomain(clientEntity.getHabits()),
+                convertWeeksDomain(clientEntity.getWeeks())
         );
     }
     private List<Habit> convertHabitsDomain(List<HabitEntity> habitEntities) {
@@ -93,6 +98,20 @@ public class ClientEntityMapper {
                 habitEntity.getEnd(),
                 habitEntity.getPercentageForDay(),
                 null
+        );
+    }
+
+    private Set<Week> convertWeeksDomain(Set<WeekEntity> weekEntities) {
+        return weekEntities.stream()
+                .map(this::toWeekDomain)
+                .collect(Collectors.toSet());
+    }
+
+    private Week toWeekDomain(WeekEntity weekEntity){
+        return new Week(
+                weekEntity.getId(),
+                toHabitDomain(weekEntity.getHabitEntity()),
+                toClientDomain(weekEntity.getClientEntity())
         );
     }
 
