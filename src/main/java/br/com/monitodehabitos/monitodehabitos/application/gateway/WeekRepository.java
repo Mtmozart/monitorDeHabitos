@@ -12,9 +12,9 @@ public interface WeekRepository {
     void delete(Long id) throws WeekException;
 
 
-    Boolean addPercentage(double add);
+    Boolean addPercentage(double add, Long id) throws WeekException;
 
-    Boolean removePercentage(double add);
+    Boolean removePercentage(double add,  Long id) throws WeekException;
 
     double getPercentage();
 }

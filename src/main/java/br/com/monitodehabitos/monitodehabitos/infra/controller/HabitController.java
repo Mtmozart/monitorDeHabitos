@@ -2,7 +2,9 @@ package br.com.monitodehabitos.monitodehabitos.infra.controller;
 
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.FindClient;
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Habit.*;
+import br.com.monitodehabitos.monitodehabitos.application.useCases.Week.AddPercentage;
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Week.CreateWeek;
+import br.com.monitodehabitos.monitodehabitos.application.useCases.Week.RemovePercentage;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Week;
@@ -36,8 +38,10 @@ public class HabitController {
     private final ChangeDoHabit changeDoHabit;
     private final FactoryWeek factoryWeek;
     private final CreateWeek createWeek;
+    private final AddPercentage addPercentage;
+    private final RemovePercentage removePercentage;
 
-    public HabitController(FactoryHabit factoryHabit, CreateHabit createHabit, FindClient findClient, FindHabit findHabit, DeleteHabit deleteHabit, FindAllByUser findAllByUser, UpdateHabit updateHabit, ChangeDoHabit changeDoHabit, FactoryWeek factoryWeek, CreateWeek createWeek) {
+    public HabitController(FactoryHabit factoryHabit, CreateHabit createHabit, FindClient findClient, FindHabit findHabit, DeleteHabit deleteHabit, FindAllByUser findAllByUser, UpdateHabit updateHabit, ChangeDoHabit changeDoHabit, FactoryWeek factoryWeek, CreateWeek createWeek, AddPercentage addPercentage, RemovePercentage removePercentage) {
         this.factoryHabit = factoryHabit;
         this.createHabit = createHabit;
         this.findClient = findClient;
@@ -48,12 +52,14 @@ public class HabitController {
         this.changeDoHabit = changeDoHabit;
         this.factoryWeek = factoryWeek;
         this.createWeek = createWeek;
+        this.addPercentage = addPercentage;
+        this.removePercentage = removePercentage;
     }
 
     @PostMapping
     public ResponseEntity<ResponseHabitDto> create(@RequestBody CreateHabitDto data) throws HabitExeption, WeekException {
         Client client = this.findClient.findClient(data.clientId());
-        if (data.start() != null && data.start() != "") {
+        if (data.start() != null && !data.start().isEmpty()) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate dateStart = LocalDate.parse(data.start(), formatter);
             Habit habit = this.factoryHabit.withDescriptionAndDate(null, client, data.description(), dateStart);
@@ -71,9 +77,15 @@ public class HabitController {
     }
 
     @PatchMapping("change-habit-status/{id}")
-    public ResponseEntity<Boolean> changeDo(@PathVariable Long id) throws HabitExeption {
-        Boolean change = this.changeDoHabit.changeDoHabit(id);
-        return ResponseEntity.ok(change);
+    public ResponseEntity<Habit> changeDo(@PathVariable Long id) throws HabitExeption, WeekException {
+        Habit habit = this.changeDoHabit.changeDoHabit(id);
+        if(habit.getDone()){
+            this.addPercentage.addPercentage(habit.getPercentageForDay(), habit.getId());
+        } else if (!habit.getDone()) {
+            System.out.println("entrei aqui");
+            //this.removePercentage.removePercentage(habit.getPercentageForDay(), habit.getId());
+        }
+        return ResponseEntity.ok(habit);
     }
 
     @PutMapping("/{id}")
@@ -99,8 +111,8 @@ public class HabitController {
     public ResponseEntity<List<ResponseHabitDto>> findAllByUserId(@PathVariable Long userId) throws HabitExeption {
         List<Habit> habits = this.findAllByUser.findAllByUser(userId);
         List<ResponseHabitDto> responseDtos = habits.stream()
-                .map(habit -> new ResponseHabitDto(habit))
-                .collect(Collectors.toUnmodifiableList());
+                .map(ResponseHabitDto::new)
+                .toList();
         return ResponseEntity.ok(responseDtos);
     }
 }

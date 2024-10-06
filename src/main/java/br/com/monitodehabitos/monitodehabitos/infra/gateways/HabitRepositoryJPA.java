@@ -55,11 +55,11 @@ public class HabitRepositoryJPA implements HabitRepository {
     }
 
     @Override
-    public Boolean changeDone(Long id) throws HabitExeption {
+    public Habit changeDone(Long id) throws HabitExeption {
         Habit habit = this.findById(id);
         habit.changeDo();
         this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityCreate(habit));
-        return habit.getDone();
+        return habit;
     }
 
     @Override

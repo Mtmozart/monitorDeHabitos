@@ -14,7 +14,7 @@ public interface HabitRepository {
 
     void delete(Long id) throws HabitExeption;
 
-    Boolean changeDone(Long id) throws HabitExeption;
+    Habit changeDone(Long id) throws HabitExeption;
 
     List<Habit> findAllByUser(Long userId);
 }

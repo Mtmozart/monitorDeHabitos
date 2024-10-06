@@ -25,7 +25,9 @@ public class WeekRepositoryJPA implements WeekRepository {
 
     @Override
     public Week findById(Long id) throws WeekException {
-        return null;
+        WeekEntity weekEntity = this.weekEntityRepository.findById(id).get();
+        Week week = this.weekEntityMapper.toWeekDomain(weekEntity);
+        return week;
     }
 
     @Override
@@ -34,13 +36,23 @@ public class WeekRepositoryJPA implements WeekRepository {
     }
 
     @Override
-    public Boolean addPercentage(double add) {
-        return null;
+    public Boolean addPercentage(double add, Long id) throws WeekException {
+        Week week = this.findById(id);
+        week.addPercentage(add);
+        WeekEntity weekEntity = this.weekEntityMapper.toWeekEntity(week);
+        this.weekEntityRepository.save(weekEntity);
+        return true;
     }
 
     @Override
-    public Boolean removePercentage(double add) {
-        return null;
+    public Boolean removePercentage(double remove,  Long id) throws WeekException {
+        Week week = this.findById(id);
+        System.out.println(week);
+        System.out.println(remove);
+        week.subtractPercentage(remove);
+        WeekEntity weekEntity = this.weekEntityMapper.toWeekEntity(week);
+        this.weekEntityRepository.save(weekEntity);
+        return true;
     }
 
     @Override
