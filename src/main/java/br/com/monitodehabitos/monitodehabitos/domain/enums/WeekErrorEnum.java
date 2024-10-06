@@ -1,7 +1,7 @@
 package br.com.monitodehabitos.monitodehabitos.domain.enums;
 
 public enum WeekErrorEnum {
-    HBT0001("Erro ao criara semana."),
+    HBT0001("Erro ao criar semana."),
     HBT0002("O valor da porcetagem não pode ser negativo."),
     HBT0003("Hábito não encontrado"),
     HBT0004("Erro ao excluir o hábito"),

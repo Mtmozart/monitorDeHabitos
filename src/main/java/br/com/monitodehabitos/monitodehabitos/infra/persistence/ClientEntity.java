@@ -4,7 +4,10 @@ import br.com.monitodehabitos.monitodehabitos.domain.enums.TypeUserEnum;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity(name = "client")
 @Table(name = "client")
@@ -15,7 +18,7 @@ public class ClientEntity extends UserEntity {
     @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<HabitEntity> habits = new ArrayList<>();
     @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<WeekEntity> weeks = new HashSet<>();
+    private Set<WeekEntity> weeks = new LinkedHashSet<>();
 
 
     public ClientEntity() {

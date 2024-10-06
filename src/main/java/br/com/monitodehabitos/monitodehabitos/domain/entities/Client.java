@@ -3,19 +3,21 @@ package br.com.monitodehabitos.monitodehabitos.domain.entities;
 import br.com.monitodehabitos.monitodehabitos.domain.Address;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.TypeUserEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.UserErroEnum;
+import br.com.monitodehabitos.monitodehabitos.domain.enums.WeekErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.UserException;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 public class Client extends User {
     private Boolean isClient;
     private List<Habit> habits = new ArrayList<>();
-    private Set<Week> weeks = new HashSet<>();
+    private Set<Week> weeks = new LinkedHashSet<>();
 
     public Client() {
         super();
@@ -81,18 +83,13 @@ public class Client extends User {
         return weeks;
     }
 
-    @Override
-    public String toString() {
-        return "Client{" +
-                "email='" + getEmail() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", createdAt=" + getCreatedAt() +
-                ", updatedAt=" + getUpdatedAt() +
-                ", address=" + (getAddress() != null ? getAddress().toString() : "null") +
-                ", typeUserEnum=" + getTypeUserEnum() +
-                ", isClient=" + isClient +
-                ", habits=" + habits +
-                '}';
+    public void addWeek(Week week) throws WeekException {
+        if(week == null){
+            throw new WeekException(WeekErrorEnum.HBT0001.getMessage());
+        }
+        this.weeks.add(week);
+        week.setClient(this);
     }
+
 
 }

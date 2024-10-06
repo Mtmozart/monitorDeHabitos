@@ -49,27 +49,31 @@ public class Week {
         }
     }
 
-public void subtractPercentage(double subtract) throws WeekException {
-    if (subtract < 0) {
-        throw new WeekException(WeekErrorEnum.HBT0002.getMessage());
+    public void subtractPercentage(double subtract) throws WeekException {
+        if (subtract < 0) {
+            throw new WeekException(WeekErrorEnum.HBT0002.getMessage());
+        }
+        if (this.totalePercentage > 0) {
+            this.totalePercentage = this.totalePercentage - subtract;
+        }
+        var minor = this.totalePercentage - subtract;
+        if (minor < 0) {
+            this.totalePercentage = 0.00;
+        }
     }
-    if (this.totalePercentage > 0) {
-        this.totalePercentage = this.totalePercentage - subtract;
-    }
-    var minor = this.totalePercentage - subtract;
-    if (minor < 0) {
-        this.totalePercentage = 0.00;
-    }
-}
 
-@Override
-public String toString() {
-    return "Week{" +
-            "id=" + id +
-            ", habit=" + habit +
-            ", client=" + client +
-            ", weekNumber=" + weekNumber +
-            ", totalePercentage=" + totalePercentage +
-            '}';
-}
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    @Override
+    public String toString() {
+        return "Week{" +
+                "id=" + id +
+                ", habit=" + habit +
+                ", client=" + client +
+                ", weekNumber=" + weekNumber +
+                ", totalePercentage=" + totalePercentage +
+                '}';
+    }
 }

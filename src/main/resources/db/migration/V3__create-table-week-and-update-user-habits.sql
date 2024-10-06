@@ -1,11 +1,10 @@
 CREATE TABLE week (
     id BIGINT NOT NULL AUTO_INCREMENT,
-    description VARCHAR(255) NOT NULL,
-    done BOOLEAN NOT NULL,
-    start DATE NOT NULL,
-    end DATE NOT NULL,
-    percentage_for_day FLOAT(5, 2),
+    habit_id BIGINT NOT NULL,
     client_id BIGINT NOT NULL,
+    totale_percentage FLOAT(5, 2),
+    number_week BIGINT NOT NULL,
     PRIMARY KEY (id),
+    CONSTRAINT fk_week_habit FOREIGN KEY (habit_id) REFERENCES habit(id) ON DELETE CASCADE,
     CONSTRAINT fk_week_client FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE CASCADE
 );

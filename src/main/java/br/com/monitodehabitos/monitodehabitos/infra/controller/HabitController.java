@@ -2,11 +2,15 @@ package br.com.monitodehabitos.monitodehabitos.infra.controller;
 
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.FindClient;
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Habit.*;
+import br.com.monitodehabitos.monitodehabitos.application.useCases.Week.CreateWeek;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
+import br.com.monitodehabitos.monitodehabitos.domain.entities.Week;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.HabitsErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryHabit;
+import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryWeek;
 import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.request.CreateHabitDto;
 import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.request.UpdateHabitDto;
 import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.response.ResponseHabitDto;
@@ -30,8 +34,10 @@ public class HabitController {
     private final FindAllByUser findAllByUser;
     private final UpdateHabit updateHabit;
     private final ChangeDoHabit changeDoHabit;
+    private final FactoryWeek factoryWeek;
+    private final CreateWeek createWeek;
 
-    public HabitController(FactoryHabit factoryHabit, CreateHabit createHabit, FindClient findClient, FindHabit findHabit, DeleteHabit deleteHabit, FindAllByUser findAllByUser, UpdateHabit updateHabit, ChangeDoHabit changeDoHabit) {
+    public HabitController(FactoryHabit factoryHabit, CreateHabit createHabit, FindClient findClient, FindHabit findHabit, DeleteHabit deleteHabit, FindAllByUser findAllByUser, UpdateHabit updateHabit, ChangeDoHabit changeDoHabit, FactoryWeek factoryWeek, CreateWeek createWeek) {
         this.factoryHabit = factoryHabit;
         this.createHabit = createHabit;
         this.findClient = findClient;
@@ -40,17 +46,22 @@ public class HabitController {
         this.findAllByUser = findAllByUser;
         this.updateHabit = updateHabit;
         this.changeDoHabit = changeDoHabit;
+        this.factoryWeek = factoryWeek;
+        this.createWeek = createWeek;
     }
 
     @PostMapping
-    public ResponseEntity<ResponseHabitDto> create(@RequestBody CreateHabitDto data) throws HabitExeption {
+    public ResponseEntity<ResponseHabitDto> create(@RequestBody CreateHabitDto data) throws HabitExeption, WeekException {
         Client client = this.findClient.findClient(data.clientId());
         if (data.start() != null && data.start() != "") {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate dateStart = LocalDate.parse(data.start(), formatter);
             Habit habit = this.factoryHabit.withDescriptionAndDate(null, client, data.description(), dateStart);
             client.addHabit(habit);
-            this.createHabit.create(habit);
+            Habit newHabit = this.createHabit.create(habit);
+            Week week = this.factoryWeek.createWeekWithIdHabitClient(null, newHabit, client);
+            client.addWeek(week);
+            this.createWeek.create(week);
             ResponseHabitDto responseDto = new ResponseHabitDto(habit);
             URI location = URI.create("/api/habits/" + habit.getId());
             return ResponseEntity.created(location).body(responseDto);

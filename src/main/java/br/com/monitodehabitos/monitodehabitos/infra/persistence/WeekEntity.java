@@ -8,14 +8,13 @@ public class WeekEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "habit_id")
     private HabitEntity habitEntity;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;
-
+    @Column(name = "number_week")
     private int number;
     @Column(name = "totale_percentage")
     private double totalePercentage;
