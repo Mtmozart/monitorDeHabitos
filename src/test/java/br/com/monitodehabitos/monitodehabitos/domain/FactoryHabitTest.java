@@ -33,7 +33,7 @@ public class FactoryHabitTest {
                     factoryHabit.withDescriptionAndDate(null, client, "description", LocalDate.now());
                 }
         );
-        Assertions.assertEquals("ID do hábito não pode ser nulo", exception.getMessage());
+        Assertions.assertEquals("ID do hábito não pode ser nulo.", exception.getMessage());
     }
 
     @Test

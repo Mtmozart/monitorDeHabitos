@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +24,9 @@ class FactoryWeekTest {
         Client client = Mockito.mock(Client.class);
         FactoryHabit factoryHabit = new FactoryHabit();
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.now());
-        Week week = factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
+        List<Habit> habitList = new ArrayList<>();
+        habitList.add(habit);
+        Week week = factoryWeek.createWeekWithIdHabitClient(1L, habitList, client);
         Assertions.assertEquals(1L, week.getId());
 
     }

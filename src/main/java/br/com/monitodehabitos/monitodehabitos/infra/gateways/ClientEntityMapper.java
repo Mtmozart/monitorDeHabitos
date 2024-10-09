@@ -96,8 +96,10 @@ public class ClientEntityMapper {
                 habitEntity.getDone(),
                 habitEntity.getStart(),
                 habitEntity.getEnd(),
+                habitEntity.getDay(),
                 habitEntity.getPercentageForDay(),
-                null
+                null,
+                habitEntity.getCurrentDay()
         );
     }
 
@@ -110,9 +112,16 @@ public class ClientEntityMapper {
     private Week toWeekDomain(WeekEntity weekEntity){
         return new Week(
                 weekEntity.getId(),
-                toHabitDomain(weekEntity.getHabitEntity()),
+                toHabitsListDomain(weekEntity.getHabitEntities()),
                 toClientDomain(weekEntity.getClientEntity())
         );
+    }
+
+    private List<Habit> toHabitsListDomain (List<HabitEntity> habitsEntity){
+        return habitsEntity.stream()
+                .map(this::toHabitDomain)
+                .collect(Collectors.toList());
+
     }
 
 }

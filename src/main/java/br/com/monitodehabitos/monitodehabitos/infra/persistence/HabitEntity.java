@@ -13,33 +13,30 @@ public class HabitEntity {
     private Boolean done;
     private LocalDate start;
     private LocalDate end;
+    private int day;
     @Column(name = "percentage_for_day")
     private Double percentageForDay;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;
 
+    private LocalDate currentDay;
+
     public HabitEntity() {
     }
 
-    public HabitEntity(Long id, String description, Boolean done, LocalDate start, LocalDate end, Double percentageForDay, ClientEntity clientEntity) {
+    public HabitEntity(Long id, String description, Boolean done, LocalDate start, LocalDate end, int day, Double percentageForDay, ClientEntity clientEntity, LocalDate currentDay) {
         this.id = id;
         this.description = description;
         this.done = done;
         this.start = start;
         this.end = end;
+        this.day = day;
         this.percentageForDay = percentageForDay;
         this.clientEntity = clientEntity;
+        this.currentDay = currentDay;
     }
 
-    public HabitEntity(ClientEntity clientEntity, String description, Boolean done, LocalDate start, LocalDate end, Double percentageForDay) {
-        this.clientEntity = clientEntity;
-        this.description = description;
-        this.done = done;
-        this.start = start;
-        this.end = end;
-        this.percentageForDay = percentageForDay;
-    }
 
     public Long getId() {
         return id;
@@ -67,6 +64,14 @@ public class HabitEntity {
 
     public ClientEntity getClientEntity() {
         return clientEntity;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public LocalDate getCurrentDay() {
+        return currentDay;
     }
 
     public void setClientEntity(ClientEntity clientEntity) {

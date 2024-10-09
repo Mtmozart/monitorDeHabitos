@@ -2,15 +2,19 @@ package br.com.monitodehabitos.monitodehabitos.infra.persistence;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity(name = "week")
 public class WeekEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "habit_id")
-    private HabitEntity habitEntity;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "week_habits", joinColumns = @JoinColumn(name = "week_id"),
+            inverseJoinColumns = @JoinColumn(name = "habit_id"))
+    private List<HabitEntity> habitEntities;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;
@@ -22,9 +26,9 @@ public class WeekEntity {
     public WeekEntity() {
     }
 
-    public WeekEntity(Long id, HabitEntity habitEntity, ClientEntity clientEntity, int number, double totalePercentage) {
+    public WeekEntity(Long id, List<HabitEntity> habitEntities, ClientEntity clientEntity, int number, double totalePercentage) {
         this.id = id;
-        this.habitEntity = habitEntity;
+        this.habitEntities = habitEntities;
         this.clientEntity = clientEntity;
         this.number = number;
         this.totalePercentage = totalePercentage;
@@ -34,8 +38,8 @@ public class WeekEntity {
         return id;
     }
 
-    public HabitEntity getHabitEntity() {
-        return habitEntity;
+    public List<HabitEntity> getHabitEntities() {
+        return habitEntities;
     }
 
     public ClientEntity getClientEntity() {

@@ -14,7 +14,7 @@ public class WeekEntityMapper {
     public WeekEntity toWeekEntity(Week week) {
         return new WeekEntity(
                 week.getId(),
-                this.toHabitEntity(week.getHabit()),
+                null,
                 this.toClientEntity(week.getClient()),
                 1,
                 week.getTotalePercentage()
@@ -24,7 +24,7 @@ public class WeekEntityMapper {
     public Week toWeekDomain(WeekEntity weekEntity) {
         return new Week(
                 weekEntity.getId(),
-                this.toHabitDomain(weekEntity.getHabitEntity()),
+                null,
                 this.toClientDomain(weekEntity.getClientEntity())
         );
     }
@@ -36,26 +36,10 @@ public class WeekEntityMapper {
                 habit.getDone(),
                 habit.getStart(),
                 habit.getEnd(),
+                habit.getDay(),
                 habit.getPercentageForDay(),
-                new ClientEntity(
-                        habit.getClient().getId(),
-                        habit.getClient().getEmail(),
-                        habit.getClient().getPassword(),
-                        habit.getClient().getName(),
-                        habit.getClient().getTypeUserEnum(),
-                        habit.getClient().getClient(),
-                        habit.getClient().getCreatedAt(),
-                        habit.getClient().getUpdatedAt(),
-                        new AddressEntity(
-                                habit.getClient().getAddress().getCep(),
-                                habit.getClient().getAddress().getStreet(),
-                                habit.getClient().getAddress().getCity(),
-                                habit.getClient().getAddress().getState(),
-                                habit.getClient().getAddress().getNeighborhood(),
-                                habit.getClient().getAddress().getNumber(),
-                                habit.getClient().getAddress().getComplement()
-                        )
-                )
+                null,
+                habit.getCurrentDay()
         );
     }
 
@@ -94,8 +78,10 @@ public class WeekEntityMapper {
                 habitEntity.getDone(),
                 habitEntity.getStart(),
                 habitEntity.getEnd(),
+                habitEntity.getDay(),
                 habitEntity.getPercentageForDay(),
-                toClientDomain(habitEntity.getClientEntity())
+                toClientDomain(habitEntity.getClientEntity()),
+                habitEntity.getCurrentDay()
         );
     }
 

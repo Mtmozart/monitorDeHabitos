@@ -65,9 +65,6 @@ public class HabitController {
             Habit habit = this.factoryHabit.withDescriptionAndDate(null, client, data.description(), dateStart);
             client.addHabit(habit);
             Habit newHabit = this.createHabit.create(habit);
-            Week week = this.factoryWeek.createWeekWithIdHabitClient(null, newHabit, client);
-            client.addWeek(week);
-            this.createWeek.create(week);
             ResponseHabitDto responseDto = new ResponseHabitDto(habit);
             URI location = URI.create("/api/habits/" + habit.getId());
             return ResponseEntity.created(location).body(responseDto);
@@ -79,11 +76,11 @@ public class HabitController {
     @PatchMapping("change-habit-status/{id}")
     public ResponseEntity<Habit> changeDo(@PathVariable Long id) throws HabitExeption, WeekException {
         Habit habit = this.changeDoHabit.changeDoHabit(id);
-        if(habit.getDone()){
+        if (habit.getDone()) {
             this.addPercentage.addPercentage(habit.getPercentageForDay(), habit.getId());
-        } else if (!habit.getDone()) {
-            System.out.println("entrei aqui");
-            //this.removePercentage.removePercentage(habit.getPercentageForDay(), habit.getId());
+        }
+        if (!habit.getDone()) {
+            this.removePercentage.removePercentage(habit.getPercentageForDay(), habit.getId());
         }
         return ResponseEntity.ok(habit);
     }

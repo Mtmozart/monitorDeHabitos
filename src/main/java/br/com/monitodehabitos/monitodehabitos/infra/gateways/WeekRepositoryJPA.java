@@ -2,6 +2,7 @@ package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 
 import br.com.monitodehabitos.monitodehabitos.application.gateway.WeekRepository;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Week;
+import br.com.monitodehabitos.monitodehabitos.domain.enums.WeekErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.WeekEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.WeekEntityRepository;
@@ -25,38 +26,39 @@ public class WeekRepositoryJPA implements WeekRepository {
 
     @Override
     public Week findById(Long id) throws WeekException {
-        WeekEntity weekEntity = this.weekEntityRepository.findById(id).get();
-        Week week = this.weekEntityMapper.toWeekDomain(weekEntity);
-        return week;
+        var weekEntity = this.weekEntityRepository.findById(id);
+        if (weekEntity.isPresent()) {
+            return this.weekEntityMapper.toWeekDomain(weekEntity.get());
+        }
+        throw new WeekException(WeekErrorEnum.HBT0014.getMessage());
     }
 
-    @Override
-    public void delete(Long id) throws WeekException {
 
-    }
+        @Override
+        public void delete (Long id) throws WeekException {
 
-    @Override
-    public Boolean addPercentage(double add, Long id) throws WeekException {
-        Week week = this.findById(id);
-        week.addPercentage(add);
-        WeekEntity weekEntity = this.weekEntityMapper.toWeekEntity(week);
-        this.weekEntityRepository.save(weekEntity);
-        return true;
-    }
+        }
 
-    @Override
-    public Boolean removePercentage(double remove,  Long id) throws WeekException {
-        Week week = this.findById(id);
-        System.out.println(week);
-        System.out.println(remove);
-        week.subtractPercentage(remove);
-        WeekEntity weekEntity = this.weekEntityMapper.toWeekEntity(week);
-        this.weekEntityRepository.save(weekEntity);
-        return true;
-    }
+        @Override
+        public Boolean addPercentage ( double add, Long id) throws WeekException {
+            Week week = this.findById(id);
+            week.addPercentage(add);
+            WeekEntity weekEntity = this.weekEntityMapper.toWeekEntity(week);
+            this.weekEntityRepository.save(weekEntity);
+            return true;
+        }
 
-    @Override
-    public double getPercentage() {
-        return 0;
+        @Override
+        public Boolean removePercentage ( double remove, Long id) throws WeekException {
+            Week week = this.findById(id);
+            week.subtractPercentage(remove);
+            WeekEntity weekEntity = this.weekEntityMapper.toWeekEntity(week);
+            this.weekEntityRepository.save(weekEntity);
+            return true;
+        }
+
+        @Override
+        public double getPercentage () {
+            return 0;
+        }
     }
-}

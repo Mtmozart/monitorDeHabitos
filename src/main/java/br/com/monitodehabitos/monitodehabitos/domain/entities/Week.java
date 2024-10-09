@@ -3,16 +3,21 @@ package br.com.monitodehabitos.monitodehabitos.domain.entities;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.WeekErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Week {
     private Long id;
-    private Habit habit;
+    private List<Habit> habits;
     private Client client;
     private final int weekNumber = 1;
     private double totalePercentage = 00.00;
 
-    public Week(Long id, Habit habit, Client client) {
+
+    public Week(Long id, List<Habit> habits, Client client) {
         this.id = id;
-        this.habit = habit;
+        this.habits = habits;
         this.client = client;
     }
 
@@ -20,8 +25,8 @@ public class Week {
         return id;
     }
 
-    public Habit getHabit() {
-        return habit;
+    public List<Habit> getHabit() {
+        return habits;
     }
 
     public Client getClient() {
@@ -30,6 +35,18 @@ public class Week {
 
     public int getWeekNumber() {
         return weekNumber;
+    }
+
+    public void addHabit(Habit habit) {
+
+        long qtdHabits = ChronoUnit.DAYS.between(habit.getStart(), habit.getEnd()) + 1;
+
+        for (int i = 1; i < qtdHabits; i++) {
+            Habit newHabit = new Habit(habit);
+            newHabit.setDay(habit.getDay() + i);
+            newHabit.setCurrentDay(habit.getStart().plusDays(i));
+            habits.add(newHabit);
+        }
     }
 
     public double getTotalePercentage() {
@@ -70,7 +87,7 @@ public class Week {
     public String toString() {
         return "Week{" +
                 "id=" + id +
-                ", habit=" + habit +
+                ", habit=" + habits +
                 ", client=" + client +
                 ", weekNumber=" + weekNumber +
                 ", totalePercentage=" + totalePercentage +

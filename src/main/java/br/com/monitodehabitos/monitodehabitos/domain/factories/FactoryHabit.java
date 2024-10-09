@@ -10,6 +10,10 @@ public class FactoryHabit {
     private Habit habit;
 
     public Habit withDescriptionAndDate(Long id, Client client, String description, LocalDate start) throws HabitExeption {
+        if (id == null) {
+            throw new HabitExeption("ID do hábito não pode ser nulo.");
+        }
+
         if (client == null) {
             throw new HabitExeption("Cliente não pode ser nulo");
         }
