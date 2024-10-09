@@ -6,6 +6,7 @@ import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryHabit;
 import br.com.monitodehabitos.monitodehabitos.infra.gateways.HabitEntityMapper;
 import br.com.monitodehabitos.monitodehabitos.infra.gateways.HabitRepositoryJPA;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntityRespository;
+import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntityRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,44 +14,47 @@ import org.springframework.context.annotation.Configuration;
 public class HabitConfig {
 
     @Bean
-    FactoryHabit factoryHabit(){
+    FactoryHabit factoryHabit() {
         return new FactoryHabit();
     }
+
     @Bean
-    CreateHabit createHabit(HabitRepository habitRepository){
+    CreateHabit createHabit(HabitRepository habitRepository) {
         return new CreateHabit(habitRepository);
     }
+
     @Bean
-    FindHabit findHabit(HabitRepository habitRepository){
+    FindHabit findHabit(HabitRepository habitRepository) {
         return new FindHabit(habitRepository);
     }
 
     @Bean
-    DeleteHabit deleteHabit(HabitRepository habitRepository){
+    DeleteHabit deleteHabit(HabitRepository habitRepository) {
         return new DeleteHabit(habitRepository);
     }
 
     @Bean
-    UpdateHabit updateHabit(HabitRepository habitRepository){
+    UpdateHabit updateHabit(HabitRepository habitRepository) {
         return new UpdateHabit(habitRepository);
     }
+
     @Bean
-    FindAllByUser findAllByUser(HabitRepository habitRepository){
+    FindAllByUser findAllByUser(HabitRepository habitRepository) {
         return new FindAllByUser(habitRepository);
     }
 
     @Bean
-    ChangeDoHabit changeDoHabit(HabitRepository habitRepository){
+    ChangeDoHabit changeDoHabit(HabitRepository habitRepository) {
         return new ChangeDoHabit(habitRepository);
     }
 
     @Bean
-    HabitRepositoryJPA habitRepositoryJPA(HabitEntityRespository habitEntityRespository, HabitEntityMapper habitEntityMapper){
-        return new HabitRepositoryJPA(habitEntityRespository, habitEntityMapper);
+    HabitRepositoryJPA habitRepositoryJPA(HabitEntityRespository habitEntityRespository, HabitEntityMapper habitEntityMapper, ProgressEntityRepository progressEntityRepository) {
+        return new HabitRepositoryJPA(habitEntityRespository, habitEntityMapper, progressEntityRepository);
     }
 
     @Bean
-    HabitEntityMapper habitEntityMapper(){
+    HabitEntityMapper habitEntityMapper() {
         return new HabitEntityMapper();
     }
- }
+    }

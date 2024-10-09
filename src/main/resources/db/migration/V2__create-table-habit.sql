@@ -6,7 +6,6 @@ CREATE TABLE habit (
     end DATE NOT NULL,
     percentage_for_day FLOAT(5, 2),
     habit_day DATE NOT NULL,
-    completed BOOLEAN NOT NULL,
     client_id BIGINT NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_client FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE CASCADE

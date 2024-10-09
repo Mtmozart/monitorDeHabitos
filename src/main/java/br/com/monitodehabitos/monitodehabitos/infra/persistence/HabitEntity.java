@@ -22,12 +22,25 @@ public class HabitEntity {
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;
 
+    @Column(name = "habit_day", nullable = false)
     private LocalDate currentDay;
 
     @OneToMany(mappedBy = "habitEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProgressEntity> progressEntities = new ArrayList<>();
 
     public HabitEntity() {
+    }
+
+    public HabitEntity(Long id, String description, Boolean done, LocalDate start, LocalDate end, Double percentageForDay, ClientEntity clientEntity, LocalDate currentDay, List<ProgressEntity> progressEntities) {
+        this.id = id;
+        this.description = description;
+        this.done = done;
+        this.start = start;
+        this.end = end;
+        this.percentageForDay = percentageForDay;
+        this.clientEntity = clientEntity;
+        this.currentDay = currentDay;
+        this.progressEntities = progressEntities;
     }
 
     public HabitEntity(Long id, String description, Boolean done, LocalDate start, LocalDate end, Double percentageForDay, ClientEntity clientEntity, LocalDate currentDay) {
@@ -39,8 +52,8 @@ public class HabitEntity {
         this.percentageForDay = percentageForDay;
         this.clientEntity = clientEntity;
         this.currentDay = currentDay;
+        this.progressEntities = new ArrayList<>();
     }
-
 
     public Long getId() {
         return id;
@@ -70,12 +83,35 @@ public class HabitEntity {
         return clientEntity;
     }
 
-       public LocalDate getCurrentDay() {
+    public LocalDate getCurrentDay() {
         return currentDay;
+    }
+
+    public List<ProgressEntity> getProgressEntities() {
+        return progressEntities;
+    }
+
+    public void addProgress(ProgressEntity progressEntity) {
+        this.progressEntities.add(progressEntity);
     }
 
     public void setClientEntity(ClientEntity clientEntity) {
         this.clientEntity = clientEntity;
+    }
+
+    @Override
+    public String toString() {
+        return "HabitEntity{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", done=" + done +
+                ", start=" + start +
+                ", end=" + end +
+                ", percentageForDay=" + percentageForDay +
+                ", clientEntity=" + clientEntity +
+                ", currentDay=" + currentDay +
+                ", progressEntities=" + progressEntities.toString() +
+                '}';
     }
 }
 

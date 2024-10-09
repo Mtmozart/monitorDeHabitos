@@ -16,11 +16,29 @@ public class ProgressEntity {
     private HabitEntity habitEntity;
     @Column(name = "habit_day")
     private LocalDate currentDate;
+    @Column(name = "completed")
     private Boolean completed;
 
-    public ProgressEntity(LocalDate currentDate, Boolean completed) {
+    public ProgressEntity() {}
+
+    public ProgressEntity(Long id, HabitEntity habitEntity, LocalDate currentDate, Boolean completed) {
+        this.id = id;
+        this.habitEntity = habitEntity;
         this.currentDate = currentDate;
         this.completed = completed;
+    }
+
+    public ProgressEntity( LocalDate currentDate, Boolean completed) {
+        this.currentDate = currentDate;
+        this.completed = completed;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public HabitEntity getHabitEntity() {
+        return habitEntity;
     }
 
     public LocalDate getCurrentDate() {
@@ -29,6 +47,10 @@ public class ProgressEntity {
 
     public Boolean getCompleted() {
         return completed;
+    }
+
+    public void addHabitEntity(HabitEntity habitEntity) {
+        this.habitEntity = habitEntity;
     }
 
     @Override
