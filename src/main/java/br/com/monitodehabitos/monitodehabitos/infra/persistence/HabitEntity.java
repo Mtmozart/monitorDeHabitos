@@ -3,8 +3,11 @@ package br.com.monitodehabitos.monitodehabitos.infra.persistence;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "habit")
+@Table(name = "habit")
 public class HabitEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +16,6 @@ public class HabitEntity {
     private Boolean done;
     private LocalDate start;
     private LocalDate end;
-    private int day;
     @Column(name = "percentage_for_day")
     private Double percentageForDay;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,16 +24,18 @@ public class HabitEntity {
 
     private LocalDate currentDay;
 
+    @OneToMany(mappedBy = "habitEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProgressEntity> progressEntities = new ArrayList<>();
+
     public HabitEntity() {
     }
 
-    public HabitEntity(Long id, String description, Boolean done, LocalDate start, LocalDate end, int day, Double percentageForDay, ClientEntity clientEntity, LocalDate currentDay) {
+    public HabitEntity(Long id, String description, Boolean done, LocalDate start, LocalDate end, Double percentageForDay, ClientEntity clientEntity, LocalDate currentDay) {
         this.id = id;
         this.description = description;
         this.done = done;
         this.start = start;
         this.end = end;
-        this.day = day;
         this.percentageForDay = percentageForDay;
         this.clientEntity = clientEntity;
         this.currentDay = currentDay;
@@ -66,11 +70,7 @@ public class HabitEntity {
         return clientEntity;
     }
 
-    public int getDay() {
-        return day;
-    }
-
-    public LocalDate getCurrentDay() {
+       public LocalDate getCurrentDay() {
         return currentDay;
     }
 

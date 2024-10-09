@@ -64,7 +64,7 @@ public class HabitController {
             LocalDate dateStart = LocalDate.parse(data.start(), formatter);
             Habit habit = this.factoryHabit.withDescriptionAndDate(null, client, data.description(), dateStart);
             client.addHabit(habit);
-            Habit newHabit = this.createHabit.create(habit);
+            this.createHabit.create(habit);
             ResponseHabitDto responseDto = new ResponseHabitDto(habit);
             URI location = URI.create("/api/habits/" + habit.getId());
             return ResponseEntity.created(location).body(responseDto);

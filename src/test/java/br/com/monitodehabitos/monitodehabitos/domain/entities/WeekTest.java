@@ -109,7 +109,7 @@ class WeekTest {
     }
 
     @Test
-    @DisplayName("Should be return 0 ")
+    @DisplayName("Should be create a period until next sunday.")
     public void scenario6() throws HabitExeption {
         Client client = Mockito.mock(Client.class);
         FactoryHabit factoryHabit = new FactoryHabit();
@@ -122,7 +122,7 @@ class WeekTest {
         Week week = factoryWeek.createWeekWithIdHabitClient(1L, habitList, client);
         week.addHabit(habit);
 
-        System.out.println(week.getHabit());
+        System.out.println(week.getHabit().getFirst().getProgress());
 
     }
 

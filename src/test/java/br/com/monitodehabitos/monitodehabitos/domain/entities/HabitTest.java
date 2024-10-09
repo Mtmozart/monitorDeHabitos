@@ -49,4 +49,24 @@ public class HabitTest {
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.of(2024, 9, 8));
         Assertions.assertEquals(14.29, habit.getPercentageForDay());
     }
+
+    @Test
+    @DisplayName("Should return size equal 4 because the list progress until saturday.")
+    void scenario05() throws HabitExeption {
+        Client client = Mockito.mock(Client.class);
+        FactoryHabit factoryHabit = new FactoryHabit();
+        Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.of(2024, 9, 24));
+        //O SABÁDO SEGUINTE AO DIA 24/09 É  DIA 27/09.
+        Assertions.assertEquals(4, habit.getProgress().size());
+    }
+
+    @Test
+    @DisplayName("Should return 27/09 with the last day.")
+    void scenario06() throws HabitExeption {
+        Client client = Mockito.mock(Client.class);
+        FactoryHabit factoryHabit = new FactoryHabit();
+        Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.of(2024, 9, 24));
+        //O SABÁDO SEGUINTE AO DIA 24/09 É  DIA 27/09.
+        Assertions.assertEquals(LocalDate.of(2024, 9, 27), habit.getProgress().get(3).getDate());
+    }
 }

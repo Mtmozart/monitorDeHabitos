@@ -96,10 +96,10 @@ public class ClientEntityMapper {
                 habitEntity.getDone(),
                 habitEntity.getStart(),
                 habitEntity.getEnd(),
-                habitEntity.getDay(),
                 habitEntity.getPercentageForDay(),
                 null,
-                habitEntity.getCurrentDay()
+                habitEntity.getCurrentDay(),
+                null
         );
     }
 

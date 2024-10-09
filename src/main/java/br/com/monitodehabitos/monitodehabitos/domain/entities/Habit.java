@@ -7,6 +7,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Habit {
     private Long id;
@@ -14,20 +16,18 @@ public class Habit {
     private Boolean done;
     private LocalDate start;
     private LocalDate end;
-    private int day;
     private Double percentageForDay;
     private Client client;
     private LocalDate currentDay;
-    private Progress progress;
+    private List<Progress> progress = new ArrayList<>();
 
 
-    public Habit(Long id, String description, Boolean done, LocalDate start, LocalDate end, int day, Double percentageForDay, Client client, LocalDate currentDay, Progress progress) {
+    public Habit(Long id, String description, Boolean done, LocalDate start, LocalDate end, Double percentageForDay, Client client, LocalDate currentDay, List<Progress> progress) {
         this.id = id;
         this.description = description;
         this.done = done;
         this.start = start;
         this.end = end;
-        this.day = day;
         this.percentageForDay = percentageForDay;
         this.client = client;
         this.currentDay = currentDay;
@@ -42,8 +42,8 @@ public class Habit {
         this.end = calcEnd(start);
         this.percentageForDay = this.calcPercentageForDay();
         this.client = client;
-        this.day = 1;
         this.currentDay = this.start;
+        this.progress = this.addProgress();
     }
 
     public Habit(Habit habit) {
@@ -54,7 +54,6 @@ public class Habit {
         this.end = habit.getEnd();
         this.percentageForDay = habit.getPercentageForDay();
         this.client = habit.getClient();
-        this.day = habit.getDay();
         this.currentDay = habit.currentDay;
     }
 
@@ -76,6 +75,10 @@ public class Habit {
 
     public LocalDate getEnd() {
         return this.end;
+    }
+
+    public List<Progress> getProgress() {
+        return progress;
     }
 
     public Double getPercentageForDay() {
@@ -127,13 +130,6 @@ public class Habit {
         }
     }
 
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
 
     public LocalDate getCurrentDay() {
         return currentDay;
@@ -151,11 +147,13 @@ public class Habit {
         this.client = client;
     }
 
-    public void addProgress(){
+    public List<Progress> addProgress(){
         long qtdHabits = ChronoUnit.DAYS.between(this.getStart(), this.getEnd()) + 1;
-        for (int i = 1; i < qtdHabits; i++) {
-            this.progress.addPercentage(currentDay.plusDays(i));
+        for (int i = 0; i < qtdHabits - 1; i++) {
+            Progress progressObject = new Progress(currentDay.plusDays(i));
+            this.progress.add(progressObject);
         }
+        return this.progress;
     }
 
     @Override
@@ -166,9 +164,10 @@ public class Habit {
                 ", done=" + done +
                 ", start=" + start +
                 ", end=" + end +
-                ", currentDay " + currentDay +
                 ", percentageForDay=" + percentageForDay +
-                ", client=" + client.toString() +
+                ", client=" + client +
+                ", currentDay=" + currentDay +
+                ", progress=" + progress.toString() +
                 '}';
     }
 }

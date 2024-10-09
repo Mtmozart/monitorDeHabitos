@@ -29,4 +29,11 @@ public class Progress {
         this.completed = false;
     }
 
+    @Override
+    public String toString() {
+        return "Progress{" +
+                "currentDate=" + currentDate +
+                ", completed=" + completed +
+                '}';
+    }
 }

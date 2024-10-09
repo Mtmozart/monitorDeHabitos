@@ -16,9 +16,8 @@ public class HabitEntityMapper {
                 habit.getDone(),
                 habit.getStart(),
                 habit.getEnd(),
-                habit.getDay(),
                 habit.getPercentageForDay(),
-                null,
+                toClientEntity(habit.getClient()),
                 habit.getCurrentDay()
         );
     }
@@ -31,10 +30,65 @@ public class HabitEntityMapper {
                 habitEntity.getDone(),
                 habitEntity.getStart(),
                 habitEntity.getEnd(),
-                habitEntity.getDay(),
                 habitEntity.getPercentageForDay(),
-                null,
-                habitEntity.getCurrentDay()
+                toClientDomain(habitEntity.getClientEntity()),
+                habitEntity.getCurrentDay(),
+                null
         );
     }
+
+    public Client toClientDomain(ClientEntity clientEntity) {
+        return new Client(
+                clientEntity.getId(),
+                clientEntity.getEmail(),
+                clientEntity.getPassword(),
+                clientEntity.getName(),
+                clientEntity.getCreatedAt(),
+                clientEntity.getUpdatedAt(),
+                toAddressDomain(clientEntity.getAddressEntity()),
+                clientEntity.getTypeUser(),
+                clientEntity.getClient(),
+                null,
+                null
+        );
+    }
+
+    public Address toAddressDomain(AddressEntity addressEntity){
+        return new Address(
+                addressEntity.getCep(),
+                addressEntity.getStreet(),
+                addressEntity.getCity(),
+                addressEntity.getState(),
+                addressEntity.getNeighborhood(),
+                addressEntity.getNumber(),
+                addressEntity.getComplement()
+        );
+    }
+
+    public ClientEntity toClientEntity(Client client) {
+        return new ClientEntity(
+                client.getId(),
+                client.getEmail(),
+                client.getPassword(),
+                client.getName(),
+                client.getTypeUserEnum(),
+                client.getClient(),
+                client.getCreatedAt(),
+                client.getUpdatedAt(),
+                toAddressEntity(client.getAddress())
+        );
+    }
+    public AddressEntity toAddressEntity(Address address){
+        return new AddressEntity(
+                address.getCep(),
+                address.getStreet(),
+                address.getCity(),
+                address.getState(),
+                address.getNeighborhood(),
+                address.getNumber(),
+                address.getComplement()
+        );
+    }
+
+
 }

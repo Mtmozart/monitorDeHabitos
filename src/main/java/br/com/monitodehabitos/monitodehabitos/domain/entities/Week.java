@@ -39,14 +39,6 @@ public class Week {
 
     public void addHabit(Habit habit) {
 
-        long qtdHabits = ChronoUnit.DAYS.between(habit.getStart(), habit.getEnd()) + 1;
-
-        for (int i = 1; i < qtdHabits; i++) {
-            Habit newHabit = new Habit(habit);
-            newHabit.setDay(habit.getDay() + i);
-            newHabit.setCurrentDay(habit.getStart().plusDays(i));
-            habits.add(newHabit);
-        }
     }
 
     public double getTotalePercentage() {
