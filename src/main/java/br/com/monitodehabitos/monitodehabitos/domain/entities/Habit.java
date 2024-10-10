@@ -2,6 +2,9 @@ package br.com.monitodehabitos.monitodehabitos.domain.entities;
 
 import br.com.monitodehabitos.monitodehabitos.domain.enums.HabitsErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
+import br.com.monitodehabitos.monitodehabitos.domain.observer.Observer;
+import br.com.monitodehabitos.monitodehabitos.domain.observer.Subject;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -9,8 +12,9 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class Habit {
+public class Habit implements Subject {
     private Long id;
     private String description;
     private Boolean done;
@@ -20,7 +24,7 @@ public class Habit {
     private Client client;
     private LocalDate currentDay;
     private List<Progress> progress = new ArrayList<>();
-
+    private List<Observer> observers = new ArrayList<Observer>();
 
     public Habit(Long id, String description, Boolean done, LocalDate start, LocalDate end, Double percentageForDay, Client client, LocalDate currentDay, List<Progress> progress) {
         this.id = id;
@@ -100,13 +104,23 @@ public class Habit {
         if (updateHabit.start != this.getStart() && updateHabit.start != null) {
             this.changeDateStart(updateHabit.getStart());
         }
-        if (updateHabit.description != this.description && updateHabit.description != null) {
+        if (!Objects.equals(updateHabit.description, this.description) && updateHabit.description != null) {
             this.description = updateHabit.getDescription();
         }
     }
 
-    public void changeDo() {
-        this.done = !this.done;
+    public void changeDo(LocalDate date) throws HabitExeption, WeekException {
+        if (date == null) {
+            throw new HabitExeption(HabitsErrorEnum.HBT0016.getMessage());
+        }
+        boolean isCompleted = this.progress.stream()
+                .filter(n -> date.equals(n.getDate()))
+                .findFirst()
+                .map(Progress::changeStatusToCompleteOrNot)
+                .orElse(false);
+        notifyObservers(this, isCompleted);
+        this.done = this.progress.stream().allMatch(Progress::getCompleted);
+
     }
 
     public LocalDate calcEnd(LocalDate start) throws HabitExeption {
@@ -130,13 +144,8 @@ public class Habit {
         }
     }
 
-
     public LocalDate getCurrentDay() {
         return currentDay;
-    }
-
-    public void setCurrentDay(LocalDate currentDay) {
-        this.currentDay = currentDay;
     }
 
     public Client getClient() {
@@ -147,7 +156,7 @@ public class Habit {
         this.client = client;
     }
 
-    public List<Progress> addProgress(){
+    public List<Progress> addProgress() {
         long qtdHabits = ChronoUnit.DAYS.between(this.getStart(), this.getEnd()) + 1;
         for (int i = 0; i < qtdHabits - 1; i++) {
             Progress progressObject = new Progress(currentDay.plusDays(i));
@@ -156,18 +165,26 @@ public class Habit {
         return this.progress;
     }
 
+
     @Override
     public String toString() {
-        return "Habit{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", done=" + done +
-                ", start=" + start +
-                ", end=" + end +
-                ", percentageForDay=" + percentageForDay +
-                ", client=" + client +
-                ", currentDay=" + currentDay +
-                ", progress=" + progress.toString() +
-                '}';
+        return "Habit{" + "id=" + id + ", description='" + description + '\'' + ", done=" + done + ", start=" + start + ", end=" + end + ", percentageForDay=" + percentageForDay + ", client=" + client + ", currentDay=" + currentDay + ", progress=" + progress.toString() + '}';
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(Habit habit, boolean change) throws WeekException {
+        for (Observer observer : observers) {
+            observer.update(habit, change);
+        }
     }
 }

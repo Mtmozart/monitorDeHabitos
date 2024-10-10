@@ -24,9 +24,12 @@ public class Progress {
         return completed;
     }
 
-    public void addPercentage(LocalDate currentDate){
-        this.currentDate = currentDate;
-        this.completed = false;
+    public boolean changeStatusToCompleteOrNot() {
+        if(this.completed){
+            return this.completed = false;
+        } else  {
+            return this.completed = true;
+        }
     }
 
     @Override

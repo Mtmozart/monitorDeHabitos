@@ -1,6 +1,7 @@
 package br.com.monitodehabitos.monitodehabitos.domain.entities;
 
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryHabit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -23,18 +24,31 @@ public class HabitTest {
     }
 
     @Test
-    @DisplayName("Should be to change the the status 'done'")
-    void scenario02() throws HabitExeption {
+    @DisplayName("Should NOT be to change the the status 'done'")
+    void scenario02() throws HabitExeption, WeekException {
         Client client = Mockito.mock(Client.class);
         FactoryHabit factoryHabit = new FactoryHabit();
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.now());
-        habit.changeDo();
-        Assertions.assertEquals(true, habit.getDone());
+        habit.changeDo(LocalDate.now());
+        Assertions.assertEquals(true, habit.getProgress().getFirst().getCompleted());
+        Assertions.assertEquals(false, habit.getDone());
     }
 
     @Test
+    @DisplayName("Should be to change the the status 'done' for true")
+    void scenario03() throws HabitExeption, WeekException {
+        Client client = Mockito.mock(Client.class);
+        FactoryHabit factoryHabit = new FactoryHabit();
+        Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.now());
+        habit.changeDo(LocalDate.now());
+        habit.changeDo(LocalDate.now().plusDays(1));
+        Assertions.assertEquals(true, habit.getProgress().getFirst().getCompleted());
+        Assertions.assertEquals(true, habit.getProgress().getLast().getCompleted());
+        Assertions.assertEquals(true, habit.getDone());
+    }
+    @Test
     @DisplayName("Should return the end in the next saturday")
-    void scenario03() throws HabitExeption {
+    void scenario04() throws HabitExeption {
         Client client = Mockito.mock(Client.class);
         FactoryHabit factoryHabit = new FactoryHabit();
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.parse("2024-09-14"));
@@ -43,7 +57,7 @@ public class HabitTest {
     }
     @Test
     @DisplayName("Should return 14.33% of percentage for day")
-    void scenario04() throws HabitExeption {
+    void scenario05() throws HabitExeption {
         Client client = Mockito.mock(Client.class);
         FactoryHabit factoryHabit = new FactoryHabit();
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.of(2024, 9, 8));
@@ -52,7 +66,7 @@ public class HabitTest {
 
     @Test
     @DisplayName("Should return size equal 4 because the list progress until saturday.")
-    void scenario05() throws HabitExeption {
+    void scenario06() throws HabitExeption {
         Client client = Mockito.mock(Client.class);
         FactoryHabit factoryHabit = new FactoryHabit();
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.of(2024, 9, 24));
@@ -62,7 +76,7 @@ public class HabitTest {
 
     @Test
     @DisplayName("Should return 27/09 with the last day.")
-    void scenario06() throws HabitExeption {
+    void scenario07() throws HabitExeption {
         Client client = Mockito.mock(Client.class);
         FactoryHabit factoryHabit = new FactoryHabit();
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.of(2024, 9, 24));

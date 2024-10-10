@@ -4,6 +4,7 @@ import br.com.monitodehabitos.monitodehabitos.application.gateway.HabitRepositor
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.HabitsErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntityRespository;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntity;
@@ -65,9 +66,9 @@ public class HabitRepositoryJPA implements HabitRepository {
     }
 
     @Override
-    public Habit changeDone(Long id) throws HabitExeption {
+    public Habit changeDone(Long id) throws HabitExeption, WeekException {
         Habit habit = this.findById(id);
-        habit.changeDo();
+        habit.changeDo(habit.getProgress().getFirst().getDate());
         this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityCreate(habit));
         return habit;
     }

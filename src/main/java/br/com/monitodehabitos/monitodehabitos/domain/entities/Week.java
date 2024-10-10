@@ -2,12 +2,12 @@ package br.com.monitodehabitos.monitodehabitos.domain.entities;
 
 import br.com.monitodehabitos.monitodehabitos.domain.enums.WeekErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
+import br.com.monitodehabitos.monitodehabitos.domain.observer.Observer;
+import br.com.monitodehabitos.monitodehabitos.domain.observer.Subject;
 
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
-public class Week {
+public class Week implements Observer {
     private Long id;
     private List<Habit> habits;
     private Client client;
@@ -76,6 +76,15 @@ public class Week {
     }
 
     @Override
+    public void update(Habit habit, boolean change) throws WeekException {
+        if (!change) {
+            this.subtractPercentage(habit.getPercentageForDay());
+        } else {
+            this.addPercentage(habit.getPercentageForDay());
+        }
+    }
+
+    @Override
     public String toString() {
         return "Week{" +
                 "id=" + id +
@@ -85,4 +94,6 @@ public class Week {
                 ", totalePercentage=" + totalePercentage +
                 '}';
     }
+
+
 }
