@@ -10,6 +10,7 @@ import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntityRespo
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntityRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,13 +44,21 @@ public class HabitRepositoryJPA implements HabitRepository {
     public Habit update(Long id, Habit newHabit) throws HabitExeption {
         Habit habit = this.findById(id);
         habit.update(newHabit);
-        this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityCreate(habit));
-        return habit;
+
+        HabitEntity savedHabitEntity = this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityCreate(habit));
+
+        List<ProgressEntity> progressEntities = this.habitEntityMapper.toProgressEntityMapper(habit);
+        for (ProgressEntity p : progressEntities) {
+            p.addHabitEntity(savedHabitEntity);
+            savedHabitEntity.addProgress(p);
+            this.progressEntityRepository.save(p);
+        }
+        return this.habitEntityMapper.toHabitDomainWithAllParameters(savedHabitEntity);
     }
 
     @Override
     public Habit findById(Long id) throws HabitExeption {
-        Optional<HabitEntity> habitEntity = this.habitEntityRespository.findById(id);
+        Optional<HabitEntity> habitEntity = this.habitEntityRespository.findHabit(id);
         if (habitEntity.isEmpty()) {
             throw new HabitExeption(HabitsErrorEnum.HBT0003.getMessage());
         }
@@ -58,7 +67,7 @@ public class HabitRepositoryJPA implements HabitRepository {
 
     @Override
     public void delete(Long id) throws HabitExeption {
-        Boolean exists = this.habitEntityRespository.existsById(id);
+        boolean exists = this.habitEntityRespository.existsById(id);
         if (!exists) {
             throw new HabitExeption(HabitsErrorEnum.HBT0003.getMessage());
         }
@@ -66,9 +75,9 @@ public class HabitRepositoryJPA implements HabitRepository {
     }
 
     @Override
-    public Habit changeDone(Long id) throws HabitExeption, WeekException {
+    public Habit changeDone(Long id, LocalDate dateHabit) throws HabitExeption, WeekException {
         Habit habit = this.findById(id);
-        habit.changeDo(habit.getProgress().getFirst().getDate());
+        habit.changeDo(dateHabit);
         this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityCreate(habit));
         return habit;
     }

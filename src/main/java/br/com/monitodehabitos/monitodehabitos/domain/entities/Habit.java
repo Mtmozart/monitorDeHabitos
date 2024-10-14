@@ -13,6 +13,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Habit implements Subject {
     private Long id;
@@ -37,7 +38,7 @@ public class Habit implements Subject {
         this.currentDay = currentDay;
         this.progress = progress;
     }
-
+     //Contructor do update com data de ínicio
     public Habit(Long id, Client client, String description, LocalDate start) throws HabitExeption {
         this.id = id;
         this.description = description;
@@ -50,6 +51,13 @@ public class Habit implements Subject {
         this.progress = this.addProgress();
     }
 
+    //Contructor do update sem data de ínicio
+    public Habit(Long id, Client client, String description) throws HabitExeption {
+        this.id = id;
+        this.description = description;
+        this.client = client;
+    }
+
     public Habit(Habit habit) {
         this.id = habit.getId();
         this.description = habit.getDescription();
@@ -60,6 +68,7 @@ public class Habit implements Subject {
         this.client = habit.getClient();
         this.currentDay = habit.currentDay;
     }
+
 
     public Long getId() {
         return id;
@@ -103,6 +112,10 @@ public class Habit implements Subject {
         }
         if (updateHabit.start != this.getStart() && updateHabit.start != null) {
             this.changeDateStart(updateHabit.getStart());
+            this.getProgress().clear();
+            updateHabit.getProgress().stream()
+                    .map(p -> this.getProgress().add(p))
+                    .collect(Collectors.toList());
         }
         if (!Objects.equals(updateHabit.description, this.description) && updateHabit.description != null) {
             this.description = updateHabit.getDescription();
@@ -164,7 +177,6 @@ public class Habit implements Subject {
         }
         return this.progress;
     }
-
 
     @Override
     public String toString() {

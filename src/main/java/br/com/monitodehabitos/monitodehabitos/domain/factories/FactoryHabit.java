@@ -25,13 +25,12 @@ public class FactoryHabit {
     }
 
     public Habit update(String description, LocalDate start) throws HabitExeption {
-        if (description == null) {
-            throw new HabitExeption("Descrição do hábito não pode ser nula");
-        }
-        if (start == null) {
-            throw new HabitExeption("Data de início do hábito não pode ser nula");
-        }
         this.habit = new Habit(null, null, description, start);
+        return this.habit;
+    }
+
+    public Habit updateNoDateStater(String description) throws HabitExeption {
+        this.habit = new Habit(null, null, description);
         return this.habit;
     }
 }

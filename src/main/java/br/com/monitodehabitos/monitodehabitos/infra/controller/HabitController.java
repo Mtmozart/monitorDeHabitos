@@ -13,6 +13,7 @@ import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryHabit;
 import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryWeek;
+import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.request.ChangeDoneDto;
 import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.request.CreateHabitDto;
 import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.request.UpdateHabitDto;
 import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.response.ResponseHabitDto;
@@ -74,14 +75,14 @@ public class HabitController {
     }
 
     @PatchMapping("change-habit-status/{id}")
-    public ResponseEntity<Habit> changeDo(@PathVariable Long id) throws HabitExeption, WeekException {
-        Habit habit = this.changeDoHabit.changeDoHabit(id);
-        if (habit.getDone()) {
-            this.addPercentage.addPercentage(habit.getPercentageForDay(), habit.getId());
+    public ResponseEntity<Habit> changeDo(@PathVariable Long id, @RequestBody ChangeDoneDto dateProgress) throws HabitExeption, WeekException {
+        LocalDate dateProgressDate = null;
+        if (dateProgress.date() == null || dateProgress.date().isEmpty()) {
+            throw new HabitExeption(HabitsErrorEnum.HBT0016.getMessage());
         }
-        if (!habit.getDone()) {
-            this.removePercentage.removePercentage(habit.getPercentageForDay(), habit.getId());
-        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        dateProgressDate = LocalDate.parse(dateProgress.date(), formatter);
+        Habit habit = this.changeDoHabit.changeDoHabit(id, dateProgressDate);
         return ResponseEntity.ok(habit);
     }
 
@@ -91,17 +92,32 @@ public class HabitController {
         if (data.start() != null && !data.start().isBlank() && !data.start().isEmpty()) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             dateStart = LocalDate.parse(data.start(), formatter);
+            Habit habit = this.factoryHabit.update(data.description(), dateStart);
+            Habit update = this.updateHabit.update(id, habit);
+            ResponseHabitDto responseDto = new ResponseHabitDto(update);
+            return ResponseEntity.ok(responseDto);
         }
-        Habit habit = this.factoryHabit.update(data.description(), dateStart);
-        Habit update = this.updateHabit.update(id, habit);
-        ResponseHabitDto responseDto = new ResponseHabitDto(update);
-        return ResponseEntity.ok(responseDto);
+        if(data.start() == null){
+            Habit habit = this.factoryHabit.updateNoDateStater(data.description());
+            Habit update = this.updateHabit.update(id, habit);
+            ResponseHabitDto responseDto = new ResponseHabitDto(update);
+            return ResponseEntity.ok(responseDto);
+        }
+        return ResponseEntity.badRequest().build();
+
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id) throws HabitExeption {
         this.deleteHabit.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ResponseHabitDto> findById(@PathVariable Long id) throws HabitExeption {
+        Habit habit = this.findHabit.findById(id);
+        ResponseHabitDto responseHabitDto = new ResponseHabitDto(habit);
+        return ResponseEntity.ok(responseHabitDto);
     }
 
     @GetMapping("find-all/{userId}")
