@@ -37,12 +37,9 @@ public class HabitController {
     private final FindAllByUser findAllByUser;
     private final UpdateHabit updateHabit;
     private final ChangeDoHabit changeDoHabit;
-    private final FactoryWeek factoryWeek;
-    private final CreateWeek createWeek;
-    private final AddPercentage addPercentage;
-    private final RemovePercentage removePercentage;
 
-    public HabitController(FactoryHabit factoryHabit, CreateHabit createHabit, FindClient findClient, FindHabit findHabit, DeleteHabit deleteHabit, FindAllByUser findAllByUser, UpdateHabit updateHabit, ChangeDoHabit changeDoHabit, FactoryWeek factoryWeek, CreateWeek createWeek, AddPercentage addPercentage, RemovePercentage removePercentage) {
+
+    public HabitController(FactoryHabit factoryHabit, CreateHabit createHabit, FindClient findClient, FindHabit findHabit, DeleteHabit deleteHabit, FindAllByUser findAllByUser, UpdateHabit updateHabit, ChangeDoHabit changeDoHabit) {
         this.factoryHabit = factoryHabit;
         this.createHabit = createHabit;
         this.findClient = findClient;
@@ -51,10 +48,7 @@ public class HabitController {
         this.findAllByUser = findAllByUser;
         this.updateHabit = updateHabit;
         this.changeDoHabit = changeDoHabit;
-        this.factoryWeek = factoryWeek;
-        this.createWeek = createWeek;
-        this.addPercentage = addPercentage;
-        this.removePercentage = removePercentage;
+
     }
 
     @PostMapping
@@ -97,7 +91,7 @@ public class HabitController {
             ResponseHabitDto responseDto = new ResponseHabitDto(update);
             return ResponseEntity.ok(responseDto);
         }
-        if(data.start() == null){
+        if (data.start() == null) {
             Habit habit = this.factoryHabit.updateNoDateStater(data.description());
             Habit update = this.updateHabit.update(id, habit);
             ResponseHabitDto responseDto = new ResponseHabitDto(update);

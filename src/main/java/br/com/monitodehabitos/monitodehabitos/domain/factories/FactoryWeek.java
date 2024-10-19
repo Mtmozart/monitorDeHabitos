@@ -9,8 +9,8 @@ import java.util.List;
 public class FactoryWeek {
     private Week week;
 
-    public Week createWeekWithIdHabitClient(Long id, List<Habit> habits, Client client){
-        this.week = new Week(id, habits, client);
-        return  this.week;
+    public Week createWeekWithIdHabitClient(Long id, Habit habit, Client client){
+        this.week = new Week(id, habit, client);
+        return this.week;
     }
 }

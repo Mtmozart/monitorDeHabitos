@@ -112,16 +112,9 @@ public class ClientEntityMapper {
     private Week toWeekDomain(WeekEntity weekEntity){
         return new Week(
                 weekEntity.getId(),
-                toHabitsListDomain(weekEntity.getHabitEntities()),
+                toHabitDomain(weekEntity.getHabitEntity()),
                 toClientDomain(weekEntity.getClientEntity())
         );
     }
 
-    private List<Habit> toHabitsListDomain (List<HabitEntity> habitsEntity){
-        return habitsEntity.stream()
-                .map(this::toHabitDomain)
-                .collect(Collectors.toList());
-
-    }
-
-}
+  }

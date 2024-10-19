@@ -4,20 +4,28 @@ import br.com.monitodehabitos.monitodehabitos.domain.enums.WeekErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 import br.com.monitodehabitos.monitodehabitos.domain.observer.Observer;
 import br.com.monitodehabitos.monitodehabitos.domain.observer.Subject;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 import java.util.List;
 
 public class Week implements Observer {
     private Long id;
-    private List<Habit> habits;
+
+    @OneToOne
+    @JoinColumn(name = "perfil_id", referencedColumnName = "id")
+    private Habit habit;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
     private Client client;
-    private final int weekNumber = 1;
     private double totalePercentage = 00.00;
 
 
-    public Week(Long id, List<Habit> habits, Client client) {
+    public Week(Long id, Habit habit, Client client) {
         this.id = id;
-        this.habits = habits;
+        this.habit = habit;
         this.client = client;
     }
 
@@ -25,20 +33,12 @@ public class Week implements Observer {
         return id;
     }
 
-    public List<Habit> getHabit() {
-        return habits;
+    public Habit getHabit() {
+        return habit;
     }
 
     public Client getClient() {
         return client;
-    }
-
-    public int getWeekNumber() {
-        return weekNumber;
-    }
-
-    public void addHabit(Habit habit) {
-
     }
 
     public double getTotalePercentage() {
@@ -88,12 +88,9 @@ public class Week implements Observer {
     public String toString() {
         return "Week{" +
                 "id=" + id +
-                ", habit=" + habits +
+                ", habit=" + habit +
                 ", client=" + client +
-                ", weekNumber=" + weekNumber +
                 ", totalePercentage=" + totalePercentage +
                 '}';
     }
-
-
 }

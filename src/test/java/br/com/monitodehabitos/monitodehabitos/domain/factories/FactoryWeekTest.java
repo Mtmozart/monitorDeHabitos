@@ -24,9 +24,8 @@ class FactoryWeekTest {
         Client client = Mockito.mock(Client.class);
         FactoryHabit factoryHabit = new FactoryHabit();
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.now());
-        List<Habit> habitList = new ArrayList<>();
-        habitList.add(habit);
-        Week week = factoryWeek.createWeekWithIdHabitClient(1L, habitList, client);
+
+        Week week = factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
         Assertions.assertEquals(1L, week.getId());
 
     }
