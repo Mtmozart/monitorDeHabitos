@@ -3,20 +3,20 @@ package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 import br.com.monitodehabitos.monitodehabitos.domain.Address;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
+import br.com.monitodehabitos.monitodehabitos.domain.entities.Progress;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Week;
-import br.com.monitodehabitos.monitodehabitos.infra.persistence.AddressEntity;
-import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntity;
-import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntity;
-import br.com.monitodehabitos.monitodehabitos.infra.persistence.WeekEntity;
+import br.com.monitodehabitos.monitodehabitos.infra.persistence.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class WeekEntityMapper {
 
     public WeekEntity toWeekEntity(Week week) {
         return new WeekEntity(
                 week.getId(),
-                null,
+                this.toHabitEntity(week.getHabit()),
                 this.toClientEntity(week.getClient()),
-                1,
                 week.getTotalePercentage()
         );
     }
@@ -24,7 +24,7 @@ public class WeekEntityMapper {
     public Week toWeekDomain(WeekEntity weekEntity) {
         return new Week(
                 weekEntity.getId(),
-                null,
+                this.toHabitDomain(weekEntity.getHabitEntity()),
                 this.toClientDomain(weekEntity.getClientEntity())
         );
     }
@@ -39,7 +39,7 @@ public class WeekEntityMapper {
                 habit.getPercentageForDay(),
                 null,
                 habit.getCurrentDay(),
-                null
+                progressEntityList(habit.getProgress())
         );
     }
 
@@ -55,7 +55,6 @@ public class WeekEntityMapper {
                 client.getUpdatedAt(),
                 toAddressEntity(client.getAddress())
         );
-
     }
 
     private AddressEntity toAddressEntity(Address address) {
@@ -81,7 +80,7 @@ public class WeekEntityMapper {
                 habitEntity.getPercentageForDay(),
                 toClientDomain(habitEntity.getClientEntity()),
                 habitEntity.getCurrentDay(),
-                null
+                progressDomainList(habitEntity.getProgressEntities())
         );
     }
 
@@ -109,6 +108,31 @@ public class WeekEntityMapper {
                 address.getNeighborhood(),
                 address.getNumber(),
                 address.getComplement()
+        );
+    }
+
+
+    private List<ProgressEntity> progressEntityList(List<Progress> progresses){
+        return progresses.stream().map(this::toProgressEntity).collect(Collectors.toList());
+
+    }
+
+    private ProgressEntity toProgressEntity(Progress progress){
+        return new ProgressEntity(
+                progress.getDate(),
+                progress.getCompleted()
+        );
+    }
+
+    private List<Progress> progressDomainList(List<ProgressEntity> progressEntities){
+        return progressEntities.stream().map(this::toProgressDomain).collect(Collectors.toList());
+
+    }
+
+    private Progress toProgressDomain(ProgressEntity progressEntity){
+        return new Progress(
+                progressEntity.getCurrentDate(),
+                progressEntity.getCompleted()
         );
     }
 

@@ -10,7 +10,7 @@ public class RemoveWeek {
     public RemoveWeek(WeekRepository weekRepository) {
         this.weekRepository = weekRepository;
     }
-    public void create(Long id) throws WeekException {
+    public void remove(Long id) throws WeekException {
         this.weekRepository.delete(id);
     }
 }

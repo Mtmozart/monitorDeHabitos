@@ -10,24 +10,22 @@ public class WeekEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne()
+    @OneToOne
+    @JoinColumn(name = "habit_id")
     private HabitEntity habitEntity;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;
-    @Column(name = "number_week")
-    private int number;
     @Column(name = "totale_percentage")
     private double totalePercentage;
 
     public WeekEntity() {
     }
 
-    public WeekEntity(Long id, HabitEntity habitEntity, ClientEntity clientEntity, int number, double totalePercentage) {
+    public WeekEntity(Long id, HabitEntity habitEntity, ClientEntity clientEntity, double totalePercentage) {
         this.id = id;
         this.habitEntity = habitEntity;
         this.clientEntity = clientEntity;
-        this.number = number;
         this.totalePercentage = totalePercentage;
     }
 
@@ -41,10 +39,6 @@ public class WeekEntity {
 
     public ClientEntity getClientEntity() {
         return clientEntity;
-    }
-
-    public int getNumber() {
-        return number;
     }
 
     public double getTotalePercentage() {
