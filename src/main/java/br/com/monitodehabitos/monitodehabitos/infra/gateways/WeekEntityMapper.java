@@ -131,6 +131,7 @@ public class WeekEntityMapper {
 
     private Progress toProgressDomain(ProgressEntity progressEntity){
         return new Progress(
+                progressEntity.getId(),
                 progressEntity.getCurrentDate(),
                 progressEntity.getCompleted()
         );

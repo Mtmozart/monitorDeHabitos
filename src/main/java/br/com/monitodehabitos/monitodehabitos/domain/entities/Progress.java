@@ -3,10 +3,13 @@ package br.com.monitodehabitos.monitodehabitos.domain.entities;
 import java.time.LocalDate;
 
 public class Progress {
+
+    private Long id;
     private LocalDate currentDate;
     private Boolean completed;
 
-    public Progress(LocalDate currentDate, Boolean completed) {
+    public Progress(Long id, LocalDate currentDate, Boolean completed) {
+        this.id = id;
         this.currentDate = currentDate;
         this.completed = completed;
     }
@@ -14,6 +17,14 @@ public class Progress {
     public Progress(LocalDate currentDate) {
         this.currentDate = currentDate;
         this.completed = false;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDate getCurrentDate() {
+        return currentDate;
     }
 
     public LocalDate getDate() {

@@ -27,6 +27,20 @@ public class HabitEntityMapper {
         );
     }
 
+    public HabitEntity toHabitEntityWithAllParamentrs(Habit habit) {
+        return new HabitEntity(
+                habit.getId(),
+                habit.getDescription(),
+                habit.getDone(),
+                habit.getStart(),
+                habit.getEnd(),
+                habit.getPercentageForDay(),
+                toClientEntity(habit.getClient()),
+                habit.getCurrentDay(),
+                toProgressEntityListWithAllParamenters(habit)
+        );
+    }
+
     public Habit toHabitDomainWithAllParameters(HabitEntity habitEntity) {
         return new Habit(
                 habitEntity.getId(),
@@ -106,6 +120,21 @@ public class HabitEntityMapper {
         );
     }
 
+    public List<ProgressEntity> toProgressEntityListWithAllParamenters(Habit habit) {
+        return  habit.getProgress().stream()
+                .map( p -> this.toProgressEntityWithAllParamenters(p, habit))
+                .collect(Collectors.toList());
+    }
+
+    public ProgressEntity toProgressEntityWithAllParamenters(Progress progress, Habit habit){
+        return new ProgressEntity(
+                progress.getId(),
+                toHabitEntityCreate(habit),
+                progress.getCurrentDate(),
+                progress.getCompleted()
+        );
+    }
+
     public List<ProgressEntity> toProgressEntityMapper(Habit habit) {
         return habit.getProgress().stream()
                 .map(this::toProgressEntity)
@@ -114,6 +143,7 @@ public class HabitEntityMapper {
 
     public Progress toProgressDomain(ProgressEntity progressEntity) {
         return new Progress(
+                progressEntity.getId(),
                 progressEntity.getCurrentDate(),
                 progressEntity.getCompleted()
         );

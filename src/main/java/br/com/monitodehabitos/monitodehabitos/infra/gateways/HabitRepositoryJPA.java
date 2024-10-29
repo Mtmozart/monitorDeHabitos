@@ -78,7 +78,7 @@ public class HabitRepositoryJPA implements HabitRepository {
     public Habit changeDone(Long id, LocalDate dateHabit) throws HabitExeption, WeekException {
         Habit habit = this.findById(id);
         habit.changeDo(dateHabit);
-        this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityCreate(habit));
+        this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityWithAllParamentrs(habit));
         return habit;
     }
 
