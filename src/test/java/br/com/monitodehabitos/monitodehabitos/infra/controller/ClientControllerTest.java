@@ -29,7 +29,6 @@ class ClientControllerTest {
     @Test
     @DisplayName("Should give back status 201, created.")
     void scenario01() throws Exception {
-
         //Arrange
         String json =
                 """

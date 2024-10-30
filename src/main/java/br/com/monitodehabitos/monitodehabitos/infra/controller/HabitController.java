@@ -107,7 +107,7 @@ public class HabitController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseHabitDto> findById(@PathVariable Long id) throws HabitExeption {
         Habit habit = this.findHabit.findById(id);
         ResponseHabitDto responseHabitDto = new ResponseHabitDto(habit);

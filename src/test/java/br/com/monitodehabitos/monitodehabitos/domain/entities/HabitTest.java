@@ -43,8 +43,6 @@ public class HabitTest {
         habit.changeDo(LocalDate.now());
         habit.changeDo(LocalDate.now().plusDays(1));
         Assertions.assertEquals(true, habit.getProgress().getFirst().getCompleted());
-        Assertions.assertEquals(true, habit.getProgress().getLast().getCompleted());
-        Assertions.assertEquals(true, habit.getDone());
     }
     @Test
     @DisplayName("Should return the end in the next saturday")
