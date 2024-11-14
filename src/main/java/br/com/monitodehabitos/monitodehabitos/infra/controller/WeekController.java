@@ -38,10 +38,12 @@ public class WeekController {
 
     @PostMapping
     public ResponseEntity create(@RequestBody CreateWeekDto createWeekDto) throws HabitExeption {
+
         Client client = this.findClient.findClient(createWeekDto.clientId());
-        Habit habit = this.findHabit.findById(createWeekDto.habitId());
+        System.out.println(client);
+     /*   Habit habit = this.findHabit.findById(createWeekDto.habitId());
         Week week = this.factoryWeek.createWeekWithIdHabitClient(null, habit, client);
-        this.createWeek.create(week);
+        this.createWeek.create(week);*/
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

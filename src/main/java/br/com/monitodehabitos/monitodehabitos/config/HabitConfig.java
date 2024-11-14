@@ -7,6 +7,7 @@ import br.com.monitodehabitos.monitodehabitos.infra.gateways.HabitEntityMapper;
 import br.com.monitodehabitos.monitodehabitos.infra.gateways.HabitRepositoryJPA;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntityRespository;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntityRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -49,8 +50,8 @@ public class HabitConfig {
     }
 
     @Bean
-    HabitRepositoryJPA habitRepositoryJPA(HabitEntityRespository habitEntityRespository, HabitEntityMapper habitEntityMapper, ProgressEntityRepository progressEntityRepository) {
-        return new HabitRepositoryJPA(habitEntityRespository, habitEntityMapper, progressEntityRepository);
+    HabitRepositoryJPA habitRepositoryJPA(HabitEntityRespository habitEntityRespository, HabitEntityMapper habitEntityMapper, ProgressEntityRepository progressEntityRepository, ApplicationEventPublisher eventPublisher) {
+        return new HabitRepositoryJPA(habitEntityRespository, habitEntityMapper, progressEntityRepository, eventPublisher);
     }
 
     @Bean

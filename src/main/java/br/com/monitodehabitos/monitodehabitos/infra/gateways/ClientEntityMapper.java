@@ -80,7 +80,7 @@ public class ClientEntityMapper {
                 clientEntity.getTypeUser(),
                 clientEntity.getClient(),
                 convertHabitsDomain(clientEntity.getHabits()),
-                convertWeeksDomain(clientEntity.getWeeks())
+                null
         );
     }
     private List<Habit> convertHabitsDomain(List<HabitEntity> habitEntities) {

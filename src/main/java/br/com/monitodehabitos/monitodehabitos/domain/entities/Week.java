@@ -2,26 +2,12 @@ package br.com.monitodehabitos.monitodehabitos.domain.entities;
 
 import br.com.monitodehabitos.monitodehabitos.domain.enums.WeekErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
-import br.com.monitodehabitos.monitodehabitos.domain.observer.Observer;
-import br.com.monitodehabitos.monitodehabitos.domain.observer.Subject;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 
-import java.util.List;
-
-public class Week implements Observer {
+public class Week {
     private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "perfil_id", referencedColumnName = "id")
     private Habit habit;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
     private Client client;
     private double totalePercentage = 00.00;
-
 
     public Week(Long id, Habit habit, Client client) {
         this.id = id;
@@ -73,15 +59,6 @@ public class Week implements Observer {
 
     public void setClient(Client client) {
         this.client = client;
-    }
-
-    @Override
-    public void update(Habit habit, boolean change) throws WeekException {
-        if (!change) {
-            this.subtractPercentage(habit.getPercentageForDay());
-        } else {
-            this.addPercentage(habit.getPercentageForDay());
-        }
     }
 
     @Override

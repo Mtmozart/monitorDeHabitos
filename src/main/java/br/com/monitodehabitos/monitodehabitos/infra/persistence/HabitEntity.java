@@ -1,5 +1,6 @@
 package br.com.monitodehabitos.monitodehabitos.infra.persistence;
 
+
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -113,5 +114,7 @@ public class HabitEntity {
                 ", progressEntities=" + progressEntities.toString() +
                 '}';
     }
+
+
 }
 

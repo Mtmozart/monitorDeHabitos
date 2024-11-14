@@ -6,7 +6,6 @@ import java.util.List;
 
 @Entity(name = "week")
 public class WeekEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +20,6 @@ public class WeekEntity {
 
     public WeekEntity() {
     }
-
     public WeekEntity(Long id, HabitEntity habitEntity, ClientEntity clientEntity, double totalePercentage) {
         this.id = id;
         this.habitEntity = habitEntity;
@@ -43,5 +41,16 @@ public class WeekEntity {
 
     public double getTotalePercentage() {
         return totalePercentage;
+    }
+
+
+    @Override
+    public String toString() {
+        return "WeekEntity{" +
+                "id=" + id +
+                ", habitEntity=" + habitEntity +
+                ", clientEntity=" + clientEntity +
+                ", totalePercentage=" + totalePercentage +
+                '}';
     }
 }

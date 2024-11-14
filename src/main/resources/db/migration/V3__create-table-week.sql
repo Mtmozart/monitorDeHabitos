@@ -4,5 +4,7 @@ CREATE TABLE week (
     client_id BIGINT NOT NULL,
     totale_percentage FLOAT(4, 2),
     PRIMARY KEY (id),
+    CONSTRAINT fk_week_habit FOREIGN KEY (habit_id) REFERENCES habit(id),
     CONSTRAINT fk_week_client FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE CASCADE
 );
+

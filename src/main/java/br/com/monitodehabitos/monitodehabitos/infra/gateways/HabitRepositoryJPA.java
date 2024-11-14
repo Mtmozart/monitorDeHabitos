@@ -9,6 +9,8 @@ import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntityRespository;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntityRepository;
+import br.com.monitodehabitos.monitodehabitos.infra.utils.HabitChangeEvent;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,13 +19,14 @@ import java.util.Optional;
 public class HabitRepositoryJPA implements HabitRepository {
     private final HabitEntityRespository habitEntityRespository;
     private final HabitEntityMapper habitEntityMapper;
-
     private final ProgressEntityRepository progressEntityRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public HabitRepositoryJPA(HabitEntityRespository habitEntityRespository, HabitEntityMapper habitEntityMapper, ProgressEntityRepository progressEntityRepository) {
+    public HabitRepositoryJPA(HabitEntityRespository habitEntityRespository, HabitEntityMapper habitEntityMapper, ProgressEntityRepository progressEntityRepository, ApplicationEventPublisher eventPublisher) {
         this.habitEntityRespository = habitEntityRespository;
         this.habitEntityMapper = habitEntityMapper;
         this.progressEntityRepository = progressEntityRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -31,6 +34,7 @@ public class HabitRepositoryJPA implements HabitRepository {
         HabitEntity habitEntity = this.habitEntityMapper.toHabitEntityCreate(habit);
         HabitEntity savedHabitEntity = this.habitEntityRespository.save(habitEntity);
         List<ProgressEntity> progressEntities = this.habitEntityMapper.toProgressEntityMapper(habit);
+        System.out.println(habit.getProgress());
         for (ProgressEntity p : progressEntities) {
             p.addHabitEntity(savedHabitEntity);
             savedHabitEntity.addProgress(p);
@@ -44,7 +48,6 @@ public class HabitRepositoryJPA implements HabitRepository {
     public Habit update(Long id, Habit newHabit) throws HabitExeption {
         Habit habit = this.findById(id);
         habit.update(newHabit);
-
         HabitEntity savedHabitEntity = this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityCreate(habit));
 
         List<ProgressEntity> progressEntities = this.habitEntityMapper.toProgressEntityMapper(habit);
@@ -77,14 +80,15 @@ public class HabitRepositoryJPA implements HabitRepository {
     @Override
     public Habit changeDone(Long id, LocalDate dateHabit) throws HabitExeption, WeekException {
         Habit habit = this.findById(id);
-        habit.changeDo(dateHabit);
-        this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityWithAllParamentrs(habit));
+        var change = habit.changeDo(dateHabit);
+        HabitEntity habitEntity = this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityWithAllParamentrs(habit));
+        eventPublisher.publishEvent(new HabitChangeEvent(this, habitEntity, change));
+
         return habit;
     }
 
     @Override
     public List<Habit> findAllByUser(Long userId) {
-
         List<HabitEntity> habitEntities = this.habitEntityRespository.findAllByClientId(userId);
         if (habitEntities.isEmpty()) {
             return List.of();
@@ -93,4 +97,5 @@ public class HabitRepositoryJPA implements HabitRepository {
                 .map(this.habitEntityMapper::toHabitDomainWithAllParameters)
                 .toList();
     }
+
 }

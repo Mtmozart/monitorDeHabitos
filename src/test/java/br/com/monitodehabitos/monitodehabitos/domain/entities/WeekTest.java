@@ -113,22 +113,6 @@ class WeekTest {
     }
 
     @Test
-    @DisplayName("Should adding or remove the percentage with obsevators.")
-    public void scenario7() throws HabitExeption, WeekException {
-        Client client = Mockito.mock(Client.class);
-        FactoryHabit factoryHabit = new FactoryHabit();
-        //20%
-        Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.of(2024, 9, 24));
-        FactoryWeek factoryWeek = new FactoryWeek();
-
-        Week week = factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
-        habit.registerObserver(week);
-
-        habit.changeDo(LocalDate.of(2024, 9, 24));
-        Assertions.assertEquals(habit.getPercentageForDay(), week.getTotalePercentage());
-    }
-
-    @Test
     @DisplayName("Should subtract or remove the percentage with obsevators.")
     public void scenario8() throws HabitExeption, WeekException {
         Client client = Mockito.mock(Client.class);
@@ -137,7 +121,7 @@ class WeekTest {
         Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "Descrição genéria de algo", LocalDate.of(2024, 9, 24));
         FactoryWeek factoryWeek = new FactoryWeek();
         Week week = factoryWeek.createWeekWithIdHabitClient(1L, habit, client);
-        habit.registerObserver(week);
+
         habit.changeDo(LocalDate.of(2024, 9, 24));
         habit.changeDo(LocalDate.of(2024, 9, 24));
         Assertions.assertEquals(0, week.getTotalePercentage());

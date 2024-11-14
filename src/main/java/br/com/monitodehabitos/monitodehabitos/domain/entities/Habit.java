@@ -3,8 +3,6 @@ package br.com.monitodehabitos.monitodehabitos.domain.entities;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.HabitsErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
-import br.com.monitodehabitos.monitodehabitos.domain.observer.Observer;
-import br.com.monitodehabitos.monitodehabitos.domain.observer.Subject;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -15,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Habit implements Subject {
+public class Habit {
     private Long id;
     private String description;
     private Boolean done;
@@ -25,8 +23,6 @@ public class Habit implements Subject {
     private Client client;
     private LocalDate currentDay;
     private List<Progress> progress = new ArrayList<>();
-    private List<Observer> observers = new ArrayList<Observer>();
-
     public Habit(Long id, String description, Boolean done, LocalDate start, LocalDate end, Double percentageForDay, Client client, LocalDate currentDay, List<Progress> progress) {
         this.id = id;
         this.description = description;
@@ -122,7 +118,7 @@ public class Habit implements Subject {
         }
     }
 
-    public void changeDo(LocalDate date) throws HabitExeption, WeekException {
+    public boolean changeDo(LocalDate date) throws HabitExeption, WeekException {
         if (date == null) {
             throw new HabitExeption(HabitsErrorEnum.HBT0016.getMessage());
         }
@@ -131,14 +127,14 @@ public class Habit implements Subject {
                 .findFirst()
                 .map(Progress::changeStatusToCompleteOrNot)
                 .orElse(false);
-        notifyObservers(this, isCompleted);
-        this.done = this.progress.stream().allMatch(Progress::getCompleted);
 
+        this.done = this.progress.stream().allMatch(Progress::getCompleted);
+        return isCompleted;
     }
 
     public LocalDate calcEnd(LocalDate start) throws HabitExeption {
         if (start != null) {
-            return start.with(TemporalAdjusters.next(DayOfWeek.SATURDAY));
+            return start.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
         }
         this.end = this.start;
         return this.end;
@@ -181,22 +177,5 @@ public class Habit implements Subject {
     @Override
     public String toString() {
         return "Habit{" + "id=" + id + ", description='" + description + '\'' + ", done=" + done + ", start=" + start + ", end=" + end + ", percentageForDay=" + percentageForDay + ", client=" + client + ", currentDay=" + currentDay + ", progress=" + progress.toString() + '}';
-    }
-
-    @Override
-    public void registerObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers(Habit habit, boolean change) throws WeekException {
-        for (Observer observer : observers) {
-            observer.update(habit, change);
-        }
     }
 }

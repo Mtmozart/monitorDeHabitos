@@ -172,4 +172,29 @@ public class HabitControllerTest {
         assertEquals(200, response.getStatus());
     }
 
+    @Test
+    @DisplayName("Should return status 204 when to delete the habit")
+    void scenario06() throws Exception {
+        List<Progress> progresses = new ArrayList<>();
+        Habit habit1 = new Habit(
+                1L,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                progresses
+
+        );
+        String id = "1";
+
+        MockHttpServletResponse response = mockMvc.perform(
+                delete("/habit/{id}", id)
+        ).andReturn().getResponse();
+        // Assert
+        assertEquals(204, response.getStatus());
+    }
+
 }
