@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class FactoryHabit {
     private Habit habit;
 
-    public Habit withDescriptionAndDate(Long id, Client client, String description, LocalDate start) throws HabitExeption {
+    public Habit withDescriptionAndDate(Long id, Client client, String description, LocalDate start, LocalDate end) throws HabitExeption {
 
         if (client == null) {
             throw new HabitExeption("Cliente não pode ser nulo");
@@ -20,17 +20,15 @@ public class FactoryHabit {
         if (start == null) {
             throw new HabitExeption("Data de início do hábito não pode ser nula");
         }
-        this.habit = new Habit(id, client, description, start);
-        return this.habit;
+        return this.habit = new Habit(id, client, description, start, end);
     }
 
-    public Habit update(String description, LocalDate start) throws HabitExeption {
-        this.habit = new Habit(null, null, description, start);
-        return this.habit;
+    public Habit update(String description, LocalDate start, LocalDate end) throws HabitExeption {
+        return this.habit = new Habit(null, null, description, start, end);
     }
 
     public Habit updateNoDateStater(String description) throws HabitExeption {
-        this.habit = new Habit(null, null, description);
-        return this.habit;
+        return this.habit = new Habit(null, null, description);
+
     }
 }
