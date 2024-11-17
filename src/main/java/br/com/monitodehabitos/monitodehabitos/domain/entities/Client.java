@@ -17,8 +17,6 @@ import java.util.Set;
 public class Client extends User {
     private Boolean isClient;
     private List<Habit> habits = new ArrayList<>();
-    private Set<Week> weeks = new LinkedHashSet<>();
-
     public Client() {
         super();
     }
@@ -29,11 +27,11 @@ public class Client extends User {
         this.isClient = isClient;
     }
 
-    public Client(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum, Boolean isClient, List<Habit> habits, Set<Week> weeks) {
+    public Client(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum, Boolean isClient, List<Habit> habits) {
         super(id, email, password, name, createdAt, updatedAt, address, typeUserEnum);
         this.isClient = isClient;
         this.habits = habits;
-        this.weeks = weeks;
+
     }
 
     public Boolean getClient() {
@@ -78,18 +76,5 @@ public class Client extends User {
         this.habits.remove(habit);
         habit.setClient(null);
     }
-
-    public Set<Week> getWeeks() {
-        return weeks;
-    }
-
-    public void addWeek(Week week) throws WeekException {
-        if(week == null){
-            throw new WeekException(WeekErrorEnum.HBT0001.getMessage());
-        }
-        this.weeks.add(week);
-        week.setClient(this);
-    }
-
 
 }

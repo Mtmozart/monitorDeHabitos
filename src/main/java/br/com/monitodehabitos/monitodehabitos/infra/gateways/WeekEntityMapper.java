@@ -13,34 +13,15 @@ import java.util.stream.Collectors;
 public class WeekEntityMapper {
 
     public WeekEntity toWeekEntity(Week week) {
-        return new WeekEntity(
-                week.getId(),
-                this.toHabitEntity(week.getHabit()),
-                this.toClientEntity(week.getClient()),
-                week.getTotalePercentage()
-        );
+        return null;
     }
 
     public Week toWeekDomain(WeekEntity weekEntity) {
-        return new Week(
-                weekEntity.getId(),
-                this.toHabitDomain(weekEntity.getHabitEntity()),
-                this.toClientDomain(weekEntity.getClientEntity())
-        );
+        return null;
     }
 
     private HabitEntity toHabitEntity(Habit habit) {
-        return new HabitEntity(
-                habit.getId(),
-                habit.getDescription(),
-                habit.getDone(),
-                habit.getStart(),
-                habit.getEnd(),
-                habit.getPercentageForDay(),
-                null,
-                habit.getCurrentDay(),
-                progressEntityList(habit.getProgress())
-        );
+        return null;
     }
 
     private ClientEntity toClientEntity(Client client) {
@@ -71,17 +52,7 @@ public class WeekEntityMapper {
 
 
     private Habit toHabitDomain(HabitEntity habitEntity) {
-        return new Habit(
-                habitEntity.getId(),
-                habitEntity.getDescription(),
-                habitEntity.getDone(),
-                habitEntity.getStart(),
-                habitEntity.getEnd(),
-                habitEntity.getPercentageForDay(),
-                toClientDomain(habitEntity.getClientEntity()),
-                habitEntity.getCurrentDay(),
-                progressDomainList(habitEntity.getProgressEntities())
-        );
+        return null;
     }
 
     private Client toClientDomain(ClientEntity client) {
@@ -118,10 +89,7 @@ public class WeekEntityMapper {
     }
 
     private ProgressEntity toProgressEntity(Progress progress){
-        return new ProgressEntity(
-                progress.getDate(),
-                progress.getCompleted()
-        );
+        return null;
     }
 
     private List<Progress> progressDomainList(List<ProgressEntity> progressEntities){
@@ -130,11 +98,7 @@ public class WeekEntityMapper {
     }
 
     private Progress toProgressDomain(ProgressEntity progressEntity){
-        return new Progress(
-                progressEntity.getId(),
-                progressEntity.getCurrentDate(),
-                progressEntity.getCompleted()
-        );
+        return null;
     }
 
 }

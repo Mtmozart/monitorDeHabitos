@@ -69,19 +69,7 @@ public class ClientEntityMapper {
     }
 
     public Client toClientDomain(ClientEntity clientEntity) {
-        return new Client(
-                clientEntity.getId(),
-                clientEntity.getEmail(),
-                clientEntity.getPassword(),
-                clientEntity.getName(),
-                clientEntity.getCreatedAt(),
-                clientEntity.getUpdatedAt(),
-                toAddressDomain(clientEntity.getAddressEntity()),
-                clientEntity.getTypeUser(),
-                clientEntity.getClient(),
-                convertHabitsDomain(clientEntity.getHabits()),
-                null
-        );
+        return null;
     }
     private List<Habit> convertHabitsDomain(List<HabitEntity> habitEntities) {
         return habitEntities.stream()
@@ -90,17 +78,7 @@ public class ClientEntityMapper {
     }
 
     private Habit toHabitDomain(HabitEntity habitEntity) {
-        return new Habit(
-                habitEntity.getId(),
-                habitEntity.getDescription(),
-                habitEntity.getDone(),
-                habitEntity.getStart(),
-                habitEntity.getEnd(),
-                habitEntity.getPercentageForDay(),
-                null,
-                habitEntity.getCurrentDay(),
-                null
-        );
+        return null;
     }
 
     private Set<Week> convertWeeksDomain(Set<WeekEntity> weekEntities) {
@@ -110,11 +88,7 @@ public class ClientEntityMapper {
     }
 
     private Week toWeekDomain(WeekEntity weekEntity){
-        return new Week(
-                weekEntity.getId(),
-                toHabitDomain(weekEntity.getHabitEntity()),
-                toClientDomain(weekEntity.getClientEntity())
-        );
+        return null;
     }
 
   }

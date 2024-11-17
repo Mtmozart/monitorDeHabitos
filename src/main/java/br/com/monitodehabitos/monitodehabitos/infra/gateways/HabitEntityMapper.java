@@ -18,12 +18,12 @@ public class HabitEntityMapper {
         return new HabitEntity(
                 habit.getId(),
                 habit.getDescription(),
-                habit.getDone(),
+                null,
                 habit.getStart(),
                 habit.getEnd(),
-                habit.getPercentageForDay(),
+                null,
                 toClientEntity(habit.getClient()),
-                habit.getCurrentDay()
+                null
         );
     }
 
@@ -31,46 +31,26 @@ public class HabitEntityMapper {
         return new HabitEntity(
                 habit.getId(),
                 habit.getDescription(),
-                habit.getDone(),
+                null,
                 habit.getStart(),
                 habit.getEnd(),
-                habit.getPercentageForDay(),
+               null,
                 toClientEntity(habit.getClient()),
-                habit.getCurrentDay(),
+               null,
                 toProgressEntityListWithAllParamenters(habit)
         );
     }
 
     public Habit toHabitDomainWithAllParameters(HabitEntity habitEntity) {
         return new Habit(
-                habitEntity.getId(),
-                habitEntity.getDescription(),
-                habitEntity.getDone(),
-                habitEntity.getStart(),
-                habitEntity.getEnd(),
-                habitEntity.getPercentageForDay(),
-                toClientDomain(habitEntity.getClientEntity()),
-                habitEntity.getCurrentDay(),
-                toProgressDomainMapper(habitEntity.getProgressEntities())
+                null
         );
     }
 
     public Client toClientDomain(ClientEntity clientEntity) {
         if (clientEntity == null) return null;
 
-        return new Client(
-                clientEntity.getId(),
-                clientEntity.getEmail(),
-                clientEntity.getPassword(),
-                clientEntity.getName(),
-                clientEntity.getCreatedAt(),
-                clientEntity.getUpdatedAt(),
-                toAddressDomain(clientEntity.getAddressEntity()),
-                clientEntity.getTypeUser(),
-                clientEntity.getClient(),
-                null,
-                null
-        );
+        return null;
     }
 
     public Address toAddressDomain(AddressEntity addressEntity) {
@@ -114,39 +94,23 @@ public class HabitEntityMapper {
     }
 
     public ProgressEntity toProgressEntity(Progress progress) {
-        return new ProgressEntity(
-                progress.getDate(),
-                progress.getCompleted()
-        );
+        return null;
     }
 
     public List<ProgressEntity> toProgressEntityListWithAllParamenters(Habit habit) {
-        return  habit.getProgress().stream()
-                .map( p -> this.toProgressEntityWithAllParamenters(p, habit))
-                .collect(Collectors.toList());
+        return  null;
     }
 
     public ProgressEntity toProgressEntityWithAllParamenters(Progress progress, Habit habit){
-        return new ProgressEntity(
-                progress.getId(),
-                toHabitEntityCreate(habit),
-                progress.getCurrentDate(),
-                progress.getCompleted()
-        );
+        return null;
     }
 
     public List<ProgressEntity> toProgressEntityMapper(Habit habit) {
-        return habit.getProgress().stream()
-                .map(this::toProgressEntity)
-                .collect(Collectors.toList());
+        return null;
     }
 
     public Progress toProgressDomain(ProgressEntity progressEntity) {
-        return new Progress(
-                progressEntity.getId(),
-                progressEntity.getCurrentDate(),
-                progressEntity.getCompleted()
-        );
+        return null;
     }
 
     public List<Progress> toProgressDomainMapper(List<ProgressEntity> progressEntities) {

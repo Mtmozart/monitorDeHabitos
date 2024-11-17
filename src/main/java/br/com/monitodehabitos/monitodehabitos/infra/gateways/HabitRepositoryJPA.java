@@ -2,6 +2,7 @@ package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 
 import br.com.monitodehabitos.monitodehabitos.application.gateway.HabitRepository;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
+import br.com.monitodehabitos.monitodehabitos.domain.entities.HabitStatus;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.HabitsErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
@@ -34,7 +35,6 @@ public class HabitRepositoryJPA implements HabitRepository {
         HabitEntity habitEntity = this.habitEntityMapper.toHabitEntityCreate(habit);
         HabitEntity savedHabitEntity = this.habitEntityRespository.save(habitEntity);
         List<ProgressEntity> progressEntities = this.habitEntityMapper.toProgressEntityMapper(habit);
-        System.out.println(habit.getProgress());
         for (ProgressEntity p : progressEntities) {
             p.addHabitEntity(savedHabitEntity);
             savedHabitEntity.addProgress(p);
@@ -80,9 +80,9 @@ public class HabitRepositoryJPA implements HabitRepository {
     @Override
     public Habit changeDone(Long id, LocalDate dateHabit) throws HabitExeption, WeekException {
         Habit habit = this.findById(id);
-        var change = habit.changeDo(dateHabit);
+
+        var change = habit.changeStatus(HabitStatus.COMPLETED);
         HabitEntity habitEntity = this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityWithAllParamentrs(habit));
-        eventPublisher.publishEvent(new HabitChangeEvent(this, habitEntity, change));
 
         return habit;
     }

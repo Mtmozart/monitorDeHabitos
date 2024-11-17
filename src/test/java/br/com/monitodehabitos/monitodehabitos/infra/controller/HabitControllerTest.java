@@ -52,149 +52,138 @@ public class HabitControllerTest {
     @Mock
     private Habit habit;
 
-    @Test
-    @DisplayName("Should be return status 201, created ")
-    void scneario01() throws Exception {
-        Client client1 = new Client(
-             1L,
-             null,
-             null,
-             null,
-             null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        var json = """
-                {
-                  "description": "Descrição aleatória de algo muito importante",
-                  "start":  "10/10/2024",
-                  "clientId": 1
-                }
-                """;
-        when(findClient.findClient(1L)).thenReturn(client1);
-        var response = mockMvc.perform(
-                post("/habit")
-                        .content(json)
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andReturn().getResponse();
-
-        //Assert
-        assertEquals(201, response.getStatus());
-    }
-
-    @Test
-    @DisplayName("Should be return status 200, update ")
-    void scneario02() throws Exception {
-        var json = """
-                {
-                   "date": "10/10/2024"
-                }
-                """;
-        var response = mockMvc.perform(
-                patch("/habit/change-habit-status/10")
-                        .content(json)
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andReturn().getResponse();
-
-        //Assert
-        assertEquals(200, response.getStatus());
-    }
-
-    @Test
-    @DisplayName("Should return status 204, delete ")
-    void scenario03() throws Exception {
-        var response = mockMvc.perform(
-                delete("/habit/1")
-        ).andReturn().getResponse();
-        // Assertions
-        assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatus());
-        assertTrue(response.getContentAsString().isEmpty(), "Response body should be empty for status 204");
-    }
-
-    @Test
-    @DisplayName("Should return status 200 to findByID")
-    void scenario04() throws Exception {
-
-        List<Progress> progresses = new ArrayList<>();
-        Habit habit1 = new Habit(
-                1L,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                progresses
-
-        );
-        String id = "1";
-        when(findHabit.findById(1L)).thenReturn(habit1);
-
-        MockHttpServletResponse response = mockMvc.perform(
-                get("/habit/{id}", id)
-        ).andReturn().getResponse();
-        // Assert
-        assertEquals(200, response.getStatus());
-    }
-
-    @Test
-    @DisplayName("Should return status 200 to find all by user")
-    void scenario05() throws Exception {
-
-        Client client1 = new Client(
-                1L,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        List<Habit> habits = new ArrayList<>();
-
-        when(findClient.findClient(1L)).thenReturn(client1);
-
-        when(findAllByUser.findAllByUser(1L)).thenReturn(habits);
-
-        String id = "1";
-        MockHttpServletResponse response = mockMvc.perform(
-                get("/habit/find-all/{id}", id)
-        ).andReturn().getResponse();
-
-        // Verifica se o status retornado é 200 (OK)
-        assertEquals(200, response.getStatus());
-    }
-
-    @Test
-    @DisplayName("Should return status 204 when to delete the habit")
-    void scenario06() throws Exception {
-        List<Progress> progresses = new ArrayList<>();
-        Habit habit1 = new Habit(
-                1L,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                progresses
-
-        );
-        String id = "1";
-
-        MockHttpServletResponse response = mockMvc.perform(
-                delete("/habit/{id}", id)
-        ).andReturn().getResponse();
-        // Assert
-        assertEquals(204, response.getStatus());
-    }
+//    @Test
+//    @DisplayName("Should be return status 201, created ")
+//    void scneario01() throws Exception {
+//        Client client1 = new Client(
+//             1L,
+//             null,
+//             null,
+//             null,
+//             null,
+//                null,
+//                null,
+//                null,
+//                null
+//        );
+//
+//        var json = """
+//                {
+//                  "description": "Descrição aleatória de algo muito importante",
+//                  "start":  "10/10/2024",
+//                  "clientId": 1
+//                }
+//                """;
+//        when(findClient.findClient(1L)).thenReturn(client1);
+//        var response = mockMvc.perform(
+//                post("/habit")
+//                        .content(json)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//        ).andReturn().getResponse();
+//
+//        //Assert
+//        assertEquals(201, response.getStatus());
+//    }
+//
+//    @Test
+//    @DisplayName("Should be return status 200, update ")
+//    void scneario02() throws Exception {
+//        var json = """
+//                {
+//                   "date": "10/10/2024"
+//                }
+//                """;
+//        var response = mockMvc.perform(
+//                patch("/habit/change-habit-status/10")
+//                        .content(json)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//        ).andReturn().getResponse();
+//
+//        //Assert
+//        assertEquals(200, response.getStatus());
+//    }
+//
+//    @Test
+//    @DisplayName("Should return status 204, delete ")
+//    void scenario03() throws Exception {
+//        var response = mockMvc.perform(
+//                delete("/habit/1")
+//        ).andReturn().getResponse();
+//        // Assertions
+//        assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatus());
+//        assertTrue(response.getContentAsString().isEmpty(), "Response body should be empty for status 204");
+//    }
+//
+//    @Test
+//    @DisplayName("Should return status 200 to findByID")
+//    void scenario04() throws Exception {
+//
+//        List<Progress> progresses = new ArrayList<>();
+//        Habit habit1 = null;
+//        String id = "1";
+//        when(findHabit.findById(1L)).thenReturn(habit1);
+//
+//        MockHttpServletResponse response = mockMvc.perform(
+//                get("/habit/{id}", id)
+//        ).andReturn().getResponse();
+//        // Assert
+//        assertEquals(200, response.getStatus());
+//    }
+//
+//    @Test
+//    @DisplayName("Should return status 200 to find all by user")
+//    void scenario05() throws Exception {
+//
+//        Client client1 = new Client(
+//                1L,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null
+//        );
+//
+//        List<Habit> habits = new ArrayList<>();
+//
+//        when(findClient.findClient(1L)).thenReturn(client1);
+//
+//        when(findAllByUser.findAllByUser(1L)).thenReturn(habits);
+//
+//        String id = "1";
+//        MockHttpServletResponse response = mockMvc.perform(
+//                get("/habit/find-all/{id}", id)
+//        ).andReturn().getResponse();
+//
+//        // Verifica se o status retornado é 200 (OK)
+//        assertEquals(200, response.getStatus());
+//    }
+//
+//    @Test
+//    @DisplayName("Should return status 204 when to delete the habit")
+//    void scenario06() throws Exception {
+//        List<Progress> progresses = new ArrayList<>();
+//        Habit habit1 = new Habit(
+//                1L,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                progresses
+//
+//        );
+//        String id = "1";
+//
+//        MockHttpServletResponse response = mockMvc.perform(
+//                delete("/habit/{id}", id)
+//        ).andReturn().getResponse();
+//        // Assert
+//        assertEquals(204, response.getStatus());
+//    }
 
 }

@@ -19,12 +19,10 @@ public record ResponseHabitDto(
         this(
         habit.getId(),
         habit.getDescription(),
-        habit.getDone(),
+        null,
         habit.getStart(),
         habit.getEnd(),
-                habit.getProgress().stream()
-                        .map(p -> new ProgresDto(p.getDate(), p.getCompleted()))
-                        .collect(Collectors.toList())
+               null
         );
     }
 }

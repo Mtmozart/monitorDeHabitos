@@ -164,9 +164,9 @@ class ClientTest {
                 null, new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
 
         FactoryHabit factoryHabit = new FactoryHabit();
-        Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now());
-        Habit habit2 = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now());
-        Habit habit3 = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now());
+        Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now(), LocalDate.now());
+        Habit habit2 = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now(), LocalDate.now());
+        Habit habit3 = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now(), LocalDate.now());
         client.addHabit(habit);
         client.addHabit(habit2);
         client.addHabit(habit3);
@@ -182,7 +182,7 @@ class ClientTest {
                 "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
                 null, new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
         FactoryHabit factoryHabit = new FactoryHabit();
-        Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now());
+        Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now(), LocalDate.now());
         client.addHabit(habit);
 
         Assertions.assertEquals("description", client.getHabits().get(0).getDescription());
@@ -198,7 +198,7 @@ class ClientTest {
                 "email@gmail.com", "Bor@5930", "Matheus Mozart da Silva Neves Borges", LocalDateTime.now(),
                 null, new Address("76820-124", "rua miguel chakian", "Porto Velho", "RO", "Nova Porto Velho", "848", null));
         FactoryHabit factoryHabit = new FactoryHabit();
-        Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now());
+        Habit habit = factoryHabit.withDescriptionAndDate(1L, client, "description", LocalDate.now(), LocalDate.now());
         client.addHabit(habit);
         client.removeHabit(habit);
         Assertions.assertEquals(0, client.getHabits().size());

@@ -53,7 +53,7 @@ public class HabitController {
         if (data.start() != null && !data.start().isEmpty()) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate dateStart = LocalDate.parse(data.start(), formatter);
-            Habit habit = this.factoryHabit.withDescriptionAndDate(null, client, data.description(), dateStart);
+            Habit habit = this.factoryHabit.withDescriptionAndDate(null, client, data.description(), dateStart, LocalDate.of(2024, 11, 5));
             client.addHabit(habit);
             this.createHabit.create(habit);
             ResponseHabitDto responseDto = new ResponseHabitDto(habit);
@@ -82,7 +82,7 @@ public class HabitController {
         if (data.start() != null && !data.start().isBlank() && !data.start().isEmpty()) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             dateStart = LocalDate.parse(data.start(), formatter);
-            Habit habit = this.factoryHabit.update(data.description(), dateStart);
+            Habit habit = this.factoryHabit.update(data.description(), dateStart, LocalDate.of(2024, 11, 1));
             Habit update = this.updateHabit.update(id, habit);
             ResponseHabitDto responseDto = new ResponseHabitDto(update);
             return ResponseEntity.ok(responseDto);
