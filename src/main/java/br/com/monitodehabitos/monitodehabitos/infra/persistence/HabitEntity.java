@@ -1,6 +1,7 @@
 package br.com.monitodehabitos.monitodehabitos.infra.persistence;
 
 
+import br.com.monitodehabitos.monitodehabitos.domain.entities.HabitStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -14,46 +15,36 @@ public class HabitEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
-    private Boolean done;
+    private HabitStatus done;
     private LocalDate start;
     private LocalDate end;
-    @Column(name = "percentage_for_day")
-    private Double percentageForDay;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;
 
-    @Column(name = "habit_day", nullable = false)
-    private LocalDate currentDay;
-
     @OneToMany(mappedBy = "habitEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProgressEntity> progressEntities = new ArrayList<>();
+    private List<WeekEntity> weeks = new ArrayList<>();
 
     public HabitEntity() {
     }
 
-    public HabitEntity(Long id, String description, Boolean done, LocalDate start, LocalDate end, Double percentageForDay, ClientEntity clientEntity, LocalDate currentDay, List<ProgressEntity> progressEntities) {
+    public HabitEntity(Long id, String description, HabitStatus done, LocalDate start, LocalDate end, ClientEntity clientEntity, List<WeekEntity> weeks) {
         this.id = id;
         this.description = description;
         this.done = done;
         this.start = start;
         this.end = end;
-        this.percentageForDay = percentageForDay;
         this.clientEntity = clientEntity;
-        this.currentDay = currentDay;
-        this.progressEntities = progressEntities;
+        this.weeks = weeks;
     }
 
-    public HabitEntity(Long id, String description, Boolean done, LocalDate start, LocalDate end, Double percentageForDay, ClientEntity clientEntity, LocalDate currentDay) {
+    public HabitEntity(Long id, String description, HabitStatus done, LocalDate start, LocalDate end, ClientEntity clientEntity) {
         this.id = id;
         this.description = description;
         this.done = done;
         this.start = start;
         this.end = end;
-        this.percentageForDay = percentageForDay;
         this.clientEntity = clientEntity;
-        this.currentDay = currentDay;
-        this.progressEntities = new ArrayList<>();
     }
 
     public Long getId() {
@@ -64,37 +55,27 @@ public class HabitEntity {
         return description;
     }
 
-    public Boolean getDone() {
-        return done;
-    }
 
     public LocalDate getStart() {
         return start;
+    }
+
+    public HabitStatus getDone() {
+        return done;
     }
 
     public LocalDate getEnd() {
         return end;
     }
 
-    public Double getPercentageForDay() {
-        return percentageForDay;
+    public List<WeekEntity> getWeeks() {
+        return weeks;
     }
 
     public ClientEntity getClientEntity() {
         return clientEntity;
     }
 
-    public LocalDate getCurrentDay() {
-        return currentDay;
-    }
-
-    public List<ProgressEntity> getProgressEntities() {
-        return progressEntities;
-    }
-
-    public void addProgress(ProgressEntity progressEntity) {
-        this.progressEntities.add(progressEntity);
-    }
 
     public void setClientEntity(ClientEntity clientEntity) {
         this.clientEntity = clientEntity;
@@ -108,13 +89,9 @@ public class HabitEntity {
                 ", done=" + done +
                 ", start=" + start +
                 ", end=" + end +
-                ", percentageForDay=" + percentageForDay +
                 ", clientEntity=" + clientEntity +
-                ", currentDay=" + currentDay +
-                ", progressEntities=" + progressEntities.toString() +
+                ", weeks=" + weeks +
                 '}';
     }
-
-
 }
 

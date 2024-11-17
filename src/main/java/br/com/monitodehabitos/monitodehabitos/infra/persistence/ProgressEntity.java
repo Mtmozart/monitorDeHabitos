@@ -12,8 +12,8 @@ public class ProgressEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "habit_id", nullable = false)
-    private HabitEntity habitEntity;
+    @JoinColumn(name = "week_id", nullable = false)
+    private WeekEntity week;
     @Column(name = "habit_day")
     private LocalDate currentDate;
     @Column(name = "completed")
@@ -21,14 +21,14 @@ public class ProgressEntity {
 
     public ProgressEntity() {}
 
-    public ProgressEntity(Long id, HabitEntity habitEntity, LocalDate currentDate, Boolean completed) {
+    public ProgressEntity(Long id, WeekEntity week, LocalDate currentDate, Boolean completed) {
         this.id = id;
-        this.habitEntity = habitEntity;
+        this.week = week;
         this.currentDate = currentDate;
         this.completed = completed;
     }
 
-    public ProgressEntity( LocalDate currentDate, Boolean completed) {
+    public ProgressEntity(LocalDate currentDate, Boolean completed) {
         this.currentDate = currentDate;
         this.completed = completed;
     }
@@ -37,8 +37,8 @@ public class ProgressEntity {
         return id;
     }
 
-    public HabitEntity getHabitEntity() {
-        return habitEntity;
+    public WeekEntity getWeek() {
+        return week;
     }
 
     public LocalDate getCurrentDate() {
@@ -49,14 +49,16 @@ public class ProgressEntity {
         return completed;
     }
 
-    public void addHabitEntity(HabitEntity habitEntity) {
-        this.habitEntity = habitEntity;
+    public void addWeekEntity(WeekEntity weekEntity) {
+        this.week = weekEntity;
     }
 
     @Override
     public String toString() {
         return "ProgressEntity{" +
-                "currentDate=" + currentDate +
+                "id=" + id +
+                ", week=" + week +
+                ", currentDate=" + currentDate +
                 ", completed=" + completed +
                 '}';
     }
