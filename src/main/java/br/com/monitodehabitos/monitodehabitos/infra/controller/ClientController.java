@@ -8,6 +8,9 @@ import br.com.monitodehabitos.monitodehabitos.domain.Address;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.UserException;
 import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryClient;
+import br.com.monitodehabitos.monitodehabitos.infra.controller.clientDto.CreateClientDto;
+import br.com.monitodehabitos.monitodehabitos.infra.controller.clientDto.UpdateClientDto;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +33,7 @@ public class ClientController {
     }
 
    @PostMapping()
-    private ResponseEntity create(@RequestBody CreateClientDto dto){
+    private ResponseEntity create(@RequestBody @Valid CreateClientDto dto){
         Client client = factoryClient.withoutCreatedatAndUpdatedatParameters(null, dto.email(), dto.password(), dto.name(),
                 new Address(
                         dto.addressClientDto().cep(), dto.addressClientDto().street(), dto.addressClientDto().city(),

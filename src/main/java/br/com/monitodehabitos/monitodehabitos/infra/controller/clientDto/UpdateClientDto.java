@@ -1,4 +1,4 @@
-package br.com.monitodehabitos.monitodehabitos.infra.controller;
+package br.com.monitodehabitos.monitodehabitos.infra.controller.clientDto;
 
 public record UpdateClientDto(
     String email,

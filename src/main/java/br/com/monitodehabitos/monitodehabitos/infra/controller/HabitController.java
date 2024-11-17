@@ -12,6 +12,7 @@ import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.request.
 import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.request.CreateHabitDto;
 import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.request.UpdateHabitDto;
 import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.response.ResponseHabitDto;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +47,7 @@ public class HabitController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseHabitDto> create(@RequestBody CreateHabitDto data) throws HabitExeption, WeekException {
+    public ResponseEntity<ResponseHabitDto> create(@RequestBody @Valid CreateHabitDto data) throws HabitExeption, WeekException {
 
         Client client = this.findClient.findClient(data.clientId());
 
