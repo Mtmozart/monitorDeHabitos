@@ -35,11 +35,7 @@ public class HabitRepositoryJPA implements HabitRepository {
         HabitEntity habitEntity = this.habitEntityMapper.toHabitEntityCreate(habit);
         HabitEntity savedHabitEntity = this.habitEntityRespository.save(habitEntity);
         List<ProgressEntity> progressEntities = this.habitEntityMapper.toProgressEntityMapper(habit);
-        for (ProgressEntity p : progressEntities) {
-            p.addHabitEntity(savedHabitEntity);
-            savedHabitEntity.addProgress(p);
-            this.progressEntityRepository.save(p);
-        }
+
 
         return this.habitEntityMapper.toHabitDomainWithAllParameters(savedHabitEntity);
     }
@@ -51,11 +47,7 @@ public class HabitRepositoryJPA implements HabitRepository {
         HabitEntity savedHabitEntity = this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityCreate(habit));
 
         List<ProgressEntity> progressEntities = this.habitEntityMapper.toProgressEntityMapper(habit);
-        for (ProgressEntity p : progressEntities) {
-            p.addHabitEntity(savedHabitEntity);
-            savedHabitEntity.addProgress(p);
-            this.progressEntityRepository.save(p);
-        }
+
         return this.habitEntityMapper.toHabitDomainWithAllParameters(savedHabitEntity);
     }
 

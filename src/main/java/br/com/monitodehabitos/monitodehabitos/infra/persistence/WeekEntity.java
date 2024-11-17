@@ -22,7 +22,7 @@ public class WeekEntity {
     @Column(name = "total_percentage")
     private double totalPercentage;
 
-    @Column(name = "total_per_day")
+    @Column(name = "percentage_per_day")
     private double percentagePerDay;
 
     @OneToMany(mappedBy = "week", cascade = CascadeType.ALL, orphanRemoval = true)

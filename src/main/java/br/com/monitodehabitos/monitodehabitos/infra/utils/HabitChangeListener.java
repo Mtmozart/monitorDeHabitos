@@ -10,23 +10,15 @@ import org.springframework.stereotype.Component;
 @Component("Observer")
 public class HabitChangeListener {
 
-    private final AddPercentage addPercentage;
-    private final RemovePercentage removePercentage;
 
-    public HabitChangeListener(AddPercentage addPercentage, RemovePercentage removePercentage) {
-        this.addPercentage = addPercentage;
-        this.removePercentage = removePercentage;
+    public HabitChangeListener() {
     }
 
     @EventListener
     public void handleHabitChangedEvent(HabitChangeEvent event) throws WeekException {
         HabitEntity habitEntity = event.getHabitEntity();
         boolean change = event.isChange();
-            if (!change) {
-                this.removePercentage.removePercentage(habitEntity.getPercentageForDay(), habitEntity.getId());
-            } else {
-                this.addPercentage.addPercentage(habitEntity.getPercentageForDay(), habitEntity.getId());
-            }
+
         }
 
 }

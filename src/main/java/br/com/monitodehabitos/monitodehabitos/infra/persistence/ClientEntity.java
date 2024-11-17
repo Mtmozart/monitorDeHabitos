@@ -17,9 +17,6 @@ public class ClientEntity extends UserEntity {
     private Boolean isClient;
     @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<HabitEntity> habits = new ArrayList<>();
-    @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<WeekEntity> weeks = new LinkedHashSet<>();
-
 
     public ClientEntity() {
     }
@@ -40,9 +37,6 @@ public class ClientEntity extends UserEntity {
         return habits;
     }
 
-    public Set<WeekEntity> getWeeks() {
-        return weeks;
-    }
 
     public Boolean getClient() {
         return isClient;
