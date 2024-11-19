@@ -12,6 +12,7 @@ import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.request.
 import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.request.CreateHabitDto;
 import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.request.UpdateHabitDto;
 import br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.response.ResponseHabitDto;
+import br.com.monitodehabitos.monitodehabitos.infra.utils.DateValidationAndFormater;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +33,10 @@ public class HabitController {
     private final FindAllByUser findAllByUser;
     private final UpdateHabit updateHabit;
     private final ChangeDoHabit changeDoHabit;
+    private final DateValidationAndFormater dateValidationAndFormater;
 
 
-    public HabitController(FactoryHabit factoryHabit, CreateHabit createHabit, FindClient findClient, FindHabit findHabit, DeleteHabit deleteHabit, FindAllByUser findAllByUser, UpdateHabit updateHabit, ChangeDoHabit changeDoHabit) {
+    public HabitController(FactoryHabit factoryHabit, CreateHabit createHabit, FindClient findClient, FindHabit findHabit, DeleteHabit deleteHabit, FindAllByUser findAllByUser, UpdateHabit updateHabit, ChangeDoHabit changeDoHabit, DateValidationAndFormater dateValidationAndFormater) {
         this.factoryHabit = factoryHabit;
         this.createHabit = createHabit;
         this.findClient = findClient;
@@ -43,46 +45,37 @@ public class HabitController {
         this.findAllByUser = findAllByUser;
         this.updateHabit = updateHabit;
         this.changeDoHabit = changeDoHabit;
-
+        this.dateValidationAndFormater = dateValidationAndFormater;
     }
 
     @PostMapping
     public ResponseEntity<ResponseHabitDto> create(@RequestBody @Valid CreateHabitDto data) throws HabitExeption, WeekException {
 
         Client client = this.findClient.findClient(data.clientId());
-
-        if (data.start() != null && !data.start().isEmpty()) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate dateStart = LocalDate.parse(data.start(), formatter);
-            Habit habit = this.factoryHabit.withDescriptionAndDate(null, client, data.description(), dateStart, LocalDate.of(2024, 11, 5));
-            client.addHabit(habit);
-            this.createHabit.create(habit);
-            ResponseHabitDto responseDto = new ResponseHabitDto(habit);
-            URI location = URI.create("/api/habits/" + habit.getId());
-            return ResponseEntity.created(location).body(responseDto);
-        } else {
-            throw new HabitExeption(HabitsErrorEnum.HBT0009.getMessage());
-        }
+        var dateStart = this.dateValidationAndFormater.validate(data.start());
+        var dateEnd = this.dateValidationAndFormater.validate(data.end());
+        Habit habit = this.factoryHabit.withDescriptionAndDate(null, client, data.description(), data.status(), dateStart, dateEnd);
+        client.addHabit(habit);
+        var newHabit = this.createHabit.create(habit);
+        ResponseHabitDto responseDto = new ResponseHabitDto(newHabit);
+        URI location = URI.create("/api/habits/" + newHabit.getId());
+        return ResponseEntity.created(location).body(responseDto);
     }
 
     @PatchMapping("change-habit-status/{id}")
     public ResponseEntity<Habit> changeDo(@PathVariable Long id, @RequestBody ChangeDoneDto dateProgress) throws HabitExeption, WeekException {
         LocalDate dateProgressDate = null;
-        if (dateProgress.date() == null || dateProgress.date().isEmpty()) {
-            throw new HabitExeption(HabitsErrorEnum.HBT0016.getMessage());
-        }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        dateProgressDate = LocalDate.parse(dateProgress.date(), formatter);
-        Habit habit = this.changeDoHabit.changeDoHabit(id, dateProgressDate);
+        var dateStart = this.dateValidationAndFormater.validate(dateProgress.date());
+        Habit habit = this.changeDoHabit.changeDoHabit(id, dateStart);
         return ResponseEntity.ok(habit);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseHabitDto> update(@PathVariable Long id, @RequestBody UpdateHabitDto data) throws HabitExeption {
         LocalDate dateStart = null;
+
         if (data.start() != null && !data.start().isBlank() && !data.start().isEmpty()) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            dateStart = LocalDate.parse(data.start(), formatter);
+            dateStart = this.dateValidationAndFormater.validate(data.start());
             Habit habit = this.factoryHabit.update(data.description(), dateStart, LocalDate.of(2024, 11, 1));
             Habit update = this.updateHabit.update(id, habit);
             ResponseHabitDto responseDto = new ResponseHabitDto(update);

@@ -15,7 +15,16 @@ import java.util.stream.Collectors;
 public class HabitEntityMapper {
 
     public HabitEntity toHabitEntityCreate(Habit habit) {
-        return null;
+        System.out.println(habit);
+        return new HabitEntity(
+                null,
+                habit.getDescription(),
+                habit.getDone(),
+                habit.getStart(),
+                habit.getEnd(),
+                toClientEntity(habit.getClient()),
+                null
+        );
     }
 
     public HabitEntity toHabitEntityWithAllParamentrs(Habit habit) {
@@ -23,7 +32,15 @@ public class HabitEntityMapper {
     }
 
     public Habit toHabitDomainWithAllParameters(HabitEntity habitEntity) {
-        return null;
+        return new Habit(
+                habitEntity.getId(),
+                habitEntity.getDescription(),
+                habitEntity.getDone(),
+                habitEntity.getStart(),
+                habitEntity.getEnd(),
+                toClientDomain(habitEntity.getClientEntity()),
+                null
+        );
     }
 
     public Client toClientDomain(ClientEntity clientEntity) {

@@ -50,8 +50,8 @@ public class HabitConfig {
     }
 
     @Bean
-    HabitRepositoryJPA habitRepositoryJPA(HabitEntityRespository habitEntityRespository, HabitEntityMapper habitEntityMapper, ProgressEntityRepository progressEntityRepository, ApplicationEventPublisher eventPublisher) {
-        return new HabitRepositoryJPA(habitEntityRespository, habitEntityMapper, progressEntityRepository, eventPublisher);
+    HabitRepositoryJPA habitRepositoryJPA(HabitEntityRespository habitEntityRespository, HabitEntityMapper habitEntityMapper) {
+        return new HabitRepositoryJPA(habitEntityRespository, habitEntityMapper);
     }
 
     @Bean

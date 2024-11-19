@@ -69,7 +69,20 @@ public class ClientEntityMapper {
     }
 
     public Client toClientDomain(ClientEntity clientEntity) {
-        return null;
+        return  new Client(
+                clientEntity.getId(),
+                clientEntity.getEmail(),
+                clientEntity.getPassword(),
+                clientEntity.getName(),
+                clientEntity.getCreatedAt(),
+                clientEntity.getUpdatedAt(),
+                toAddressDomain(clientEntity.getAddressEntity()),
+                clientEntity.getTypeUser(),
+                clientEntity.getClient()
+
+        )
+
+                ;
     }
     private List<Habit> convertHabitsDomain(List<HabitEntity> habitEntities) {
         return habitEntities.stream()

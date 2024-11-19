@@ -2,6 +2,7 @@ package br.com.monitodehabitos.monitodehabitos.domain.factories;
 
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
+import br.com.monitodehabitos.monitodehabitos.domain.entities.HabitStatus;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
 
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 public class FactoryHabit {
     private Habit habit;
 
-    public Habit withDescriptionAndDate(Long id, Client client, String description, LocalDate start, LocalDate end) throws HabitExeption {
+    public Habit withDescriptionAndDate(Long id, Client client, String description, HabitStatus done, LocalDate start, LocalDate end) throws HabitExeption {
 
         if (client == null) {
             throw new HabitExeption("Cliente não pode ser nulo");
@@ -20,7 +21,7 @@ public class FactoryHabit {
         if (start == null) {
             throw new HabitExeption("Data de início do hábito não pode ser nula");
         }
-        return this.habit = new Habit(id, client, description, start, end);
+        return this.habit = new Habit(id, description, done,  start, end, client);
     }
 
     public Habit update(String description, LocalDate start, LocalDate end) throws HabitExeption {

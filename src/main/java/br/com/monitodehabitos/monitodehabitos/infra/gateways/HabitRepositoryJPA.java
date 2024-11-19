@@ -9,9 +9,6 @@ import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntityRespository;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntity;
-import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntityRepository;
-import br.com.monitodehabitos.monitodehabitos.infra.utils.HabitChangeEvent;
-import org.springframework.context.ApplicationEventPublisher;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,23 +17,18 @@ import java.util.Optional;
 public class HabitRepositoryJPA implements HabitRepository {
     private final HabitEntityRespository habitEntityRespository;
     private final HabitEntityMapper habitEntityMapper;
-    private final ProgressEntityRepository progressEntityRepository;
-    private final ApplicationEventPublisher eventPublisher;
 
-    public HabitRepositoryJPA(HabitEntityRespository habitEntityRespository, HabitEntityMapper habitEntityMapper, ProgressEntityRepository progressEntityRepository, ApplicationEventPublisher eventPublisher) {
+    public HabitRepositoryJPA(HabitEntityRespository habitEntityRespository, HabitEntityMapper habitEntityMapper) {
         this.habitEntityRespository = habitEntityRespository;
         this.habitEntityMapper = habitEntityMapper;
-        this.progressEntityRepository = progressEntityRepository;
-        this.eventPublisher = eventPublisher;
+
     }
 
     @Override
     public Habit save(Habit habit) {
+        System.out.println(habit);
         HabitEntity habitEntity = this.habitEntityMapper.toHabitEntityCreate(habit);
         HabitEntity savedHabitEntity = this.habitEntityRespository.save(habitEntity);
-        List<ProgressEntity> progressEntities = this.habitEntityMapper.toProgressEntityMapper(habit);
-
-
         return this.habitEntityMapper.toHabitDomainWithAllParameters(savedHabitEntity);
     }
 

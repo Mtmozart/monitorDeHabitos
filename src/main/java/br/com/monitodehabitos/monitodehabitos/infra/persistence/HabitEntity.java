@@ -15,7 +15,10 @@ public class HabitEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
+
+    @Enumerated(EnumType.STRING)
     private HabitStatus done;
+
     private LocalDate start;
     private LocalDate end;
     @ManyToOne(fetch = FetchType.LAZY)
