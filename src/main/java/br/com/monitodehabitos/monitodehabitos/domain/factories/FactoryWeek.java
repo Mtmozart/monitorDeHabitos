@@ -10,7 +10,7 @@ import java.util.List;
 public class FactoryWeek {
     private Week week;
 
-    public Week createWeekWithStartDateAndEndDate(LocalDate dateStart, LocalDate dateEnd){
+    public Week createWeekWithStartDateAndEndDate(LocalDate dateStart, LocalDate dateEnd, Habit habit){
         return this.week = new Week(dateStart, dateEnd);
     }
 }

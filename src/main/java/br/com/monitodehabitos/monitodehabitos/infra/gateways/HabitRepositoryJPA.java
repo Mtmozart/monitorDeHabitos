@@ -26,6 +26,7 @@ public class HabitRepositoryJPA implements HabitRepository {
 
     @Override
     public Habit save(Habit habit) {
+        System.out.println("entrei aqui");
         System.out.println(habit);
         HabitEntity habitEntity = this.habitEntityMapper.toHabitEntityCreate(habit);
         HabitEntity savedHabitEntity = this.habitEntityRespository.save(habitEntity);

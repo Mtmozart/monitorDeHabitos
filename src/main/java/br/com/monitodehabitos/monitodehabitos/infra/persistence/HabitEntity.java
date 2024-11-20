@@ -24,7 +24,8 @@ public class HabitEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;
-    @OneToMany(mappedBy = "habitEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "habit_id")
     private List<WeekEntity> weeks = new ArrayList<>();
 
     public HabitEntity() {

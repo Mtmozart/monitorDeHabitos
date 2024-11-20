@@ -89,7 +89,11 @@ public class WeekEntityMapper {
     }
 
     private ProgressEntity toProgressEntity(Progress progress){
-        return null;
+        return new ProgressEntity(
+                progress.getId(),
+                progress.getCurrentDate(),
+                progress.getProgressEnumStatus()
+        );
     }
 
     private List<Progress> progressDomainList(List<ProgressEntity> progressEntities){
@@ -98,7 +102,11 @@ public class WeekEntityMapper {
     }
 
     private Progress toProgressDomain(ProgressEntity progressEntity){
-        return null;
+        return new Progress(
+                progressEntity.getId(),
+                progressEntity.getCurrentDate(),
+                progressEntity.getCompleted()
+        );
     }
 
 }

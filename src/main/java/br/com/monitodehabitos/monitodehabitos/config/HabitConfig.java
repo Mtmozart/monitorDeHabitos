@@ -1,6 +1,7 @@
 package br.com.monitodehabitos.monitodehabitos.config;
 
 import br.com.monitodehabitos.monitodehabitos.application.gateway.HabitRepository;
+import br.com.monitodehabitos.monitodehabitos.application.gateway.WeekRepository;
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Habit.*;
 import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryHabit;
 import br.com.monitodehabitos.monitodehabitos.infra.gateways.HabitEntityMapper;

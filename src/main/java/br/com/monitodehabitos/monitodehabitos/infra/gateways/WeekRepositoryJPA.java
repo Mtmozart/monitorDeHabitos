@@ -51,28 +51,30 @@ public class WeekRepositoryJPA implements WeekRepository {
 
     @Override
     public Boolean addPercentage(double add, Long habitId) throws WeekException {
-        Optional<WeekEntity> weekEntity = this.weekEntityRepository.findWeekByHabitId(habitId);
-        if(weekEntity.isEmpty()){
-            System.out.println("Semana inexistente");
-        }
-        Week week = this.weekEntityMapper.toWeekDomain(weekEntity.get());
-        week.addPercentage(add);
-        WeekEntity weekEntitySave = this.weekEntityMapper.toWeekEntity(week);
-        this.weekEntityRepository.save(weekEntitySave);
-        return true;
+//        Optional<WeekEntity> weekEntity = this.weekEntityRepository.findWeekByHabitId(habitId);
+//        if(weekEntity.isEmpty()){
+//            System.out.println("Semana inexistente");
+//        }
+//        Week week = this.weekEntityMapper.toWeekDomain(weekEntity.get());
+//        week.addPercentage(add);
+//        WeekEntity weekEntitySave = this.weekEntityMapper.toWeekEntity(week);
+//        this.weekEntityRepository.save(weekEntitySave);
+//        return true;
+        return null;
     }
 
     @Override
     public Boolean removePercentage(double remove, Long habitId) throws WeekException {
-        Optional<WeekEntity> weekEntity = this.weekEntityRepository.findWeekByHabitId(habitId);
-        if(weekEntity.isEmpty()){
-            System.out.println("Semana inexistente");
-        }
-        Week week = this.weekEntityMapper.toWeekDomain(weekEntity.get());
-        week.subtractPercentage(remove);
-        WeekEntity weekEntitySave = this.weekEntityMapper.toWeekEntity(week);
-        this.weekEntityRepository.save(weekEntitySave);
-        return true;
+//        Optional<WeekEntity> weekEntity = this.weekEntityRepository.findWeekByHabitId(habitId);
+//        if(weekEntity.isEmpty()){
+//            System.out.println("Semana inexistente");
+//        }
+//        Week week = this.weekEntityMapper.toWeekDomain(weekEntity.get());
+//        week.subtractPercentage(remove);
+//        WeekEntity weekEntitySave = this.weekEntityMapper.toWeekEntity(week);
+//        this.weekEntityRepository.save(weekEntitySave);
+//        return true;
+        return null;
     }
 
     @Override

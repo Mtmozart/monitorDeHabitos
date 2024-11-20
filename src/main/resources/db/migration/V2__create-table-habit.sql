@@ -17,14 +17,14 @@ CREATE TABLE week (
     total_percentage FLOAT(4, 2),
     percentage_per_day FLOAT(4, 2),
     PRIMARY KEY (id),
-    CONSTRAINT fk_week_habit FOREIGN KEY (habit_id) REFERENCES habit(id)
+    CONSTRAINT fk_week_habit FOREIGN KEY (habit_id) REFERENCES habit(id) ON DELETE CASCADE
 );
 
 CREATE TABLE progress (
     id BIGINT NOT NULL AUTO_INCREMENT,
     habit_day DATE NOT NULL,
     week_id BIGINT NOT NULL,
-    completed BOOLEAN NOT NULL,
+    completed ENUM('NOT_STARTED', 'COMPLETED')  NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_week FOREIGN KEY (week_id) REFERENCES week(id) ON DELETE CASCADE
 );

@@ -13,7 +13,7 @@ public class Week {
     private LocalDate startDate;
     private LocalDate endDate;
     private double percentagePerDay;
-    private List<Progress> progresses = new ArrayList<>();
+    private List<Progress> progresses;
     private double totalPercentage;
 
     public Week(Long id, LocalDate startDate, LocalDate endDate, double percentagePerDay, List<Progress> progresses, double totalPercentage) {

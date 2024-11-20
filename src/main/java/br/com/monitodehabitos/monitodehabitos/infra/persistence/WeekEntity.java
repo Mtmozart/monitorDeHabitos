@@ -3,6 +3,7 @@ package br.com.monitodehabitos.monitodehabitos.infra.persistence;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "week")
@@ -10,9 +11,6 @@ public class WeekEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
-    @JoinColumn(name = "habit_id")
-    private HabitEntity habitEntity;
 
     @Column(name = "start_date")
     private LocalDate startDate;
@@ -25,16 +23,16 @@ public class WeekEntity {
     @Column(name = "percentage_per_day")
     private double percentagePerDay;
 
-    @OneToMany(mappedBy = "week", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProgressEntity> progresses;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "week_id")
+    private List<ProgressEntity> progresses = new ArrayList<>();
 
 
     public WeekEntity() {
     }
 
-    public WeekEntity(Long id, HabitEntity habitEntity, LocalDate startDate, LocalDate endDate, double totalPercentage, double percentagePerDay, List<ProgressEntity> progresses) {
+    public WeekEntity(Long id, LocalDate startDate, LocalDate endDate, double totalPercentage, double percentagePerDay, List<ProgressEntity> progresses) {
         this.id = id;
-        this.habitEntity = habitEntity;
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPercentage = totalPercentage;
@@ -46,9 +44,6 @@ public class WeekEntity {
         return id;
     }
 
-    public HabitEntity getHabitEntity() {
-        return habitEntity;
-    }
 
     public LocalDate getStartDate() {
         return startDate;
@@ -74,7 +69,6 @@ public class WeekEntity {
     public String toString() {
         return "WeekEntity{" +
                 "id=" + id +
-                ", habitEntity=" + habitEntity +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", totalPercentage=" + totalPercentage +

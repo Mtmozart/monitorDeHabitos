@@ -26,7 +26,7 @@ public class Habit {
         this.client = client;
         this.weeks = weeks;
     }
-    //para o create, ou talvez não, estou meio perdido
+
     public Habit(Long id, String description, HabitStatus done, LocalDate start, LocalDate end, Client client) {
         this.id = id;
         this.description = description;

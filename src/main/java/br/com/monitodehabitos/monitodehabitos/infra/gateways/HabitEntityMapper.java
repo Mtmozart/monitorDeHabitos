@@ -4,10 +4,8 @@ import br.com.monitodehabitos.monitodehabitos.domain.Address;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Progress;
-import br.com.monitodehabitos.monitodehabitos.infra.persistence.AddressEntity;
-import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntity;
-import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntity;
-import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntity;
+import br.com.monitodehabitos.monitodehabitos.domain.entities.Week;
+import br.com.monitodehabitos.monitodehabitos.infra.persistence.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +21,7 @@ public class HabitEntityMapper {
                 habit.getStart(),
                 habit.getEnd(),
                 toClientEntity(habit.getClient()),
-                null
+                toWeekEntities(habit.getWeeks())
         );
     }
 
@@ -93,12 +91,14 @@ public class HabitEntityMapper {
         return null;
     }
 
-    public List<ProgressEntity> toProgressEntityListWithAllParamenters(Habit habit) {
-        return  null;
+    public List<ProgressEntity> toProgressEntityListWithAllParamenters(List<Progress> progresses) {
+        return progresses.stream().map(
+                this::toProgressEntity
+        ).collect(Collectors.toList());
     }
 
-    public ProgressEntity toProgressEntityWithAllParamenters(Progress progress, Habit habit){
-        return null;
+    public ProgressEntity toProgressEntityWithAllParamenters(Progress progress){
+        return new ProgressEntity(progress.getId(), progress.getCurrentDate(), progress.getProgressEnumStatus());
     }
 
     public List<ProgressEntity> toProgressEntityMapper(Habit habit) {
@@ -114,4 +114,24 @@ public class HabitEntityMapper {
                 .map(this::toProgressDomain)
                 .collect(Collectors.toList());
     }
+
+    public List<WeekEntity> toWeekEntities(List<Week> weeks){
+        return weeks.stream().map(
+                this::toWeekEntity
+        ).collect(Collectors.toList());
+    }
+
+    public WeekEntity toWeekEntity(Week week){
+        return new WeekEntity(
+            week.getId(),
+               week.getStartDate(),
+                week.getEndDate(),
+                week.getTotalPercentage(),
+                week.getPercentagePerDay(),
+                toProgressEntityListWithAllParamenters(week.getProgresses())
+
+        );
+    }
+
+
 }
