@@ -21,6 +21,7 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/habit")
@@ -54,8 +55,7 @@ public class HabitController {
         Client client = this.findClient.findClient(data.clientId());
         var dateStart = this.dateValidationAndFormater.validate(data.start());
         var dateEnd = this.dateValidationAndFormater.validate(data.end());
-        Habit habit = this.factoryHabit.withDescriptionAndDate(null, client, data.description(), data.status(), dateStart, dateEnd);
-        client.addHabit(habit);
+        Habit habit = this.factoryHabit.withDescriptionAndDate(client, data.description(), data.status(), dateStart, dateEnd);
         var newHabit = this.createHabit.create(habit);
         ResponseHabitDto responseDto = new ResponseHabitDto(newHabit);
         URI location = URI.create("/api/habits/" + newHabit.getId());
@@ -63,7 +63,7 @@ public class HabitController {
     }
 
     @PatchMapping("change-habit-status/{id}")
-    public ResponseEntity<Habit> changeDo(@PathVariable Long id, @RequestBody ChangeDoneDto dateProgress) throws HabitExeption, WeekException {
+    public ResponseEntity<Habit> changeDo(@PathVariable String id, @RequestBody ChangeDoneDto dateProgress) throws HabitExeption, WeekException {
         LocalDate dateProgressDate = null;
         var dateStart = this.dateValidationAndFormater.validate(dateProgress.date());
         Habit habit = this.changeDoHabit.changeDoHabit(id, dateStart);
@@ -71,7 +71,7 @@ public class HabitController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseHabitDto> update(@PathVariable Long id, @RequestBody UpdateHabitDto data) throws HabitExeption {
+    public ResponseEntity<ResponseHabitDto> update(@PathVariable String id, @RequestBody UpdateHabitDto data) throws HabitExeption {
         LocalDate dateStart = null;
 
         if (data.start() != null && !data.start().isBlank() && !data.start().isEmpty()) {
@@ -92,20 +92,20 @@ public class HabitController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Long id) throws HabitExeption {
+    public ResponseEntity delete(@PathVariable String id) throws HabitExeption {
         this.deleteHabit.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseHabitDto> findById(@PathVariable Long id) throws HabitExeption {
+    public ResponseEntity<ResponseHabitDto> findById(@PathVariable String id) throws HabitExeption {
         Habit habit = this.findHabit.findById(id);
         ResponseHabitDto responseHabitDto = new ResponseHabitDto(habit);
         return ResponseEntity.ok(responseHabitDto);
     }
 
     @GetMapping("find-all/{userId}")
-    public ResponseEntity<List<ResponseHabitDto>> findAllByUserId(@PathVariable Long userId) throws HabitExeption {
+    public ResponseEntity<List<ResponseHabitDto>> findAllByUserId(@PathVariable String userId) throws HabitExeption {
         List<Habit> habits = this.findAllByUser.findAllByUser(userId);
         List<ResponseHabitDto> responseDtos = habits.stream()
                 .map(ResponseHabitDto::new)

@@ -1,21 +1,33 @@
 package br.com.monitodehabitos.monitodehabitos.domain.entities;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class Progress {
 
-    private Long id;
+    private String id;
     private LocalDate currentDate;
     private ProgressEnumStatus status;
+    private Week week;
 
-    public Progress(Long id, LocalDate currentDate, ProgressEnumStatus status) {
+
+    public Progress(String id, LocalDate currentDate, ProgressEnumStatus status, Week week) {
         this.id = id;
         this.currentDate = currentDate;
         this.status = status;
+        this.week = week;
+    }
+
+    //create
+    public Progress(LocalDate currentDate, ProgressEnumStatus status, Week week) {
+        this.id = UUID.randomUUID().toString();
+        this.currentDate = currentDate;
+        this.status = status;
+        this.week = week;
     }
 
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -29,6 +41,14 @@ public class Progress {
 
     public ProgressEnumStatus getProgressEnumStatus() {
         return status;
+    }
+
+    public ProgressEnumStatus getStatus() {
+        return status;
+    }
+
+    public Week getWeek() {
+        return week;
     }
 
     public ProgressEnumStatus changeStatusToCompleteOrNot() {
@@ -64,4 +84,7 @@ public class Progress {
         result = 31 * result + status.hashCode();
         return result;
     }
+
+
+
 }

@@ -12,7 +12,7 @@ public class DeleteClient {
         this.repository = repository;
     }
 
-    public void delete(Long id) {
+    public void delete(String id) {
         repository.delete(id);
     }
 }

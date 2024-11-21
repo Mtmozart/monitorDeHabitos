@@ -7,13 +7,13 @@ public interface WeekRepository {
 
     Week save(Week week);
 
-   Week findById(Long id) throws WeekException;
+   Week findById(String id) throws WeekException;
 
-    void delete(Long id) throws WeekException;
+    void delete(String id) throws WeekException;
 
-    Boolean addPercentage(double add, Long id) throws WeekException;
+    Boolean addPercentage(double add, String id) throws WeekException;
 
-    Boolean removePercentage(double add,  Long id) throws WeekException;
+    Boolean removePercentage(double add,  String id) throws WeekException;
 
     double getPercentage();
 }

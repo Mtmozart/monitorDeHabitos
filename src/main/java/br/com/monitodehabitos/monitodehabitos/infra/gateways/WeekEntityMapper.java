@@ -65,7 +65,8 @@ public class WeekEntityMapper {
                 client.getUpdatedAt(),
                 toAddressDomain(client.getAddressEntity()),
                 client.getTypeUser(),
-                client.getClient()
+                client.getClient(),
+                null
         );
 
     }
@@ -92,7 +93,8 @@ public class WeekEntityMapper {
         return new ProgressEntity(
                 progress.getId(),
                 progress.getCurrentDate(),
-                progress.getProgressEnumStatus()
+                progress.getProgressEnumStatus(),
+                toWeekEntity(progress.getWeek())
         );
     }
 
@@ -105,7 +107,8 @@ public class WeekEntityMapper {
         return new Progress(
                 progressEntity.getId(),
                 progressEntity.getCurrentDate(),
-                progressEntity.getCompleted()
+                progressEntity.getCompleted(),
+                toWeekDomain(progressEntity.getWeek())
         );
     }
 

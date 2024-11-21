@@ -12,6 +12,7 @@ import br.com.monitodehabitos.monitodehabitos.infra.persistence.WeekEntity;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -54,7 +55,7 @@ public class ClientEntityMapper {
         );
     }
 
-    public ClientEntity toClientEntityUpdate(Long id, Client client) {
+    public ClientEntity toClientEntityUpdate(String id, Client client) {
         return new ClientEntity(
                 id,
                 client.getEmail(),
@@ -78,8 +79,8 @@ public class ClientEntityMapper {
                 clientEntity.getUpdatedAt(),
                 toAddressDomain(clientEntity.getAddressEntity()),
                 clientEntity.getTypeUser(),
-                clientEntity.getClient()
-
+                clientEntity.getClient(),
+                convertHabitsDomain(clientEntity.getHabits())
         )
 
                 ;

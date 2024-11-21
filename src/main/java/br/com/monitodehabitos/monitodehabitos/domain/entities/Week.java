@@ -7,16 +7,18 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Week {
-    private Long id;
+    private String id;
     private LocalDate startDate;
     private LocalDate endDate;
     private double percentagePerDay;
-    private List<Progress> progresses;
+    private List<Progress> progresses = new ArrayList<>();
+    private Habit habit;
     private double totalPercentage;
 
-    public Week(Long id, LocalDate startDate, LocalDate endDate, double percentagePerDay, List<Progress> progresses, double totalPercentage) {
+    public Week(String id, LocalDate startDate, LocalDate endDate, double percentagePerDay, List<Progress> progresses, Habit habit, double totalPercentage) {
         this.id = id;
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("A data inicial deve ser anterior ou igual à data final.");
@@ -24,19 +26,22 @@ public class Week {
         this.endDate = endDate;
         this.percentagePerDay = percentagePerDay;
         this.progresses = progresses;
+        this.habit = habit;
         this.totalPercentage = totalPercentage;
     }
 
-    public Week(LocalDate startDate, LocalDate endDate) {
+    public Week(LocalDate startDate, LocalDate endDate, Habit habit) {
+        this.id = UUID.randomUUID().toString();
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("A data inicial deve ser anterior ou igual à data final.");
         }
         this.startDate = startDate;
         this.endDate = endDate;
         this.percentagePerDay = calcPercentageForDay();
+        this.habit = habit;
         this.progresses = addProgress(startDate, endDate);
     }
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -60,13 +65,17 @@ public class Week {
         return percentagePerDay;
     }
 
+    public Habit getHabit() {
+        return habit;
+    }
+
     public List<Progress> addProgress(LocalDate start, LocalDate end) {
         if (start.isAfter(end)) {
             throw new IllegalArgumentException("A data inicial deve ser anterior ou igual à data final.");
         }
         long qtdHabits = ChronoUnit.DAYS.between(start, end) + 1;
         for (int i = 0; i < qtdHabits; i++) {
-            Progress progress = new Progress(null, start.plusDays(i), ProgressEnumStatus.NOT_STARTED);
+            Progress progress = new Progress(start.plusDays(i), ProgressEnumStatus.NOT_STARTED, this);
             this.progresses.add(progress);
         }
         return this.progresses;
@@ -99,11 +108,13 @@ public class Week {
     @Override
     public String toString() {
         return "Week{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
+                ", percentagePerDay=" + percentagePerDay +
                 ", progresses=" + progresses +
-                ", totalePercentage=" + totalPercentage +
+                ", habit=" + habit +
+                ", totalPercentage=" + totalPercentage +
                 '}';
     }
 

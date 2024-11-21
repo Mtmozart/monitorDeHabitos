@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 @Entity(name = "user")
 public abstract class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @Column(length = 36, nullable = false)
+    private String id;
 
     private String email;
 
@@ -33,7 +33,7 @@ public abstract class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(Long id, String email, String password, String name, TypeUserEnum typeUser, LocalDateTime createdAt, LocalDateTime updatedAt, AddressEntity addressEntity) {
+    public UserEntity(String id, String email, String password, String name, TypeUserEnum typeUser, LocalDateTime createdAt, LocalDateTime updatedAt, AddressEntity addressEntity) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -44,7 +44,7 @@ public abstract class UserEntity {
         this.addressEntity = addressEntity;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

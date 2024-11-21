@@ -7,6 +7,8 @@ import br.com.monitodehabitos.monitodehabitos.domain.exception.UserException;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntityRepository;
 
+import java.util.UUID;
+
 public class ClientRepositoryJPA implements ClientRepository {
     private final ClientEntityRepository clientEntityRepository;
     private final ClientEntityMapper clientEntityMapper;
@@ -24,7 +26,7 @@ public class ClientRepositoryJPA implements ClientRepository {
     }
 
     @Override
-    public Client update(Long id, Client updateClient) throws UserException {
+    public Client update(String id, Client updateClient) throws UserException {
         ClientEntity clientEntity = this.clientEntityRepository.findById(id).orElse(null);
         if (clientEntity == null) {
             throw new RuntimeException("Usuário não encontrado");
@@ -37,7 +39,7 @@ public class ClientRepositoryJPA implements ClientRepository {
     }
 
     @Override
-    public Client findById(Long id) {
+    public Client findById(String id) {
         ClientEntity clientEntity = this.clientEntityRepository.findById(id).orElse(null);
         if (clientEntity == null) {
             throw new RuntimeException("Usuário não encontrado");
@@ -46,7 +48,7 @@ public class ClientRepositoryJPA implements ClientRepository {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         if (!clientEntityRepository.existsById(id)) {
             throw new RuntimeException("Usuário não encontrado para exclusão");
         }

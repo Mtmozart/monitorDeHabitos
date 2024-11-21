@@ -12,8 +12,8 @@ import java.util.List;
 @Table(name = "habit")
 public class HabitEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(length = 36, nullable = false)
+    private String id;
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -24,14 +24,13 @@ public class HabitEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "habit_id")
+    @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WeekEntity> weeks = new ArrayList<>();
 
     public HabitEntity() {
     }
 
-    public HabitEntity(Long id, String description, HabitStatus done, LocalDate start, LocalDate end, ClientEntity clientEntity, List<WeekEntity> weeks) {
+    public HabitEntity(String id, String description, HabitStatus done, LocalDate start, LocalDate end, ClientEntity clientEntity, List<WeekEntity> weeks) {
         this.id = id;
         this.description = description;
         this.done = done;
@@ -41,7 +40,7 @@ public class HabitEntity {
         this.weeks = weeks;
     }
 
-    public HabitEntity(Long id, String description, HabitStatus done, LocalDate start, LocalDate end, ClientEntity clientEntity) {
+    public HabitEntity(String id, String description, HabitStatus done, LocalDate start, LocalDate end, ClientEntity clientEntity) {
         this.id = id;
         this.description = description;
         this.done = done;
@@ -50,7 +49,7 @@ public class HabitEntity {
         this.clientEntity = clientEntity;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

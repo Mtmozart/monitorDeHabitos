@@ -6,10 +6,11 @@ import br.com.monitodehabitos.monitodehabitos.infra.controller.weekDto.request.C
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public record ResponseHabitDto(
-        Long id,
+        String id,
         String description,
         HabitStatus done,
         LocalDate start,

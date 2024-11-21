@@ -9,10 +9,7 @@ import br.com.monitodehabitos.monitodehabitos.domain.exception.UserException;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Client extends User {
     private Boolean isClient;
@@ -20,14 +17,14 @@ public class Client extends User {
     public Client() {
         super();
     }
-
-    public Client(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt,
+    //contructor para create
+    public Client(String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt,
                   Address address, TypeUserEnum typeUserEnum, Boolean isClient) {
-        super(id, email, password, name, createdAt, updatedAt, address, typeUserEnum);
+        super(UUID.randomUUID().toString(), email, password, name, createdAt, updatedAt, address, typeUserEnum);
         this.isClient = isClient;
     }
 
-    public Client(Long id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum, Boolean isClient, List<Habit> habits) {
+    public Client(String id, String email, String password, String name, LocalDateTime createdAt, LocalDateTime updatedAt, Address address, TypeUserEnum typeUserEnum, Boolean isClient, List<Habit> habits) {
         super(id, email, password, name, createdAt, updatedAt, address, typeUserEnum);
         this.isClient = isClient;
         this.habits = habits;

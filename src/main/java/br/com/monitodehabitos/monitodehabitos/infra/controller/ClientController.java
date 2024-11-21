@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/client")
 public class ClientController {
@@ -34,7 +36,7 @@ public class ClientController {
 
    @PostMapping()
     private ResponseEntity create(@RequestBody @Valid CreateClientDto dto){
-        Client client = factoryClient.withoutCreatedatAndUpdatedatParameters(null, dto.email(), dto.password(), dto.name(),
+        Client client = factoryClient.withoutCreatedatAndUpdatedatParameters(dto.email(), dto.password(), dto.name(),
                 new Address(
                         dto.addressClientDto().cep(), dto.addressClientDto().street(), dto.addressClientDto().city(),
                 dto.addressClientDto().state(), dto.addressClientDto().neighborhood(), dto.addressClientDto().number(), dto.addressClientDto().complement()
@@ -44,18 +46,18 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<Client> findByID(@PathVariable("id") Long id){
+    private ResponseEntity<Client> findByID(@PathVariable("id") String id){
         Client client = this.findClient.findClient(id);
         return ResponseEntity.ok().body(client);
     }
     @DeleteMapping("/{id}")
-    private ResponseEntity delete(@PathVariable("id") Long id){
+    private ResponseEntity delete(@PathVariable("id") String id){
        this.deleteClient.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity update(@PathVariable("id") Long id, @RequestBody UpdateClientDto dto) throws UserException {
+    private ResponseEntity update(@PathVariable("id") String id, @RequestBody UpdateClientDto dto) throws UserException {
         Client updatesClient = factoryClient.updateClient(dto.email(), dto.password(), dto.name(),
                 new Address(
                         dto.cep(), dto.street(), dto.city(),

@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity(name = "client")
 @Table(name = "client")
@@ -21,13 +19,13 @@ public class ClientEntity extends UserEntity {
     public ClientEntity() {
     }
 
-    public ClientEntity(Long id, String email, String password, String name, TypeUserEnum typeUser, Boolean isClient, LocalDateTime createdAt, LocalDateTime updatedAt, AddressEntity addressEntity, List<HabitEntity> habits) {
+    public ClientEntity(String id, String email, String password, String name, TypeUserEnum typeUser, Boolean isClient, LocalDateTime createdAt, LocalDateTime updatedAt, AddressEntity addressEntity, List<HabitEntity> habits) {
         super(id, email, password, name, typeUser, createdAt, updatedAt, addressEntity);
         this.isClient = isClient;
         this.habits = habits;
     }
 
-    public ClientEntity(Long id, String email, String password, String name, TypeUserEnum typeUser, Boolean isClient, LocalDateTime createdAt, LocalDateTime updatedAt, AddressEntity addressEntity) {
+    public ClientEntity(String id, String email, String password, String name, TypeUserEnum typeUser, Boolean isClient, LocalDateTime createdAt, LocalDateTime updatedAt, AddressEntity addressEntity) {
         super(id, email, password, name, typeUser, createdAt, updatedAt, addressEntity);
         this.habits = new ArrayList<>();
         this.isClient = isClient;

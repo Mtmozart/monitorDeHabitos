@@ -1,16 +1,18 @@
 package br.com.monitodehabitos.monitodehabitos.infra.persistence;
 
+import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity(name = "week")
 public class WeekEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(length = 36, nullable = false)
+    private String id;
 
     @Column(name = "start_date")
     private LocalDate startDate;
@@ -22,28 +24,33 @@ public class WeekEntity {
 
     @Column(name = "percentage_per_day")
     private double percentagePerDay;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "week_id")
+    @ManyToOne
+    @JoinColumn(name = "habit_id", nullable = false)
+    private HabitEntity habit;
+    @OneToMany(mappedBy = "week", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProgressEntity> progresses = new ArrayList<>();
 
 
     public WeekEntity() {
     }
 
-    public WeekEntity(Long id, LocalDate startDate, LocalDate endDate, double totalPercentage, double percentagePerDay, List<ProgressEntity> progresses) {
+    public WeekEntity(String id, LocalDate startDate, LocalDate endDate, double totalPercentage, HabitEntity habitEntity, double percentagePerDay, List<ProgressEntity> progresses) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPercentage = totalPercentage;
+        this.habit = habitEntity;
         this.percentagePerDay = percentagePerDay;
         this.progresses = progresses;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
+    public HabitEntity getHabit() {
+        return habit;
+    }
 
     public LocalDate getStartDate() {
         return startDate;
@@ -63,6 +70,10 @@ public class WeekEntity {
 
     public List<ProgressEntity> getProgresses() {
         return progresses;
+    }
+
+    public void setHabit(HabitEntity habit) {
+        this.habit = habit;
     }
 
     @Override

@@ -6,6 +6,7 @@ import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class ChangeDoHabit {
     private final HabitRepository habitRepository;
@@ -14,7 +15,7 @@ public class ChangeDoHabit {
         this.habitRepository = habitRepository;
     }
 
-    public Habit changeDoHabit(Long id, LocalDate dateHabit) throws HabitExeption, WeekException {
+    public Habit changeDoHabit(String id, LocalDate dateHabit) throws HabitExeption, WeekException {
         return habitRepository.changeDone(id, dateHabit);
     }
 }

@@ -1,7 +1,9 @@
 package br.com.monitodehabitos.monitodehabitos.infra.controller.weekDto.request;
 
+import java.util.UUID;
+
 public record CreateWeekDto(
-        Long habitId,
-        Long clientId
+        String habitId,
+        String clientId
 ) {
 }

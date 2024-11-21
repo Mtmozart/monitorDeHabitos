@@ -4,12 +4,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface ClientEntityRepository extends JpaRepository<ClientEntity, Long> {
+public interface ClientEntityRepository extends JpaRepository<ClientEntity, UUID> {
 
     @Query("SELECT c FROM client c WHERE c.email = :email")
     Optional<ClientEntity> findByEmail(String email);
 
     @Query("SELECT c FROM client c WHERE c.id = :id")
-    Optional<ClientEntity> findById(Long id);
+    Optional<ClientEntity> findById(String id);
+
+    boolean existsById(String id);
+
+    void deleteById(String id);
 }

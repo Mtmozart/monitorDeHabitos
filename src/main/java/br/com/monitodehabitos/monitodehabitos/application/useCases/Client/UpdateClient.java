@@ -4,13 +4,15 @@ import br.com.monitodehabitos.monitodehabitos.application.gateway.ClientReposito
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.UserException;
 
+import java.util.UUID;
+
 public class UpdateClient {
 
     private final ClientRepository repository;
 
     public UpdateClient(ClientRepository repository) {this.repository = repository;}
 
-    public Client update(Long id, Client newClient) throws UserException {
+    public Client update(String id, Client newClient) throws UserException {
         return repository.update(id, newClient);
     }
 }

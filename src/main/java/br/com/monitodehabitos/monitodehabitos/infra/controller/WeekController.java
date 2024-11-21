@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/week")
 public class WeekController {
@@ -48,12 +50,12 @@ public class WeekController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Week> findById(@PathVariable("id") Long id) throws WeekException {
+    public ResponseEntity<Week> findById(@PathVariable("id") String id) throws WeekException {
         Week week = this.findWeekById.findById(id);
         return ResponseEntity.ok().body(week);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<String> delete(@PathVariable("id") String id) {
         try {
             // Tenta remover a semana pelo ID
             this.removeWeek.remove(id);

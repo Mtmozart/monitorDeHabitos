@@ -13,20 +13,27 @@ import java.util.stream.Collectors;
 public class HabitEntityMapper {
 
     public HabitEntity toHabitEntityCreate(Habit habit) {
-        System.out.println(habit);
         return new HabitEntity(
-                null,
+                habit.getId(),
                 habit.getDescription(),
                 habit.getDone(),
                 habit.getStart(),
                 habit.getEnd(),
                 toClientEntity(habit.getClient()),
-                toWeekEntities(habit.getWeeks())
+                toWeekEntitiesCreate(habit.getWeeks())
         );
     }
 
     public HabitEntity toHabitEntityWithAllParamentrs(Habit habit) {
-        return null;
+        return new HabitEntity(
+                habit.getId(),
+                habit.getDescription(),
+                habit.getDone(),
+                habit.getStart(),
+                habit.getEnd(),
+                toClientEntity(habit.getClient()),
+                null
+        );
     }
 
     public Habit toHabitDomainWithAllParameters(HabitEntity habitEntity) {
@@ -71,7 +78,8 @@ public class HabitEntityMapper {
                 client.getClient(),
                 client.getCreatedAt(),
                 client.getUpdatedAt(),
-                toAddressEntity(client.getAddress())
+                toAddressEntity(client.getAddress()),
+                null
         );
     }
 
@@ -88,7 +96,12 @@ public class HabitEntityMapper {
     }
 
     public ProgressEntity toProgressEntity(Progress progress) {
-        return null;
+        return new ProgressEntity(
+                progress.getId(),
+                progress.getCurrentDate(),
+                progress.getProgressEnumStatus(),
+                toWeekEntity(progress.getWeek())
+        );
     }
 
     public List<ProgressEntity> toProgressEntityListWithAllParamenters(List<Progress> progresses) {
@@ -98,7 +111,7 @@ public class HabitEntityMapper {
     }
 
     public ProgressEntity toProgressEntityWithAllParamenters(Progress progress){
-        return new ProgressEntity(progress.getId(), progress.getCurrentDate(), progress.getProgressEnumStatus());
+        return new ProgressEntity(progress.getId(), progress.getCurrentDate(), progress.getProgressEnumStatus(), toWeekEntity(progress.getWeek()));
     }
 
     public List<ProgressEntity> toProgressEntityMapper(Habit habit) {
@@ -121,15 +134,58 @@ public class HabitEntityMapper {
         ).collect(Collectors.toList());
     }
 
+    public List<WeekEntity> toWeekEntitiesCreate(List<Week> weeks){
+        return weeks.stream().map(
+                this::toWeekEntityWithoutProgress
+        ).collect(Collectors.toList());
+    }
+
     public WeekEntity toWeekEntity(Week week){
         return new WeekEntity(
-            week.getId(),
+                week.getId(),
                week.getStartDate(),
                 week.getEndDate(),
                 week.getTotalPercentage(),
+                this.toHabitEntityWithAllParamentrs(week.getHabit()),
                 week.getPercentagePerDay(),
                 toProgressEntityListWithAllParamenters(week.getProgresses())
 
+        );
+
+
+    }
+    public WeekEntity toWeekEntityWithoutProgress(Week week){
+        return new WeekEntity(
+                week.getId(),
+                week.getStartDate(),
+                week.getEndDate(),
+                week.getTotalPercentage(),
+                this.toHabitEntityWithAllParamentrs(week.getHabit()),
+                week.getPercentagePerDay(),
+               toProgressCreate(week.getProgresses())
+        );
+    }
+
+    public List<ProgressEntity> toProgressCreate(List<Progress> progresses){
+        return progresses.stream().map(
+                this::toProgressEntityForCreate
+        ).collect(Collectors.toList());
+    }
+
+    public ProgressEntity toProgressEntityForCreate(Progress progress) {
+        return new ProgressEntity(
+                progress.getId(),
+                progress.getCurrentDate(),
+                progress.getProgressEnumStatus(),
+                new WeekEntity(
+                        progress.getWeek().getId(),
+                        progress.getWeek().getStartDate(),
+                        progress.getWeek().getEndDate(),
+                        progress.getWeek().getTotalPercentage(),
+                        null,
+                        progress.getWeek().getPercentagePerDay(),
+                        null
+                )
         );
     }
 

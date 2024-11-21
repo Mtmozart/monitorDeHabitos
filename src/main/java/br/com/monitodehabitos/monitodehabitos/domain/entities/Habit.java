@@ -7,9 +7,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Habit {
-    private Long id;
+    private String id;
     private String description;
     private HabitStatus done;
     private LocalDate start;
@@ -17,7 +18,7 @@ public class Habit {
     private Client client;
     private List<Week> weeks = new ArrayList<>();
 
-    public Habit(Long id, String description, HabitStatus done, LocalDate start, LocalDate end, Client client, List<Week> weeks) {
+    public Habit(String id, String description, HabitStatus done, LocalDate start, LocalDate end, Client client, List<Week> weeks) {
         this.id = id;
         this.description = description;
         this.done = done;
@@ -26,9 +27,9 @@ public class Habit {
         this.client = client;
         this.weeks = weeks;
     }
-
-    public Habit(Long id, String description, HabitStatus done, LocalDate start, LocalDate end, Client client) {
-        this.id = id;
+    //contructor para criar
+    public Habit(String description, HabitStatus done, LocalDate start, LocalDate end, Client client) {
+        this.id = UUID.randomUUID().toString();
         this.description = description;
         this.done = done;
         this.start = start;
@@ -38,7 +39,7 @@ public class Habit {
     }
 
     //Contructor do update com data de ínicio
-    public Habit(Long id, Client client, String description, LocalDate start, LocalDate end) throws HabitExeption {
+    public Habit(String id, Client client, String description, LocalDate start, LocalDate end) throws HabitExeption {
         this.id = id;
         this.description = description;
         this.done = HabitStatus.NOT_STARTED;
@@ -48,7 +49,7 @@ public class Habit {
     }
 
     //Contructor do update sem data de ínicio
-    public Habit(Long id, Client client, String description) throws HabitExeption {
+    public Habit(String id, Client client, String description) throws HabitExeption {
         this.id = id;
         this.description = description;
         this.client = client;
@@ -63,7 +64,7 @@ public class Habit {
         this.client = habit.getClient();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -102,7 +103,6 @@ public class Habit {
     private List<Week> calcEndDayForWeek(LocalDate start, LocalDate end) {
         List<Week> weeks = new ArrayList<>();
 
-
         LocalDate startWeek = start;
         LocalDate weekEnd = startWeek.plusDays(6);
 
@@ -110,26 +110,24 @@ public class Habit {
             weekEnd = end;
         }
 
-        weeks.add(new Week(startWeek, weekEnd));
-
+        weeks.add(new Week(startWeek, weekEnd, this));
 
         startWeek = weekEnd.plusDays(1);
 
         while (startWeek.isBefore(end) || startWeek.isEqual(end)) {
             weekEnd = startWeek.plusDays(6);
-
             if (weekEnd.isAfter(end)) {
                 weekEnd = end;
             }
-
-            weeks.add(new Week(startWeek, weekEnd));
-
+            weeks.add(new Week(startWeek, weekEnd, this));
 
             startWeek = startWeek.plusWeeks(1);
         }
 
         return weeks;
     }
+
+
 
     public HabitStatus changeStatus(HabitStatus newStatus){
         return this.done = newStatus;

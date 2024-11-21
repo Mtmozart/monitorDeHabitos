@@ -5,9 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+import java.util.UUID;
+
 public record CreateHabitDto(
-        @NotNull(message = "{clientId.required}")
-        Long clientId,
+        @NotBlank(message = "{clientId.required}")
+        String clientId,
 
         @NotBlank(message = "{description.required}")
         String description,

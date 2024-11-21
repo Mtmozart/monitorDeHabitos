@@ -4,6 +4,8 @@ import br.com.monitodehabitos.monitodehabitos.application.gateway.HabitRepositor
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
 
+import java.util.UUID;
+
 public class UpdateHabit {
     private final HabitRepository habitRepository;
 
@@ -11,7 +13,7 @@ public class UpdateHabit {
         this.habitRepository = habitRepository;
     }
 
-    public Habit update(Long id, Habit habit) throws HabitExeption {
+    public Habit update(String id, Habit habit) throws HabitExeption {
         return this.habitRepository.update(id, habit);
     }
 }

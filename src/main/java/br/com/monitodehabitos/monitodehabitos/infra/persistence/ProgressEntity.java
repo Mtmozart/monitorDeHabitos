@@ -1,6 +1,7 @@
 package br.com.monitodehabitos.monitodehabitos.infra.persistence;
 
 import br.com.monitodehabitos.monitodehabitos.domain.entities.ProgressEnumStatus;
+import br.com.monitodehabitos.monitodehabitos.domain.entities.Week;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -10,30 +11,37 @@ import java.time.LocalDate;
 public class ProgressEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(length = 36, nullable = false)
+    private String id;
     @Column(name = "habit_day")
     private LocalDate currentDate;
     @Column(name = "completed")
+    @Enumerated(EnumType.STRING)
     private ProgressEnumStatus completed;
 
-    public ProgressEntity() {}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "week_id")
+    private WeekEntity week;
 
-    public ProgressEntity(Long id, LocalDate currentDate, ProgressEnumStatus completed) {
+    public ProgressEntity() {
+    }
+
+    public ProgressEntity(String id, LocalDate currentDate, ProgressEnumStatus completed, WeekEntity week) {
         this.id = id;
         this.currentDate = currentDate;
         this.completed = completed;
+        this.week = week;
     }
 
-    public ProgressEntity(LocalDate currentDate, ProgressEnumStatus completed) {
+    public ProgressEntity(LocalDate currentDate, ProgressEnumStatus completed, WeekEntity week) {
         this.currentDate = currentDate;
         this.completed = completed;
+        this.week = week;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
-
 
     public LocalDate getCurrentDate() {
         return currentDate;
@@ -41,6 +49,10 @@ public class ProgressEntity {
 
     public ProgressEnumStatus getCompleted() {
         return completed;
+    }
+
+    public WeekEntity getWeek() {
+        return week;
     }
 
     @Override

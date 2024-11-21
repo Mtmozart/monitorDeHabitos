@@ -10,13 +10,13 @@ import java.util.List;
 public interface HabitRepository {
     Habit save(Habit habit);
 
-    Habit update(Long id, Habit newHabit) throws HabitExeption;
+    Habit update(String id, Habit newHabit) throws HabitExeption;
 
-    Habit findById(Long id) throws HabitExeption;
+    Habit findById(String id) throws HabitExeption;
 
-    void delete(Long id) throws HabitExeption;
+    void delete(String id) throws HabitExeption;
 
-    Habit changeDone(Long id, LocalDate dateHabit) throws HabitExeption, WeekException;
+    Habit changeDone(String id, LocalDate dateHabit) throws HabitExeption, WeekException;
 
-    List<Habit> findAllByUser(Long userId);
+    List<Habit> findAllByUser(String userId);
 }
