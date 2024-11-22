@@ -2,11 +2,9 @@ package br.com.monitodehabitos.monitodehabitos.infra.controller.habitDto.respons
 
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.HabitStatus;
-import br.com.monitodehabitos.monitodehabitos.infra.controller.weekDto.request.CreateWeekDto;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public record ResponseHabitDto(
@@ -16,16 +14,17 @@ public record ResponseHabitDto(
         LocalDate start,
         LocalDate end,
         List<WeekDto> weeks
-
 ) {
     public ResponseHabitDto(Habit habit) {
         this(
-        habit.getId(),
-        habit.getDescription(),
-        habit.getDone(),
-        habit.getStart(),
-        habit.getEnd(),
-               null
+                habit.getId(),
+                habit.getDescription(),
+                habit.getDone(),
+                habit.getStart(),
+                habit.getEnd(),
+                habit.getWeeks().stream()
+                        .map(WeekDto::new)
+                        .collect(Collectors.toList())
         );
     }
 }

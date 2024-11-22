@@ -44,7 +44,7 @@ public class HabitEntityMapper {
                 habitEntity.getStart(),
                 habitEntity.getEnd(),
                 toClientDomain(habitEntity.getClientEntity()),
-                null
+                toWeekDomainResponseList(habitEntity.getWeeks())
         );
     }
 
@@ -119,7 +119,12 @@ public class HabitEntityMapper {
     }
 
     public Progress toProgressDomain(ProgressEntity progressEntity) {
-        return null;
+        return new Progress(
+                progressEntity.getId(),
+                progressEntity.getCurrentDate(),
+                progressEntity.getCompleted(),
+                null
+        );
     }
 
     public List<Progress> toProgressDomainMapper(List<ProgressEntity> progressEntities) {
@@ -143,7 +148,7 @@ public class HabitEntityMapper {
     public WeekEntity toWeekEntity(Week week){
         return new WeekEntity(
                 week.getId(),
-               week.getStartDate(),
+                week.getStartDate(),
                 week.getEndDate(),
                 week.getTotalPercentage(),
                 this.toHabitEntityWithAllParamentrs(week.getHabit()),
@@ -189,5 +194,23 @@ public class HabitEntityMapper {
         );
     }
 
+    public List<Week> toWeekDomainResponseList(List<WeekEntity> weekEntities){
+        return weekEntities.stream().map(
+                this::toWeekDomainResponse
+        ).collect(Collectors.toList());
+    }
+    public Week toWeekDomainResponse(WeekEntity weekEntity){
+        return new Week(
+                weekEntity.getId(),
+                weekEntity.getStartDate(),
+                weekEntity.getEndDate(),
+                weekEntity.getPercentagePerDay(),
+                toProgressDomainMapper(weekEntity.getProgresses()),
+                null,
+                weekEntity.getTotalPercentage()
+
+        );
+
+    }
 
 }
