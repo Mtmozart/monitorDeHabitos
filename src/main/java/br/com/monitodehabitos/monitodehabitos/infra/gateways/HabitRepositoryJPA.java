@@ -31,6 +31,7 @@ public class HabitRepositoryJPA implements HabitRepository {
         HabitEntity habitEntity = this.habitEntityMapper.toHabitEntityCreate(habit);
         HabitEntity savedHabitEntity = this.habitEntityRespository.save(habitEntity);
         return this.habitEntityMapper.toHabitDomainWithAllParameters(savedHabitEntity);
+
     }
 
     @Override

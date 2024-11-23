@@ -18,6 +18,15 @@ public class Week {
     private Habit habit;
     private double totalPercentage;
 
+    public Week(String id, LocalDate startDate, LocalDate endDate, double percentagePerDay, List<Progress> progresses, double totalPercentage) {
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.percentagePerDay = percentagePerDay;
+        this.progresses = progresses;
+        this.totalPercentage = totalPercentage;
+    }
+
     public Week(String id, LocalDate startDate, LocalDate endDate, double percentagePerDay, List<Progress> progresses, Habit habit, double totalPercentage) {
         this.id = id;
         if (startDate.isAfter(endDate)) {

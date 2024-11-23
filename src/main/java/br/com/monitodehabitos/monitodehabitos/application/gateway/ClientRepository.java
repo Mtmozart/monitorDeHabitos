@@ -9,4 +9,5 @@ public interface ClientRepository {
     Client update(String id, Client newClient) throws UserException;
     Client findById(String id);
     void delete(String id);
+
 }

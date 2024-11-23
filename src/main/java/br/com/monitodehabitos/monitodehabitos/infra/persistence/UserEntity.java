@@ -2,12 +2,17 @@ package br.com.monitodehabitos.monitodehabitos.infra.persistence;
 
 import br.com.monitodehabitos.monitodehabitos.domain.enums.TypeUserEnum;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity(name = "user")
-public abstract class UserEntity {
+public abstract class UserEntity implements UserDetails {
     @Id
     @Column(length = 36, nullable = false)
     private String id;
@@ -51,7 +56,7 @@ public abstract class UserEntity {
     public String getEmail() {
         return email;
     }
-
+    @Override
     public String getPassword() {
         return password;
     }
@@ -74,5 +79,39 @@ public abstract class UserEntity {
 
     public AddressEntity getAddressEntity() {
         return addressEntity;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(getTypeUser().toString()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

@@ -45,6 +45,7 @@ public class ClientEntity extends UserEntity {
     }
 
 
+
     @Override
     public String toString() {
         return "Client{" +

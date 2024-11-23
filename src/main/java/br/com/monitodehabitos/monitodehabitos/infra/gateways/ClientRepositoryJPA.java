@@ -4,23 +4,29 @@ package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 import br.com.monitodehabitos.monitodehabitos.application.gateway.ClientRepository;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.UserException;
+import br.com.monitodehabitos.monitodehabitos.infra.infras.security.EncryptPassword;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntityRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
 public class ClientRepositoryJPA implements ClientRepository {
     private final ClientEntityRepository clientEntityRepository;
     private final ClientEntityMapper clientEntityMapper;
+    @Autowired
+    private EncryptPassword encryptPassword;
 
     public ClientRepositoryJPA(ClientEntityRepository clientEntityRepository, ClientEntityMapper clientEntityMapper) {
         this.clientEntityRepository = clientEntityRepository;
         this.clientEntityMapper = clientEntityMapper;
+
     }
 
     @Override
     public Client save(Client client) {
         ClientEntity clientEntity = this.clientEntityMapper.toClientEntity(client);
+        clientEntity.setPassword(encryptPassword.encrypt(clientEntity.getPassword()));
         this.clientEntityRepository.save(clientEntity);
         return this.clientEntityMapper.toClientDomain(clientEntity);
     }
@@ -32,6 +38,7 @@ public class ClientRepositoryJPA implements ClientRepository {
             throw new RuntimeException("Usuário não encontrado");
         }
         Client client = this.clientEntityMapper.toClientDomain(clientEntity);
+        client.setPassword(encryptPassword.encrypt(clientEntity.getPassword()));
         client.updateClient(updateClient);
         ClientEntity clientEntityUpdated = this.clientEntityMapper.toClientEntityUpdate(id, client);
         this.clientEntityRepository.save(clientEntityUpdated);

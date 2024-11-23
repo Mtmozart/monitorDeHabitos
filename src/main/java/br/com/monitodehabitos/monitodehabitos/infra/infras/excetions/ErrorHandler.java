@@ -1,4 +1,4 @@
-package br.com.monitodehabitos.monitodehabitos.infra.infras;
+package br.com.monitodehabitos.monitodehabitos.infra.infras.excetions;
 
 
 import jakarta.persistence.EntityNotFoundException;

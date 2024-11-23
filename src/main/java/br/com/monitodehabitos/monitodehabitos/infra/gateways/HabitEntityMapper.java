@@ -206,9 +206,7 @@ public class HabitEntityMapper {
                 weekEntity.getEndDate(),
                 weekEntity.getPercentagePerDay(),
                 toProgressDomainMapper(weekEntity.getProgresses()),
-                null,
                 weekEntity.getTotalPercentage()
-
         );
 
     }
