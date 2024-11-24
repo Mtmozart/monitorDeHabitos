@@ -27,7 +27,6 @@ public class WeekRepositoryJPA implements WeekRepository {
     @Override
     public Week save(Week week) {
         WeekEntity weekEntity = this.weekEntityMapper.toWeekEntity(week);
-
         WeekEntity weekEntitySave = this.weekEntityRepository.save(weekEntity);
         return this.weekEntityMapper.toWeekDomain(weekEntitySave);
     }

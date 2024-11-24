@@ -63,17 +63,14 @@ public class HabitController {
     }
 
     @PatchMapping("change-habit-status/{id}")
-    public ResponseEntity<Habit> changeDo(@PathVariable String id, @RequestBody ChangeDoneDto dateProgress) throws HabitExeption, WeekException {
-        LocalDate dateProgressDate = null;
-        var dateStart = this.dateValidationAndFormater.validate(dateProgress.date());
-        Habit habit = this.changeDoHabit.changeDoHabit(id, dateStart);
-        return ResponseEntity.ok(habit);
+    public ResponseEntity<ResponseHabitDto> changeDo(@PathVariable String id, @RequestBody ChangeDoneDto dateProgress) throws HabitExeption, WeekException {
+        Habit habit = this.changeDoHabit.changeDoHabit(id, dateProgress.status());
+        return ResponseEntity.ok(new ResponseHabitDto(habit));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseHabitDto> update(@PathVariable String id, @RequestBody UpdateHabitDto data) throws HabitExeption {
         LocalDate dateStart = null;
-
         if (data.start() != null && !data.start().isBlank() && !data.start().isEmpty()) {
             dateStart = this.dateValidationAndFormater.validate(data.start());
             Habit habit = this.factoryHabit.update(data.description(), dateStart, LocalDate.of(2024, 11, 1));

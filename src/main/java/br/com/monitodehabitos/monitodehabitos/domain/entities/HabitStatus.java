@@ -7,7 +7,6 @@ public enum HabitStatus {
     IN_PROGRESS("in_progress"),
     COMPLETED("completed");
 
-
     private String status;
 
     HabitStatus(String status){

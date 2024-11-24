@@ -43,7 +43,6 @@ public class WeekEntity {
         this.percentagePerDay = percentagePerDay;
         this.progresses = progresses;
     }
-
     public String getId() {
         return id;
     }

@@ -10,6 +10,7 @@ import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntityRespository;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.WeekEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,6 +28,7 @@ public class HabitRepositoryJPA implements HabitRepository {
     }
 
     @Override
+    @Transactional
     public Habit save(Habit habit) {
         HabitEntity habitEntity = this.habitEntityMapper.toHabitEntityCreate(habit);
         HabitEntity savedHabitEntity = this.habitEntityRespository.save(habitEntity);
@@ -35,14 +37,12 @@ public class HabitRepositoryJPA implements HabitRepository {
     }
 
     @Override
+    @Transactional
     public Habit update(String id, Habit newHabit) throws HabitExeption {
-
         Habit habit = this.findById(id);
         habit.update(newHabit);
         HabitEntity savedHabitEntity = this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityCreate(habit));
-
         List<ProgressEntity> progressEntities = this.habitEntityMapper.toProgressEntityMapper(habit);
-
         return this.habitEntityMapper.toHabitDomainWithAllParameters(savedHabitEntity);
     }
 
@@ -56,6 +56,7 @@ public class HabitRepositoryJPA implements HabitRepository {
     }
 
     @Override
+    @Transactional
     public void delete(String id) throws HabitExeption {
         boolean exists = this.habitEntityRespository.existsById(id);
         if (!exists) {
@@ -64,15 +65,14 @@ public class HabitRepositoryJPA implements HabitRepository {
         this.habitEntityRespository.deleteById(id);
     }
 
-    @Override
-    public Habit changeDone(String id, LocalDate dateHabit) throws HabitExeption, WeekException {
-        Habit habit = this.findById(id);
-
-        var change = habit.changeStatus(HabitStatus.COMPLETED);
-        HabitEntity habitEntity = this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityWithAllParamentrs(habit));
-
-        return habit;
-    }
+        @Override
+        @Transactional
+        public Habit changeDone(String id, HabitStatus status) throws HabitExeption {
+            Habit habit = this.findById(id);
+            habit.changeStatus(status);
+            this.habitEntityRespository.updateHabitStatus(habit.getId(), habit.getDone());
+            return habit;
+        }
 
     @Override
     public List<Habit> findAllByUser(String userId) {

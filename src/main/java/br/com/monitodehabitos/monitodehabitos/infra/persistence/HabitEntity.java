@@ -49,6 +49,7 @@ public class HabitEntity {
         this.clientEntity = clientEntity;
     }
 
+
     public String getId() {
         return id;
     }

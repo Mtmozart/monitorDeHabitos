@@ -14,8 +14,7 @@ public record CreateHabitDto(
         @NotBlank(message = "{description.required}")
         String description,
 
-
-        @NotNull()
+        @NotBlank(message = "{status.required}")
         HabitStatus status,
 
         @Pattern(regexp = "\\d{2}/\\d{2}/\\d{4}", message = "{date.invalid}")

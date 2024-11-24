@@ -126,11 +126,8 @@ public class Habit {
 
         return weeks;
     }
-
-
-
-    public HabitStatus changeStatus(HabitStatus newStatus){
-        return this.done = newStatus;
+    public void changeStatus(HabitStatus newStatus){
+        this.done = newStatus;
     }
 
     public void setClient(Client client) {

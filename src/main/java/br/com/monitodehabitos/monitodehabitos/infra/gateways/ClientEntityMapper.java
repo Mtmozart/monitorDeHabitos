@@ -92,7 +92,15 @@ public class ClientEntityMapper {
     }
 
     private Habit toHabitDomain(HabitEntity habitEntity) {
-        return null;
+        return new Habit(
+                habitEntity.getId(),
+                habitEntity.getDescription(),
+                habitEntity.getDone(),
+                habitEntity.getStart(),
+                habitEntity.getEnd(),
+                null,
+                null
+        );
     }
 
     private Set<Week> convertWeeksDomain(Set<WeekEntity> weekEntities) {

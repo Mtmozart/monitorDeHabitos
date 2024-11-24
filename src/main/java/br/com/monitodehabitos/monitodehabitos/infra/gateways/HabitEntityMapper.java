@@ -50,8 +50,18 @@ public class HabitEntityMapper {
 
     public Client toClientDomain(ClientEntity clientEntity) {
         if (clientEntity == null) return null;
-
-        return null;
+        return new Client(
+                clientEntity.getId(),
+                clientEntity.getEmail(),
+                clientEntity.getPassword(),
+                clientEntity.getName(),
+                clientEntity.getCreatedAt(),
+                clientEntity.getUpdatedAt(),
+                toAddressDomain(clientEntity.getAddressEntity()),
+                clientEntity.getTypeUser(),
+                clientEntity.getClient(),
+                null
+        );
     }
 
     public Address toAddressDomain(AddressEntity addressEntity) {
@@ -209,6 +219,53 @@ public class HabitEntityMapper {
                 weekEntity.getTotalPercentage()
         );
 
+    }
+
+
+    public HabitEntity toHabitEntityWithoutClient(Habit habit) {
+        return new HabitEntity(
+                habit.getId(),
+                habit.getDescription(),
+                habit.getDone(),
+                habit.getStart(),
+                habit.getEnd(),
+                toClientEntity(habit.getClient()),
+                toWeekEntitiesWihtouHabit(habit.getWeeks())
+        );
+    }
+
+    public List<WeekEntity> toWeekEntitiesWihtouHabit(List<Week> weeks){
+        return weeks.stream().map(
+                this::toWeekEntityWithoutHabit
+        ).collect(Collectors.toList());
+    }
+
+    public WeekEntity toWeekEntityWithoutHabit(Week week){
+        return new WeekEntity(
+                week.getId(),
+                week.getStartDate(),
+                week.getEndDate(),
+                week.getTotalPercentage(),
+                null,
+                week.getPercentagePerDay(),
+                toProgressEntityListWithoutWeek(week.getProgresses())
+
+        );
+    }
+
+    public List<ProgressEntity> toProgressEntityListWithoutWeek(List<Progress> progresses) {
+        return progresses.stream().map(
+                this::toProgressEntityWithouWeek
+        ).collect(Collectors.toList());
+    }
+
+    public ProgressEntity toProgressEntityWithouWeek(Progress progress) {
+        return new ProgressEntity(
+                progress.getId(),
+                progress.getCurrentDate(),
+                progress.getProgressEnumStatus(),
+                null
+        );
     }
 
 }

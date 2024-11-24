@@ -8,8 +8,7 @@ import br.com.monitodehabitos.monitodehabitos.infra.infras.security.EncryptPassw
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ClientEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 public class ClientRepositoryJPA implements ClientRepository {
     private final ClientEntityRepository clientEntityRepository;
@@ -24,6 +23,7 @@ public class ClientRepositoryJPA implements ClientRepository {
     }
 
     @Override
+    @Transactional
     public Client save(Client client) {
         ClientEntity clientEntity = this.clientEntityMapper.toClientEntity(client);
         clientEntity.setPassword(encryptPassword.encrypt(clientEntity.getPassword()));
@@ -32,6 +32,7 @@ public class ClientRepositoryJPA implements ClientRepository {
     }
 
     @Override
+    @Transactional
     public Client update(String id, Client updateClient) throws UserException {
         ClientEntity clientEntity = this.clientEntityRepository.findById(id).orElse(null);
         if (clientEntity == null) {
@@ -55,6 +56,7 @@ public class ClientRepositoryJPA implements ClientRepository {
     }
 
     @Override
+    @Transactional
     public void delete(String id) {
         if (!clientEntityRepository.existsById(id)) {
             throw new RuntimeException("Usuário não encontrado para exclusão");

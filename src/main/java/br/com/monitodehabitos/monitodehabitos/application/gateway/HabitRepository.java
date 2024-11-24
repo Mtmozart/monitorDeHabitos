@@ -1,6 +1,7 @@
 package br.com.monitodehabitos.monitodehabitos.application.gateway;
 
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
+import br.com.monitodehabitos.monitodehabitos.domain.entities.HabitStatus;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 
@@ -16,7 +17,7 @@ public interface HabitRepository {
 
     void delete(String id) throws HabitExeption;
 
-    Habit changeDone(String id, LocalDate dateHabit) throws HabitExeption, WeekException;
+    Habit changeDone(String id, HabitStatus status) throws HabitExeption, WeekException;
 
     List<Habit> findAllByUser(String userId);
 }

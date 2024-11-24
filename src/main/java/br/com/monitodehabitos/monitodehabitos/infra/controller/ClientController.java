@@ -9,6 +9,7 @@ import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.UserException;
 import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryClient;
 import br.com.monitodehabitos.monitodehabitos.infra.controller.clientDto.CreateClientDto;
+import br.com.monitodehabitos.monitodehabitos.infra.controller.clientDto.HabitResponseDto;
 import br.com.monitodehabitos.monitodehabitos.infra.controller.clientDto.UpdateClientDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -42,13 +43,13 @@ public class ClientController {
                 dto.addressClientDto().state(), dto.addressClientDto().neighborhood(), dto.addressClientDto().number(), dto.addressClientDto().complement()
                 ));
         this.createClient.create(client);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto("Usuário criado com sucesso"));
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<Client> findByID(@PathVariable("id") String id){
+    private ResponseEntity<HabitResponseDto> findByID(@PathVariable("id") String id){
         Client client = this.findClient.findClient(id);
-        return ResponseEntity.ok().body(client);
+        return ResponseEntity.ok().body(new HabitResponseDto(client));
     }
     @DeleteMapping("/{id}")
     private ResponseEntity delete(@PathVariable("id") String id){
@@ -64,7 +65,6 @@ public class ClientController {
                         dto.state(), dto.neighborhood(), dto.number(), dto.complement()
                 ));
         this.updateClient.update(id, updatesClient);
-
         return ResponseEntity.ok(new ResponseDto("Atualização realizada com sucesso."));
     }
 
