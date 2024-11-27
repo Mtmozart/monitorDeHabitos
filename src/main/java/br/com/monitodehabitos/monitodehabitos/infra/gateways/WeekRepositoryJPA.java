@@ -3,16 +3,15 @@ package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 import br.com.monitodehabitos.monitodehabitos.application.gateway.WeekRepository;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Week;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.WeekErrorEnum;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.ProgressException;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
-import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.WeekEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.WeekEntityRepository;
 
+import java.time.LocalDate;
 import java.util.Optional;
-import java.util.UUID;
 
 public class WeekRepositoryJPA implements WeekRepository {
-
 
     private WeekEntityRepository weekEntityRepository;
     private WeekEntityMapper weekEntityMapper;
@@ -79,7 +78,14 @@ public class WeekRepositoryJPA implements WeekRepository {
     }
 
     @Override
+    public void changeProgress(Week week, LocalDate date) throws ProgressException {
+        week.changeProgressStatus(date);
+
+    }
+
+    @Override
     public double getPercentage() {
+
         return 0;
     }
 

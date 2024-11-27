@@ -1,12 +1,14 @@
 package br.com.monitodehabitos.monitodehabitos.domain.entities;
 
 import br.com.monitodehabitos.monitodehabitos.domain.enums.WeekErrorEnum;
+import br.com.monitodehabitos.monitodehabitos.domain.exception.ProgressException;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class Week {
@@ -113,6 +115,15 @@ public class Week {
         return totalDays > 0 ? Math.round((1.0 / totalDays) * 10000.0) / 100.0 : 0.0;
     }
 
+    public void changeProgressStatus(LocalDate date) throws ProgressException {
+        Optional<Progress> progress = progresses.stream()
+                .filter(p -> p.getDate().equals(date))
+                .findFirst();
+        if(progress.isEmpty()){
+            throw new ProgressException("Progresso não encontrado");
+        }
+        progress.get().changeStatusToCompleteOrNot();
+    }
 
     @Override
     public String toString() {

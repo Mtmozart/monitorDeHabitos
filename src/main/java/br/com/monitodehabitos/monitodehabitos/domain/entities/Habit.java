@@ -102,28 +102,21 @@ public class Habit {
 
     private List<Week> calcEndDayForWeek(LocalDate start, LocalDate end) {
         List<Week> weeks = new ArrayList<>();
-
         LocalDate startWeek = start;
         LocalDate weekEnd = startWeek.plusDays(6);
-
         if (weekEnd.isAfter(end)) {
             weekEnd = end;
         }
-
         weeks.add(new Week(startWeek, weekEnd, this));
-
         startWeek = weekEnd.plusDays(1);
-
         while (startWeek.isBefore(end) || startWeek.isEqual(end)) {
             weekEnd = startWeek.plusDays(6);
             if (weekEnd.isAfter(end)) {
                 weekEnd = end;
             }
             weeks.add(new Week(startWeek, weekEnd, this));
-
             startWeek = startWeek.plusWeeks(1);
         }
-
         return weeks;
     }
     public void changeStatus(HabitStatus newStatus){

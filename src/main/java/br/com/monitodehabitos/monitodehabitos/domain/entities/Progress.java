@@ -10,7 +10,6 @@ public class Progress {
     private ProgressEnumStatus status;
     private Week week;
 
-
     public Progress(String id, LocalDate currentDate, ProgressEnumStatus status, Week week) {
         this.id = id;
         this.currentDate = currentDate;

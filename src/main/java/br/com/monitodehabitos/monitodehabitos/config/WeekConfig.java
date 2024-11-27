@@ -40,6 +40,10 @@ public class WeekConfig {
         return new ReturnPercentage(weekRepository);
     }
     @Bean
+    ChangeProgress changeProgress(WeekRepository weekRepository){
+        return new ChangeProgress(weekRepository);
+    }
+    @Bean
     WeekRepositoryJPA weekRepositoryJPA(WeekEntityRepository weekEntityRepository, WeekEntityMapper weekEntityMapper){
         return new WeekRepositoryJPA(weekEntityRepository, weekEntityMapper);
     }
