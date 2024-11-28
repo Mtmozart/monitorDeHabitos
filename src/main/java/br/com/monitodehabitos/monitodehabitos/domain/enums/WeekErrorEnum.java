@@ -15,7 +15,8 @@ public enum WeekErrorEnum {
     HBT0012("Hábito temporariamente bloqueado"),
     HBT0013("Erro ao confirmar o hábito"),
     HBT0014("Hábito não confirmado"),
-    HBT0015("Erro ao buscar o histórico de hábitos");
+    HBT0015("Erro ao buscar o histórico de hábitos"),
+    HBT0016("Semana não encontrada.");
 
     private String message;
 

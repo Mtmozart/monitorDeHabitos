@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "week")
+@Table(name = "week")
 public class WeekEntity {
     @Id
     @Column(length = 36, nullable = false)

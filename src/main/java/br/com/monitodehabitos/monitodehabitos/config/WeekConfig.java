@@ -5,6 +5,7 @@ import br.com.monitodehabitos.monitodehabitos.application.useCases.Week.*;
 import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryWeek;
 import br.com.monitodehabitos.monitodehabitos.infra.gateways.WeekEntityMapper;
 import br.com.monitodehabitos.monitodehabitos.infra.gateways.WeekRepositoryJPA;
+import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntityRepository;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.WeekEntityRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,9 +44,10 @@ public class WeekConfig {
     ChangeProgress changeProgress(WeekRepository weekRepository){
         return new ChangeProgress(weekRepository);
     }
+
     @Bean
-    WeekRepositoryJPA weekRepositoryJPA(WeekEntityRepository weekEntityRepository, WeekEntityMapper weekEntityMapper){
-        return new WeekRepositoryJPA(weekEntityRepository, weekEntityMapper);
+    WeekRepositoryJPA weekRepositoryJPA(WeekEntityRepository weekEntityRepository, WeekEntityMapper weekEntityMapper, ProgressEntityRepository progressEntityRepository){
+        return new WeekRepositoryJPA(weekEntityRepository, weekEntityMapper, progressEntityRepository);
     }
     @Bean
     WeekEntityMapper weekEntityMapper(){

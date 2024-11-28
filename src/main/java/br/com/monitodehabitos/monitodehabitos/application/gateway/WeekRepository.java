@@ -18,7 +18,7 @@ public interface WeekRepository {
 
     Boolean removePercentage(double add, String id) throws WeekException;
 
-    void changeProgress(Week week, LocalDate date) throws ProgressException;
+    void changeProgress(String weekid, LocalDate date) throws ProgressException, WeekException;
 
     double getPercentage();
 }

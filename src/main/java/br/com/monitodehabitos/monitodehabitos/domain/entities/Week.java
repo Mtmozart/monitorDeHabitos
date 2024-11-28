@@ -115,7 +115,7 @@ public class Week {
         return totalDays > 0 ? Math.round((1.0 / totalDays) * 10000.0) / 100.0 : 0.0;
     }
 
-    public void changeProgressStatus(LocalDate date) throws ProgressException {
+    public Progress changeProgressStatus(LocalDate date) throws ProgressException {
         Optional<Progress> progress = progresses.stream()
                 .filter(p -> p.getDate().equals(date))
                 .findFirst();
@@ -123,6 +123,7 @@ public class Week {
             throw new ProgressException("Progresso não encontrado");
         }
         progress.get().changeStatusToCompleteOrNot();
+        return progress.get();
     }
 
     @Override

@@ -1,12 +1,15 @@
 package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 
 import br.com.monitodehabitos.monitodehabitos.application.gateway.WeekRepository;
+import br.com.monitodehabitos.monitodehabitos.domain.entities.Progress;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Week;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.WeekErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.ProgressException;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
+import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntityRepository;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.WeekEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.WeekEntityRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -15,12 +18,15 @@ public class WeekRepositoryJPA implements WeekRepository {
 
     private WeekEntityRepository weekEntityRepository;
     private WeekEntityMapper weekEntityMapper;
+    private ProgressEntityRepository progressEntityRepository;
 
-    public WeekRepositoryJPA(){}
+    public WeekRepositoryJPA() {
+    }
 
-    public WeekRepositoryJPA(WeekEntityRepository weekEntityRepository, WeekEntityMapper weekEntityMapper) {
+    public WeekRepositoryJPA(WeekEntityRepository weekEntityRepository, WeekEntityMapper weekEntityMapper, ProgressEntityRepository progressEntityRepository) {
         this.weekEntityRepository = weekEntityRepository;
         this.weekEntityMapper = weekEntityMapper;
+        this.progressEntityRepository = progressEntityRepository;
     }
 
     @Override
@@ -33,6 +39,7 @@ public class WeekRepositoryJPA implements WeekRepository {
     @Override
     public Week findById(String id) throws WeekException {
         Optional<WeekEntity> weekEntity = this.weekEntityRepository.findById(id);
+
         if (weekEntity.isPresent()) {
             return this.weekEntityMapper.toWeekDomain(weekEntity.get());
         }
@@ -77,10 +84,17 @@ public class WeekRepositoryJPA implements WeekRepository {
         return null;
     }
 
+    @Transactional
     @Override
-    public void changeProgress(Week week, LocalDate date) throws ProgressException {
-        week.changeProgressStatus(date);
+    public void changeProgress(String weekid, LocalDate date) throws ProgressException, WeekException {
+       Optional<WeekEntity> weekEntity = this.weekEntityRepository.findById(weekid);
+        if(weekEntity.isEmpty()){
+            throw new WeekException(WeekErrorEnum.HBT0016.getMessage());
+        }
+        Week week = weekEntityMapper.toWeekDomain(weekEntity.get());
 
+        Progress progress = week.changeProgressStatus(date);
+        this.progressEntityRepository.updateProgressStatus(progress.getId(), progress.getProgressEnumStatus());
     }
 
     @Override

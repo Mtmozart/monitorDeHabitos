@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
-@Entity
+@Entity(name = "progress")
 @Table(name = "progress")
 public class ProgressEntity {
 

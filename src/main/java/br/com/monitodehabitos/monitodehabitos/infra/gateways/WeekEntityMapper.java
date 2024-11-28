@@ -17,7 +17,15 @@ public class WeekEntityMapper {
     }
 
     public Week toWeekDomain(WeekEntity weekEntity) {
-        return null;
+        return new Week(
+                weekEntity.getId(),
+                weekEntity.getStartDate(),
+                weekEntity.getEndDate(),
+                weekEntity.getPercentagePerDay(),
+                progressDomainList(weekEntity.getProgresses()),
+                weekEntity.getTotalPercentage()
+
+        );
     }
 
     private HabitEntity toHabitEntity(Habit habit) {
@@ -84,12 +92,12 @@ public class WeekEntityMapper {
     }
 
 
-    private List<ProgressEntity> progressEntityList(List<Progress> progresses){
+    private List<ProgressEntity> progressEntityList(List<Progress> progresses) {
         return progresses.stream().map(this::toProgressEntity).collect(Collectors.toList());
 
     }
 
-    private ProgressEntity toProgressEntity(Progress progress){
+    private ProgressEntity toProgressEntity(Progress progress) {
         return new ProgressEntity(
                 progress.getId(),
                 progress.getCurrentDate(),
@@ -98,17 +106,17 @@ public class WeekEntityMapper {
         );
     }
 
-    private List<Progress> progressDomainList(List<ProgressEntity> progressEntities){
+    private List<Progress> progressDomainList(List<ProgressEntity> progressEntities) {
         return progressEntities.stream().map(this::toProgressDomain).collect(Collectors.toList());
 
     }
 
-    private Progress toProgressDomain(ProgressEntity progressEntity){
+    private Progress toProgressDomain(ProgressEntity progressEntity) {
         return new Progress(
                 progressEntity.getId(),
                 progressEntity.getCurrentDate(),
                 progressEntity.getCompleted(),
-                toWeekDomain(progressEntity.getWeek())
+                null
         );
     }
 
