@@ -2,6 +2,7 @@ package br.com.monitodehabitos.monitodehabitos.infra.gateways;
 
 import br.com.monitodehabitos.monitodehabitos.application.gateway.WeekRepository;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Progress;
+import br.com.monitodehabitos.monitodehabitos.domain.entities.ProgressEnumStatus;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Week;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.WeekErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.ProgressException;
@@ -39,67 +40,66 @@ public class WeekRepositoryJPA implements WeekRepository {
     @Override
     public Week findById(String id) throws WeekException {
         Optional<WeekEntity> weekEntity = this.weekEntityRepository.findById(id);
-
         if (weekEntity.isPresent()) {
             return this.weekEntityMapper.toWeekDomain(weekEntity.get());
         }
-        throw new WeekException(WeekErrorEnum.HBT0014.getMessage());
+        throw new WeekException(WeekErrorEnum.WK0004.getMessage());
     }
 
 
     @Override
     public void delete(String id) throws WeekException {
-
         if (!this.weekEntityRepository.existsById(id)) {
-            throw new WeekException(WeekErrorEnum.HBT0014.getMessage());
+            throw new WeekException(WeekErrorEnum.WK0003.getMessage());
         }
         this.weekEntityRepository.deleteById(id);
     }
 
     @Override
-    public Boolean addPercentage(double add, String habitId) throws WeekException {
-//        Optional<WeekEntity> weekEntity = this.weekEntityRepository.findWeekByHabitId(habitId);
-//        if(weekEntity.isEmpty()){
-//            System.out.println("Semana inexistente");
-//        }
-//        Week week = this.weekEntityMapper.toWeekDomain(weekEntity.get());
-//        week.addPercentage(add);
-//        WeekEntity weekEntitySave = this.weekEntityMapper.toWeekEntity(week);
-//        this.weekEntityRepository.save(weekEntitySave);
-//        return true;
-        return null;
+    public Boolean addPercentage(double add, String id) throws WeekException {
+        Optional<WeekEntity> weekEntity = this.weekEntityRepository.findById(id);
+        if (weekEntity.isEmpty()) {
+            throw new WeekException(WeekErrorEnum.WK0003.getMessage());
+        }
+        Week week = this.weekEntityMapper.toWeekDomain(weekEntity.get());
+        week.addPercentage(add);
+        this.weekEntityRepository.updateProgressWeek(weekEntity.get().getId(), week.getTotalPercentage());
+        return true;
     }
 
     @Override
-    public Boolean removePercentage(double remove, String habitId) throws WeekException {
-//        Optional<WeekEntity> weekEntity = this.weekEntityRepository.findWeekByHabitId(habitId);
-//        if(weekEntity.isEmpty()){
-//            System.out.println("Semana inexistente");
-//        }
-//        Week week = this.weekEntityMapper.toWeekDomain(weekEntity.get());
-//        week.subtractPercentage(remove);
-//        WeekEntity weekEntitySave = this.weekEntityMapper.toWeekEntity(week);
-//        this.weekEntityRepository.save(weekEntitySave);
-//        return true;
-        return null;
+    @Transactional
+    public Boolean removePercentage(double remove, String weekId) throws WeekException {
+        Optional<WeekEntity> weekEntity = this.weekEntityRepository.findById(weekId);
+        if (weekEntity.isEmpty()) {
+            System.out.println("Semana inexistente");
+        }
+        Week week = this.weekEntityMapper.toWeekDomain(weekEntity.get());
+        week.subtractPercentage(remove);
+        this.weekEntityRepository.updateProgressWeek(week.getId(), week.getTotalPercentage());
+        return true;
+
     }
 
     @Transactional
     @Override
     public void changeProgress(String weekid, LocalDate date) throws ProgressException, WeekException {
-       Optional<WeekEntity> weekEntity = this.weekEntityRepository.findById(weekid);
-        if(weekEntity.isEmpty()){
-            throw new WeekException(WeekErrorEnum.HBT0016.getMessage());
+        Optional<WeekEntity> weekEntity = this.weekEntityRepository.findById(weekid);
+        if (weekEntity.isEmpty()) {
+            throw new WeekException(WeekErrorEnum.WK0004.getMessage());
         }
         Week week = weekEntityMapper.toWeekDomain(weekEntity.get());
-
         Progress progress = week.changeProgressStatus(date);
+        if (progress.getProgressEnumStatus().equals(ProgressEnumStatus.NOT_STARTED)) {
+            this.removePercentage(weekEntity.get().getPercentagePerDay(), weekEntity.get().getId());
+        } else {
+            this.addPercentage(weekEntity.get().getPercentagePerDay(), weekEntity.get().getId());
+        }
         this.progressEntityRepository.updateProgressStatus(progress.getId(), progress.getProgressEnumStatus());
     }
 
     @Override
     public double getPercentage() {
-
         return 0;
     }
 

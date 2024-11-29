@@ -94,7 +94,7 @@ public class Week {
 
     private void validatePercentage(double newPercentage) throws WeekException {
         if (newPercentage < 0 || newPercentage > 100) {
-            throw new WeekException(WeekErrorEnum.HBT0002.getMessage());
+            throw new WeekException(WeekErrorEnum.WK0002.getMessage());
         }
         this.totalPercentage = newPercentage;
     }

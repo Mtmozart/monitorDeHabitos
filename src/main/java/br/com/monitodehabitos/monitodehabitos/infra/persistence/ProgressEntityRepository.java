@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ProgressEntityRepository extends JpaRepository<ProgressEntity, String> {
-
     @Modifying
     @Query("UPDATE progress p SET p.completed = :status WHERE p.id = :progressId")
     void updateProgressStatus(String progressId, ProgressEnumStatus status);

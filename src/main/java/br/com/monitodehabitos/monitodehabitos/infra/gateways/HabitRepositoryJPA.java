@@ -5,17 +5,13 @@ import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.HabitStatus;
 import br.com.monitodehabitos.monitodehabitos.domain.enums.HabitsErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
-import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntity;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.HabitEntityRespository;
 import br.com.monitodehabitos.monitodehabitos.infra.persistence.ProgressEntity;
-import br.com.monitodehabitos.monitodehabitos.infra.persistence.WeekEntity;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public class HabitRepositoryJPA implements HabitRepository {
     private final HabitEntityRespository habitEntityRespository;
@@ -65,14 +61,14 @@ public class HabitRepositoryJPA implements HabitRepository {
         this.habitEntityRespository.deleteById(id);
     }
 
-        @Override
-        @Transactional
-        public Habit changeDone(String id, HabitStatus status) throws HabitExeption {
-            Habit habit = this.findById(id);
-            habit.changeStatus(status);
-            this.habitEntityRespository.updateHabitStatus(habit.getId(), habit.getDone());
-            return habit;
-        }
+    @Override
+    @Transactional
+    public Habit changeDone(String id, HabitStatus status) throws HabitExeption {
+        Habit habit = this.findById(id);
+        habit.changeStatus(status);
+        this.habitEntityRespository.updateHabitStatus(habit.getId(), habit.getDone());
+        return habit;
+    }
 
     @Override
     public List<Habit> findAllByUser(String userId) {
