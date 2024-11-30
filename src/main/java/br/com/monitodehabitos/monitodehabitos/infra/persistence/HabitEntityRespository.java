@@ -4,11 +4,9 @@ import br.com.monitodehabitos.monitodehabitos.domain.entities.HabitStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface HabitEntityRespository extends JpaRepository<HabitEntity, String>  {
     @Query("SELECT h FROM habit h WHERE h.clientEntity.id = :id")
@@ -20,7 +18,11 @@ public interface HabitEntityRespository extends JpaRepository<HabitEntity, Strin
 
     @Modifying
     @Query("UPDATE habit h SET h.done = :done WHERE h.id = :habitId")
-    int updateHabitStatus(String habitId, HabitStatus done);
+    void updateHabitStatus(String habitId, HabitStatus done);
+
+    @Modifying
+    @Query("UPDATE habit h SET h.description = :description, h.done = :done WHERE h.id = :habitId")
+    void updateHabitStatusAndDone(String habitId, String description, HabitStatus done);
 
     boolean existsById(String id);
 

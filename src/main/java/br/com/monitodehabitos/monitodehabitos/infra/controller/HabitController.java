@@ -4,7 +4,6 @@ import br.com.monitodehabitos.monitodehabitos.application.useCases.Client.FindCl
 import br.com.monitodehabitos.monitodehabitos.application.useCases.Habit.*;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Client;
 import br.com.monitodehabitos.monitodehabitos.domain.entities.Habit;
-import br.com.monitodehabitos.monitodehabitos.domain.enums.HabitsErrorEnum;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.HabitExeption;
 import br.com.monitodehabitos.monitodehabitos.domain.exception.WeekException;
 import br.com.monitodehabitos.monitodehabitos.domain.factories.FactoryHabit;
@@ -18,10 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/habit")
@@ -70,21 +66,11 @@ public class HabitController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseHabitDto> update(@PathVariable String id, @RequestBody UpdateHabitDto data) throws HabitExeption {
-        LocalDate dateStart = null;
-        if (data.start() != null && !data.start().isBlank() && !data.start().isEmpty()) {
-            dateStart = this.dateValidationAndFormater.validate(data.start());
-            Habit habit = this.factoryHabit.update(data.description(), dateStart, LocalDate.of(2024, 11, 1));
-            Habit update = this.updateHabit.update(id, habit);
-            ResponseHabitDto responseDto = new ResponseHabitDto(update);
-            return ResponseEntity.ok(responseDto);
-        }
-        if (data.start() == null) {
-            Habit habit = this.factoryHabit.updateNoDateStater(data.description());
-            Habit update = this.updateHabit.update(id, habit);
-            ResponseHabitDto responseDto = new ResponseHabitDto(update);
-            return ResponseEntity.ok(responseDto);
-        }
-        return ResponseEntity.badRequest().build();
+
+        Habit habit = this.factoryHabit.updateNoDateStater(data.description(), data.done());
+        Habit update = this.updateHabit.update(id, habit);
+        ResponseHabitDto responseDto = new ResponseHabitDto(update);
+        return ResponseEntity.ok(responseDto);
 
     }
 

@@ -37,9 +37,8 @@ public class HabitRepositoryJPA implements HabitRepository {
     public Habit update(String id, Habit newHabit) throws HabitExeption {
         Habit habit = this.findById(id);
         habit.update(newHabit);
-        HabitEntity savedHabitEntity = this.habitEntityRespository.save(this.habitEntityMapper.toHabitEntityCreate(habit));
-        List<ProgressEntity> progressEntities = this.habitEntityMapper.toProgressEntityMapper(habit);
-        return this.habitEntityMapper.toHabitDomainWithAllParameters(savedHabitEntity);
+       this.habitEntityRespository.updateHabitStatusAndDone(habit.getId(), habit.getDescription(), habit.getDone());
+        return habit;
     }
 
     @Override

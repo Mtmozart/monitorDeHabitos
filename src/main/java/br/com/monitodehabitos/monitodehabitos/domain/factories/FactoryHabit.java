@@ -29,8 +29,8 @@ public class FactoryHabit {
         return this.habit = new Habit(null, null, description, start, end);
     }
 
-    public Habit updateNoDateStater(String description) throws HabitExeption {
-        return this.habit = new Habit(null, null, description);
+    public Habit updateNoDateStater(String description, HabitStatus done) throws HabitExeption {
+        return this.habit = new Habit(null, null, description, done);
 
     }
 }

@@ -27,6 +27,7 @@ public class Habit {
         this.client = client;
         this.weeks = weeks;
     }
+
     //contructor para criar
     public Habit(String description, HabitStatus done, LocalDate start, LocalDate end, Client client) {
         this.id = UUID.randomUUID().toString();
@@ -49,9 +50,10 @@ public class Habit {
     }
 
     //Contructor do update sem data de ínicio
-    public Habit(String id, Client client, String description) throws HabitExeption {
+    public Habit(String id, Client client, String description, HabitStatus done) throws HabitExeption {
         this.id = id;
         this.description = description;
+        this.done = done;
         this.client = client;
     }
 
@@ -91,13 +93,18 @@ public class Habit {
     public Client getClient() {
         return client;
     }
-        public void update(Habit updateHabit) throws HabitExeption {
+
+    public void update(Habit updateHabit) throws HabitExeption {
         if (updateHabit == null) {
             throw new HabitExeption(HabitsErrorEnum.HBT0002.getMessage());
         }
         if (!Objects.equals(updateHabit.description, this.description) && updateHabit.description != null) {
             this.description = updateHabit.getDescription();
         }
+        if (!Objects.equals(updateHabit.getDone(), this.getDone()) && updateHabit.getDone() != null) {
+            this.done = updateHabit.getDone();
+        }
+        
     }
 
     private List<Week> calcEndDayForWeek(LocalDate start, LocalDate end) {
@@ -119,7 +126,8 @@ public class Habit {
         }
         return weeks;
     }
-    public void changeStatus(HabitStatus newStatus){
+
+    public void changeStatus(HabitStatus newStatus) {
         this.done = newStatus;
     }
 

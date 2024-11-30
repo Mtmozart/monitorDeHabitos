@@ -27,7 +27,4 @@ public class SpringDocConfiguration {
                                 .name("Time Backend")
                         ));
     }
-
-
-
 }

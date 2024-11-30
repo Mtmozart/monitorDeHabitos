@@ -9,6 +9,7 @@ public class WeekException extends Exception{
         super(message);
         this.errorDate = LocalDateTime.now();
     }
+
     public LocalDateTime getErrorDate() {
         return errorDate;
     }
