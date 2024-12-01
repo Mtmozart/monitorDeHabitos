@@ -23,7 +23,7 @@ jobs:
        - name: Build docker image
          run: docker build -t mmsnb/monitor-habitos .
        - name: Push image docker
-         run: docker push danieleleaoe/monitor-habitos
+         run: docker push mmsnb/monitor-habitos
 
 
 
