@@ -17,7 +17,7 @@ jobs:
            distribution: 'temurin'
            java-version: '21'
        - name: Build project
-         run: mvn clean install -DskipTests
+         run: mvn clean install -DskipTests -Dmaven.test.skip=true
        - name: Login Docker Hub
          run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
        - name: Build docker image
